@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package>
+  <metadata>
+    <id>LinkeD365.ERDVisioBuilder</id>
+    <version>$version$</version>
+    <authors>LinkeD365</authors>
+    <owners>LinkeD365</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/LinkeD365/ERDVisioBuilder</projectUrl>
+    <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
+    <description>A XrmToolBox tool to create Visio diagrams from CDS Entities</description>
+    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>XrmToolBox Plugins ERDVisioBuilder</tags>
+    <dependencies>
+      <dependency id="XrmToolBox" version="1.2020.6.40" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Plugins\ERDBuilder.dll" target="lib\net472\Plugins" />
+  </files>
+</package>
