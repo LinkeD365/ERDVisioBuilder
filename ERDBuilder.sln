@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ERDBuilder", "ERDBuilder\ERDBuilder.csproj", "{3D74CC1F-65E5-401E-B640-1230E92E5B60}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2FC7F77B-3C8F-445F-ACC8-3BF2AAFFDF37}"
+	ProjectSection(SolutionItems) = preProject
+		ERDVisioBuilder.nuspec = ERDVisioBuilder.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

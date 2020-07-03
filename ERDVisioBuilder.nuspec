@@ -5,6 +5,7 @@
     <version>$version$</version>
     <authors>LinkeD365</authors>
     <owners>LinkeD365</owners>
+    <title>ERD Visio Builder</title>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/LinkeD365/ERDVisioBuilder</projectUrl>
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
