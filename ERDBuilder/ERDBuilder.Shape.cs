@@ -14,6 +14,7 @@ namespace LinkeD365.ERDBuilder
     {
         private VDX.Sections.Char bold = new VDX.Sections.Char();
         private VDX.Sections.Char attribute = new VDX.Sections.Char();
+        public int FontId;
 
         private ParagraphFormat _left;
 
@@ -30,18 +31,25 @@ namespace LinkeD365.ERDBuilder
             }
         }
 
-        //private TextBlock _textBlock;
-
+        /// <summary>
+        /// Entity constructor
+        /// 6-7-2020 added width protection
+        /// </summary>
+        /// <param name="entityName"></param>
+        /// <param name="pinx"></param>
+        /// <param name="piny"></param>
+        /// <param name="fontId"></param>
         public Entity(string entityName, double pinx, double piny, int fontId) : base(0, pinx, piny, 1.2, 0.8)
         {
+            FontId = fontId;
             TextBlock = new TextBlock();
             TextBlock.VerticalAlign.Result = 0;
 
             attribute.Style.Result = CharStyle.None;
-            attribute.Font.Result = fontId;
+            attribute.Font.Result = FontId;
             attribute.Size.Result = 6;
             bold.Style.Result = CharStyle.Bold;
-            bold.Font.Result = fontId;
+            bold.Font.Result = FontId;
             bold.Size.Result = 8;
 
             CharFormats = new List<VDX.Sections.Char>();
@@ -51,6 +59,7 @@ namespace LinkeD365.ERDBuilder
             CharFormats.Add(bold);
             CharFormats.Add(attribute);
             XForm.Height.Formula = "GUARD(TEXTHEIGHT(TheText,Width))";
+            XForm.Width.Formula = "GUARD(TEXTWIDTH(TheText))";
             Text.Add(entityName, 0, 0, null);
         }
 
@@ -67,75 +76,5 @@ namespace LinkeD365.ERDBuilder
         //        _textBlock = value;
         //    }
         //}
-    }
-
-    public partial class ERDBuilderControl : PluginControlBase
-    {
-        public void ConnectShape(Entity firstEntity, Entity secondEntity, string fieldName)
-        {
-            var connector = Shape.CreateDynamicConnector(doc);
-            connector.XForm1D.EndY.Result = 0;
-            connector.Line = new Line();
-            connector.Line.EndArrow.Result = 29;
-            connector.Line.BeginArrow.Result = 30;
-            page.Shapes.Add(connector);
-            connector.Geom = new Geom();
-            connector.Geom.Rows.Add(new MoveTo(1, 3));
-            connector.Geom.Rows.Add(new LineTo(5, 3));
-            secondEntity.Text.Add("\n" + fieldName, 1, 0, null);
-            page.ConnectShapesViaConnector(connector, firstEntity, secondEntity);
-        }
-
-        private void AddEntity(Entity entity)
-        {
-            string entityName = entity.Name;
-            page.Shapes.Add(entity);
-            entity.Name = entityName;
-            addedEntities.Add(entity);
-        }
-
-        private Entity AddEntity(string entityName, double pinx, double piny)
-        {
-            var entity = new Entity(entityName, pinx, piny, face.ID);
-            page.Shapes.Add(entity);
-            entity.Name = entityName;
-            addedEntities.Add(entity);
-            return entity;
-        }
-
-        private List<Entity> addedEntities = new List<Entity>();
-
-        private List<string> _hiddenSystem;
-
-        protected List<string> HiddenSystemList
-        {
-            get
-            {
-                if (btnHideSystem.Checked)
-                {
-                    if (_hiddenSystem == null)
-                    {
-                        _hiddenSystem = new List<string>();
-                        _hiddenSystem.Add("principalobjectattributeaccess");
-                        _hiddenSystem.Add("postfollow");
-                        _hiddenSystem.Add("postregarding");
-                        _hiddenSystem.Add("postrole");
-                        _hiddenSystem.Add("syncerror");
-                        _hiddenSystem.Add("bulkdeletefailure");
-                        _hiddenSystem.Add("processsession");
-                        _hiddenSystem.Add("asyncoperation");
-                        _hiddenSystem.Add("userentityinstancedata");
-                        _hiddenSystem.Add("team");
-                        _hiddenSystem.Add("systemuser");
-                        _hiddenSystem.Add("owner");
-                        _hiddenSystem.Add("businessunit");
-                        _hiddenSystem.Add("mailboxtrackingfolder");
-                        _hiddenSystem.Add("duplicaterecord");
-                    }
-                    return _hiddenSystem;
-                }
-                else return new List<string>();
-            }
-        }
     }
 }

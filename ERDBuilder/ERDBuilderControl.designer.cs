@@ -35,16 +35,18 @@
             this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
             this.btnHideSystem = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnGrpEntities = new System.Windows.Forms.ToolStripDropDownButton();
-            this.fromSolutionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.allEntitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.splitMain = new System.Windows.Forms.SplitContainer();
+            this.splitEntitiesList = new System.Windows.Forms.SplitContainer();
+            this.splitSearch = new System.Windows.Forms.SplitContainer();
+            this.lblSearch = new System.Windows.Forms.Label();
+            this.textSearch = new System.Windows.Forms.TextBox();
             this.listEntities = new System.Windows.Forms.ListView();
             this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCustom = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colSelected = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.checkAll = new System.Windows.Forms.CheckBox();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grpSettings = new System.Windows.Forms.GroupBox();
             this.checkRelationships = new System.Windows.Forms.CheckedListBox();
@@ -57,14 +59,23 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.btnAllEntities = new System.Windows.Forms.ToolStripButton();
+            this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitEntitiesList)).BeginInit();
+            this.splitEntitiesList.Panel1.SuspendLayout();
+            this.splitEntitiesList.Panel2.SuspendLayout();
+            this.splitEntitiesList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitSearch)).BeginInit();
+            this.splitSearch.Panel1.SuspendLayout();
+            this.splitSearch.Panel2.SuspendLayout();
+            this.splitSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitRight)).BeginInit();
             this.splitRight.Panel1.SuspendLayout();
             this.splitRight.Panel2.SuspendLayout();
@@ -80,37 +91,38 @@
             this.toolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbClose,
             this.tssSeparator1,
-            this.btnGrpEntities,
+            this.btnAllEntities,
+            this.btnFromSolution,
+            this.toolStripSeparator2,
             this.btnCreateVisio,
             this.btnHideSystem,
             this.toolStripSeparator1,
             this.tspProgress});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
-            this.toolStripMenu.Size = new System.Drawing.Size(854, 25);
+            this.toolStripMenu.Size = new System.Drawing.Size(854, 31);
             this.toolStripMenu.TabIndex = 4;
             this.toolStripMenu.Text = "toolStrip1";
             // 
             // tsbClose
             // 
-            this.tsbClose.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbClose.Image = ((System.Drawing.Image)(resources.GetObject("tsbClose.Image")));
             this.tsbClose.Name = "tsbClose";
-            this.tsbClose.Size = new System.Drawing.Size(86, 22);
-            this.tsbClose.Text = "Close this tool";
+            this.tsbClose.Size = new System.Drawing.Size(64, 28);
+            this.tsbClose.Text = "Close";
             this.tsbClose.Click += new System.EventHandler(this.tsbClose_Click);
             // 
             // tssSeparator1
             // 
             this.tssSeparator1.Name = "tssSeparator1";
-            this.tssSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
             // btnCreateVisio
             // 
-            this.btnCreateVisio.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.btnCreateVisio.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateVisio.Image")));
             this.btnCreateVisio.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCreateVisio.Name = "btnCreateVisio";
-            this.btnCreateVisio.Size = new System.Drawing.Size(73, 22);
+            this.btnCreateVisio.Size = new System.Drawing.Size(97, 28);
             this.btnCreateVisio.Text = "Create Visio";
             this.btnCreateVisio.Click += new System.EventHandler(this.btnGenerateVisio_Click);
             // 
@@ -124,7 +136,7 @@
             this.btnHideSystem.Image = ((System.Drawing.Image)(resources.GetObject("btnHideSystem.Image")));
             this.btnHideSystem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnHideSystem.Name = "btnHideSystem";
-            this.btnHideSystem.Size = new System.Drawing.Size(77, 22);
+            this.btnHideSystem.Size = new System.Drawing.Size(77, 28);
             this.btnHideSystem.Text = "Hide System";
             this.btnHideSystem.ToolTipText = "Hide the standard relationships such as Created By, Modified By";
             // 
@@ -132,52 +144,92 @@
             // 
             this.toolStripSeparator1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
             // 
-            // btnGrpEntities
+            // tspProgress
             // 
-            this.btnGrpEntities.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnGrpEntities.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fromSolutionToolStripMenuItem,
-            this.allEntitiesToolStripMenuItem});
-            this.btnGrpEntities.Image = ((System.Drawing.Image)(resources.GetObject("btnGrpEntities.Image")));
-            this.btnGrpEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnGrpEntities.Name = "btnGrpEntities";
-            this.btnGrpEntities.Size = new System.Drawing.Size(79, 22);
-            this.btnGrpEntities.Text = "List Entities";
-            // 
-            // fromSolutionToolStripMenuItem
-            // 
-            this.fromSolutionToolStripMenuItem.Name = "fromSolutionToolStripMenuItem";
-            this.fromSolutionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fromSolutionToolStripMenuItem.Text = "From Solution";
-            this.fromSolutionToolStripMenuItem.Click += new System.EventHandler(this.fromSolutionToolStripMenuItem_Click);
-            // 
-            // allEntitiesToolStripMenuItem
-            // 
-            this.allEntitiesToolStripMenuItem.Name = "allEntitiesToolStripMenuItem";
-            this.allEntitiesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.allEntitiesToolStripMenuItem.Text = "All Entities";
-            this.allEntitiesToolStripMenuItem.Click += new System.EventHandler(this.allEntitiesToolStripMenuItem_Click);
+            this.tspProgress.Name = "tspProgress";
+            this.tspProgress.Size = new System.Drawing.Size(100, 28);
+            this.tspProgress.Visible = false;
             // 
             // splitMain
             // 
             this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
-            this.splitMain.Location = new System.Drawing.Point(0, 25);
+            this.splitMain.Location = new System.Drawing.Point(0, 31);
             this.splitMain.Name = "splitMain";
             // 
             // splitMain.Panel1
             // 
-            this.splitMain.Panel1.Controls.Add(this.listEntities);
+            this.splitMain.Panel1.Controls.Add(this.splitEntitiesList);
             this.splitMain.Panel1MinSize = 350;
             // 
             // splitMain.Panel2
             // 
             this.splitMain.Panel2.Controls.Add(this.splitRight);
-            this.splitMain.Size = new System.Drawing.Size(854, 611);
+            this.splitMain.Size = new System.Drawing.Size(854, 605);
             this.splitMain.SplitterDistance = 544;
             this.splitMain.TabIndex = 5;
+            // 
+            // splitEntitiesList
+            // 
+            this.splitEntitiesList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitEntitiesList.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitEntitiesList.IsSplitterFixed = true;
+            this.splitEntitiesList.Location = new System.Drawing.Point(0, 0);
+            this.splitEntitiesList.Name = "splitEntitiesList";
+            this.splitEntitiesList.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitEntitiesList.Panel1
+            // 
+            this.splitEntitiesList.Panel1.Controls.Add(this.splitSearch);
+            this.splitEntitiesList.Panel1MinSize = 20;
+            // 
+            // splitEntitiesList.Panel2
+            // 
+            this.splitEntitiesList.Panel2.Controls.Add(this.checkAll);
+            this.splitEntitiesList.Panel2.Controls.Add(this.listEntities);
+            this.splitEntitiesList.Size = new System.Drawing.Size(544, 605);
+            this.splitEntitiesList.SplitterDistance = 25;
+            this.splitEntitiesList.TabIndex = 2;
+            // 
+            // splitSearch
+            // 
+            this.splitSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitSearch.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitSearch.IsSplitterFixed = true;
+            this.splitSearch.Location = new System.Drawing.Point(0, 0);
+            this.splitSearch.Name = "splitSearch";
+            // 
+            // splitSearch.Panel1
+            // 
+            this.splitSearch.Panel1.Controls.Add(this.lblSearch);
+            // 
+            // splitSearch.Panel2
+            // 
+            this.splitSearch.Panel2.Controls.Add(this.textSearch);
+            this.splitSearch.Size = new System.Drawing.Size(544, 25);
+            this.splitSearch.SplitterDistance = 60;
+            this.splitSearch.TabIndex = 1;
+            // 
+            // lblSearch
+            // 
+            this.lblSearch.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblSearch.AutoSize = true;
+            this.lblSearch.Location = new System.Drawing.Point(9, 5);
+            this.lblSearch.Name = "lblSearch";
+            this.lblSearch.Size = new System.Drawing.Size(41, 13);
+            this.lblSearch.TabIndex = 1;
+            this.lblSearch.Text = "Search";
+            // 
+            // textSearch
+            // 
+            this.textSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textSearch.Location = new System.Drawing.Point(0, 0);
+            this.textSearch.Name = "textSearch";
+            this.textSearch.Size = new System.Drawing.Size(480, 20);
+            this.textSearch.TabIndex = 0;
+            this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
             // 
             // listEntities
             // 
@@ -185,13 +237,12 @@
             this.listEntities.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colName,
             this.colEntity,
-            this.colCustom,
-            this.colSelected});
+            this.colCustom});
             this.listEntities.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listEntities.HideSelection = false;
             this.listEntities.Location = new System.Drawing.Point(0, 0);
             this.listEntities.Name = "listEntities";
-            this.listEntities.Size = new System.Drawing.Size(544, 611);
+            this.listEntities.Size = new System.Drawing.Size(544, 576);
             this.listEntities.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listEntities.TabIndex = 0;
             this.listEntities.UseCompatibleStateImageBehavior = false;
@@ -202,7 +253,7 @@
             // 
             // colName
             // 
-            this.colName.Text = "Name";
+            this.colName.Text = "        Name";
             this.colName.Width = 25;
             // 
             // colEntity
@@ -213,9 +264,15 @@
             // 
             this.colCustom.Text = "Custom?";
             // 
-            // colSelected
+            // checkAll
             // 
-            this.colSelected.Text = "Relationships";
+            this.checkAll.AutoSize = true;
+            this.checkAll.Location = new System.Drawing.Point(6, 4);
+            this.checkAll.Name = "checkAll";
+            this.checkAll.Size = new System.Drawing.Size(15, 14);
+            this.checkAll.TabIndex = 1;
+            this.checkAll.UseVisualStyleBackColor = true;
+            this.checkAll.CheckedChanged += new System.EventHandler(this.checkAll_CheckedChanged);
             // 
             // splitRight
             // 
@@ -232,7 +289,7 @@
             // splitRight.Panel2
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
-            this.splitRight.Size = new System.Drawing.Size(306, 611);
+            this.splitRight.Size = new System.Drawing.Size(306, 605);
             this.splitRight.SplitterDistance = 193;
             this.splitRight.TabIndex = 4;
             // 
@@ -320,7 +377,7 @@
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(306, 414);
+            this.grpSelected.Size = new System.Drawing.Size(306, 408);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
@@ -330,13 +387,12 @@
             this.listSelected.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
-            this.columnHeader3,
-            this.columnHeader4});
+            this.columnHeader3});
             this.listSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listSelected.HideSelection = false;
             this.listSelected.Location = new System.Drawing.Point(3, 16);
             this.listSelected.Name = "listSelected";
-            this.listSelected.Size = new System.Drawing.Size(300, 395);
+            this.listSelected.Size = new System.Drawing.Size(300, 389);
             this.listSelected.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listSelected.TabIndex = 3;
             this.listSelected.UseCompatibleStateImageBehavior = false;
@@ -354,20 +410,33 @@
             // 
             this.columnHeader3.Text = "Custom?";
             // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Relationships";
-            // 
             // saveDialog
             // 
             this.saveDialog.DefaultExt = "vdx";
             this.saveDialog.Filter = "VDX files|*.vdx";
             // 
-            // tspProgress
+            // btnAllEntities
             // 
-            this.tspProgress.Name = "tspProgress";
-            this.tspProgress.Size = new System.Drawing.Size(100, 22);
-            this.tspProgress.Visible = false;
+            this.btnAllEntities.Image = ((System.Drawing.Image)(resources.GetObject("btnAllEntities.Image")));
+            this.btnAllEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAllEntities.Name = "btnAllEntities";
+            this.btnAllEntities.Size = new System.Drawing.Size(90, 28);
+            this.btnAllEntities.Text = "All Entities";
+            this.btnAllEntities.Click += new System.EventHandler(this.btnAllEntities_Click);
+            // 
+            // btnFromSolution
+            // 
+            this.btnFromSolution.Image = ((System.Drawing.Image)(resources.GetObject("btnFromSolution.Image")));
+            this.btnFromSolution.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFromSolution.Name = "btnFromSolution";
+            this.btnFromSolution.Size = new System.Drawing.Size(115, 28);
+            this.btnFromSolution.Text = "From Solutions";
+            this.btnFromSolution.Click += new System.EventHandler(this.btnFromSolution_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // ERDBuilderControl
             // 
@@ -383,6 +452,17 @@
             this.splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
             this.splitMain.ResumeLayout(false);
+            this.splitEntitiesList.Panel1.ResumeLayout(false);
+            this.splitEntitiesList.Panel2.ResumeLayout(false);
+            this.splitEntitiesList.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitEntitiesList)).EndInit();
+            this.splitEntitiesList.ResumeLayout(false);
+            this.splitSearch.Panel1.ResumeLayout(false);
+            this.splitSearch.Panel1.PerformLayout();
+            this.splitSearch.Panel2.ResumeLayout(false);
+            this.splitSearch.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitSearch)).EndInit();
+            this.splitSearch.ResumeLayout(false);
             this.splitRight.Panel1.ResumeLayout(false);
             this.splitRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitRight)).EndInit();
@@ -407,7 +487,6 @@
         private System.Windows.Forms.ColumnHeader colName;
         private System.Windows.Forms.ColumnHeader colEntity;
         private System.Windows.Forms.ColumnHeader colCustom;
-        private System.Windows.Forms.ColumnHeader colSelected;
         private System.Windows.Forms.SaveFileDialog saveDialog;
         private System.Windows.Forms.GroupBox grpSettings;
         private System.Windows.Forms.TextBox txtFileName;
@@ -420,13 +499,17 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.CheckedListBox checkRelationships;
         private System.Windows.Forms.ToolStripButton btnHideSystem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripDropDownButton btnGrpEntities;
-        private System.Windows.Forms.ToolStripMenuItem fromSolutionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem allEntitiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripProgressBar tspProgress;
+        private System.Windows.Forms.CheckBox checkAll;
+        private System.Windows.Forms.SplitContainer splitEntitiesList;
+        private System.Windows.Forms.SplitContainer splitSearch;
+        private System.Windows.Forms.Label lblSearch;
+        private System.Windows.Forms.TextBox textSearch;
+        private System.Windows.Forms.ToolStripButton btnAllEntities;
+        private System.Windows.Forms.ToolStripButton btnFromSolution;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

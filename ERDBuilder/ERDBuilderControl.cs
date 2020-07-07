@@ -1,4 +1,5 @@
 ﻿using McTools.Xrm.Connection;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Extensions;
 using Microsoft.Xrm.Sdk.Messages;
@@ -35,6 +36,8 @@ namespace LinkeD365.ERDBuilder
         private double xMultiplier = 1.4;
         private double yMultiplier = 1;
 
+        private List<ListViewItem> allEntities = new List<ListViewItem>();
+
         public ERDBuilderControl()
         {
             InitializeComponent();
@@ -59,6 +62,12 @@ namespace LinkeD365.ERDBuilder
             base.UpdateConnection(newService, detail, actionName, parameter);
         }
 
+        /// <summary>
+        /// Generate Visio
+        /// 7-7-20 Added primary key
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnGenerateVisio_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtFileName.Text))
@@ -81,8 +90,8 @@ namespace LinkeD365.ERDBuilder
                                            let entityMeta = Service.GetEntityMetadata(coreEntity.SubItems[1].Text)
                                            select entityMeta)
                 {
-                    if (addedEntities.Count == 0) AddEntity(entityMeta.LogicalName, pageWidth / 2, pageHeight / 2);
-                    else AddEntity(entityMeta.LogicalName, nextX, nextY);
+                    if (addedEntities.Count == 0) AddEntity(entityMeta.LogicalName, entityMeta.PrimaryIdAttribute, pageWidth / 2, pageHeight / 2);
+                    else AddEntity(entityMeta.LogicalName, entityMeta.PrimaryIdAttribute, nextX, nextY);
                 }
                 tspProgress.Visible = true;
                 tspProgress.Maximum = 100;
@@ -121,7 +130,7 @@ namespace LinkeD365.ERDBuilder
             ColumnHeader new_sorting_column = listEntities.Columns[e.Column];
 
             // Figure out the new sorting order.
-            System.Windows.Forms.SortOrder sort_order;
+            SortOrder sort_order;
             if (sortingColumn == null)
             {
                 // New column. Sort ascending.
@@ -186,6 +195,7 @@ namespace LinkeD365.ERDBuilder
             lvSelectedItem.Name = "sel_" + e.Item.Name;
             if (e.Item.Checked) listSelected.Items.Add(lvSelectedItem);
             else listSelected.Items.RemoveByKey("sel_" + e.Item.Name);
+            listSelected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
         private void checkRelationships_ItemCheck(object sender, ItemCheckEventArgs e)
@@ -198,28 +208,12 @@ namespace LinkeD365.ERDBuilder
             else if (e.Index != 3 && e.NewValue == CheckState.Checked) checkRelationships.SetItemChecked(2, false);
         }
 
-        private void fromSolutionToolStripMenuItem_Click(object sender, EventArgs args)
-        {
-            SolutionPicker solPicker = new SolutionPicker(Service);
-            if (solPicker.ShowDialog() != DialogResult.OK) return;
-
-            WorkAsync(new WorkAsyncInfo
-            {
-                Message = "Retrieving Entities",
-                Work = (wrk, e) =>
-                {
-                    var entities = GetSolutionEntities(solPicker.SelectedSolutions.Select(sol => sol.Id).ToArray());
-                    e.Result = BuildEntityItems(entities);
-                },
-                PostWorkCallBack = e =>
-                {
-                    listEntities.Items.Clear();
-                    listEntities.Items.AddRange((ListViewItem[])e.Result);
-                    listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                }
-            });
-        }
-
+        /// <summary>
+        /// Create a list of all the entities
+        /// 7-7-20 - Modified to return list to allow search
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
         private ListViewItem[] BuildEntityItems(List<EntityMetadata> entities)
         {
             if (entities.Count == 0) return new ListViewItem[] { };
@@ -318,8 +312,61 @@ namespace LinkeD365.ERDBuilder
             return new List<EntityMetadata>();
         }
 
-        private void allEntitiesToolStripMenuItem_Click(object sender, EventArgs args)
+        /// <summary>
+        /// Checks all the items in the Entity list
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void checkAll_CheckedChanged(object sender, EventArgs e)
         {
+            foreach (ListViewItem entity in listEntities.Items)
+            {
+                entity.Checked = checkAll.Checked;
+            }
+        }
+
+        private void textSearch_TextChanged(object sender, EventArgs e)
+        {
+            listEntities.Items.Clear();
+            if (string.IsNullOrEmpty(textSearch.Text))
+            {
+                listEntities.Items.AddRange(allEntities.ToArray());
+            }
+            else
+            {
+                listEntities.Items.AddRange(allEntities.Where(lvi => lvi.SubItems[0].Text.ToLower().Contains(textSearch.Text.ToLower())).ToArray());
+            }
+        }
+
+        private void btnFromSolution_Click(object sender, EventArgs args)
+        {
+            SolutionPicker solPicker = new SolutionPicker(Service);
+            if (solPicker.ShowDialog() != DialogResult.OK) return;
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Retrieving Entities",
+                Work = (wrk, e) =>
+                {
+                    var entities = GetSolutionEntities(solPicker.SelectedSolutions.Select(sol => sol.Id).ToArray());
+                    var lvi = BuildEntityItems(entities);
+                    allEntities = lvi.ToList();
+                    e.Result = lvi;
+                },
+                PostWorkCallBack = e =>
+                {
+                    listEntities.Items.Clear();
+                    listEntities.Items.AddRange((ListViewItem[])e.Result);
+                    listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                }
+            });
+        }
+
+        private void btnAllEntities_Click(object sender, EventArgs args)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            Application.DoEvents();
+            listEntities.BeginUpdate();
             listEntities.Items.Clear();
             listSelected.Items.Clear();
             WorkAsync(new WorkAsyncInfo
@@ -328,42 +375,23 @@ namespace LinkeD365.ERDBuilder
                 Work = (wrk, e) =>
                 {
                     var query = new RetrieveAllEntitiesRequest();
-                    //{
-                    //    Query = new EntityQueryExpression { Criteria = new MetadataFilterExpression(LogicalOperator.Or),
-                    //    Properties = new MetadataPropertiesExpression { }
-                    //    }
-                    //}
-                    // query.ClientVersionStamp = null;
                     var entities = ((RetrieveAllEntitiesResponse)Service.Execute(query)).EntityMetadata.ToList();
-                    e.Result = BuildEntityItems(entities);
+                    var lvi = BuildEntityItems(entities);
+                    allEntities = lvi.ToList();
+                    e.Result = lvi;
 
                     //wrk.ReportProgress(50, "Populating List");
                 },
                 PostWorkCallBack = e =>
                 {
                     listEntities.Items.AddRange((ListViewItem[])e.Result);
-                    //List<EntityMetadata> entities = ((EntityMetadata[])e.Result).ToList();
-                    //foreach (EntityMetadata entity in entities)
-                    //{
-                    //    //var newItem = new ListViewItem();
-                    //    //newItem.SubItems.Add(new TreeListViewSubItem(0) {  = "1-->M" });
-                    //    var lvItem = new ListViewItem(
-                    //        new string[] {
-                    //            entity.DisplayName.UserLocalizedLabel == null ? entity.EntitySetName : entity.DisplayName.UserLocalizedLabel.Label.ToString(),
-                    //            entity.LogicalName,
-                    //            entity.IsCustomEntity.ToString()
-                    //        }
-                    //    );
-                    //    lvItem.Name = entity.EntitySetName;
-                    //    //lvItem.SubItems.Add(new ListViewItem.ListViewSubItem { Text = "1->M" });
-                    //    //lvItem.SubItems.Add(new ListViewItem.ListViewSubItem { Text = "M->1" });
-                    //    //lvItem.SubItems.Add(new ListViewItem.ListViewSubItem { Text = "M->M" });
-                    //    listEntities.Items.Add(lvItem);
-                    //}
+
                     listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                 },
                 ProgressChanged = e => { }
             });
+            listEntities.EndUpdate();
+            Cursor.Current = Cursors.Default;
         }
     }
 
