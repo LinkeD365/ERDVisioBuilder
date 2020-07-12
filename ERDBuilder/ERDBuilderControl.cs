@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using VisioAutomation.VDX.Elements;
 using VisioAutomation.VDX.Enums;
@@ -24,7 +25,10 @@ namespace LinkeD365.ERDBuilder
     public partial class ERDBuilderControl : PluginControlBase, IGitHubPlugin
     {
         public string RepositoryName => "ERD Visio Builder";
+        private AppInsights ai;
+        private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
 
+        private const string aiKey = "cc383234-dfdb-429a-a970-d17847361df3";
         public string UserName => "LinkeD365";
 
         private static double pageWidth = 11;
@@ -41,6 +45,8 @@ namespace LinkeD365.ERDBuilder
         public ERDBuilderControl()
         {
             InitializeComponent();
+            ai = new AppInsights(aiEndpoint, aiKey, Assembly.GetExecutingAssembly());
+            ai.WriteEvent("Control Loaded");
         }
 
         private void tsbClose_Click(object sender, EventArgs e)
@@ -65,6 +71,7 @@ namespace LinkeD365.ERDBuilder
         /// <summary>
         /// Generate Visio
         /// 7-7-20 Added primary key
+        /// 12-7-20 Added Many to Many
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -108,12 +115,16 @@ namespace LinkeD365.ERDBuilder
                         var primeEntity = addedEntities.Where(pe => pe.Name == entityMeta.LogicalName).First();
 
                         if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(primeEntity, entityMeta, numericUpDown1.Value);
-                        tspProgress.Value = 50;
+                        tspProgress.Value = 25;
                         if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(primeEntity, entityMeta, numericUpDown1.Value);
+                        tspProgress.Value = 50;
+                        if (checkRelationships.CheckedItems.Contains("Many-To-Many")) AddAllManyToMany(primeEntity, entityMeta, numericUpDown1.Value);
                         tspProgress.Value = 75;
                     }
+
                 doc.Save(txtFileName.Text);
                 tspProgress.Visible = false;
+                ai.WriteEvent("Visio Entities Count", addedEntities.Count);
                 MessageBox.Show("Visio File created successfully", "Success!", MessageBoxButtons.OK);
             }
             finally
@@ -200,12 +211,13 @@ namespace LinkeD365.ERDBuilder
 
         private void checkRelationships_ItemCheck(object sender, ItemCheckEventArgs e)
         {
-            if (e.Index == 2 && e.NewValue == CheckState.Checked)
+            if (e.Index == 3 && e.NewValue == CheckState.Checked)
             {
                 checkRelationships.SetItemChecked(0, false);
                 checkRelationships.SetItemChecked(1, false);
+                checkRelationships.SetItemChecked(2, false);
             }
-            else if (e.Index != 3 && e.NewValue == CheckState.Checked) checkRelationships.SetItemChecked(2, false);
+            else if (e.Index != 3 && e.NewValue == CheckState.Checked) checkRelationships.SetItemChecked(3, false);
         }
 
         /// <summary>

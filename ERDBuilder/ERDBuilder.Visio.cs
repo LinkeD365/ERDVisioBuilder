@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk.Extensions;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
+using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,42 @@ namespace LinkeD365.ERDBuilder
 {
     public partial class ERDBuilderControl
     {
+        private List<Entity> addedEntities = new List<Entity>();
+        private List<string> addedMtoM = new List<string>();
+
+        private List<string> _hiddenSystem;
+
+        protected List<string> HiddenSystemList
+        {
+            get
+            {
+                if (btnHideSystem.Checked)
+                {
+                    if (_hiddenSystem == null)
+                    {
+                        _hiddenSystem = new List<string>();
+                        _hiddenSystem.Add("principalobjectattributeaccess");
+                        _hiddenSystem.Add("postfollow");
+                        _hiddenSystem.Add("postregarding");
+                        _hiddenSystem.Add("postrole");
+                        _hiddenSystem.Add("syncerror");
+                        _hiddenSystem.Add("bulkdeletefailure");
+                        _hiddenSystem.Add("processsession");
+                        _hiddenSystem.Add("asyncoperation");
+                        _hiddenSystem.Add("userentityinstancedata");
+                        _hiddenSystem.Add("team");
+                        _hiddenSystem.Add("systemuser");
+                        _hiddenSystem.Add("owner");
+                        _hiddenSystem.Add("businessunit");
+                        _hiddenSystem.Add("mailboxtrackingfolder");
+                        _hiddenSystem.Add("duplicaterecord");
+                    }
+                    return _hiddenSystem;
+                }
+                else return new List<string>();
+            }
+        }
+
         private double nextX
         {
             get
@@ -171,8 +208,10 @@ namespace LinkeD365.ERDBuilder
                 if (levelCount > 1)
                 {
                     var childMeta = Service.GetEntityMetadata(child.ReferencingEntity);
-                    var childEntity = addedEntities.Where(pe => pe.Name == childMeta.LogicalName).First();
+                    var childEntity = addedEntities.First(pe => pe.Name == childMeta.LogicalName);
                     AddAllOneToMany(childEntity, childMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(childEntity, childMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllManyToMany(childEntity, childMeta, --levelCount);
                 }
             }
         }
@@ -186,39 +225,60 @@ namespace LinkeD365.ERDBuilder
         /// <param name="levelCount"></param>
         private void AddAllManyToOne(Entity primeEntity, EntityMetadata entityMeta, decimal levelCount)
         {
-            foreach (var child in entityMeta.ManyToOneRelationships.Where(em => !HiddenSystemList.Contains(em.ReferencedEntity)))
+            foreach (var parent in entityMeta.ManyToOneRelationships.Where(em => !HiddenSystemList.Contains(em.ReferencedEntity)))
 
             {
-                if (!addedEntities.Where(ent => ent.Name == child.ReferencedEntity).Any())
-                {
-                    var childMeta = Service.GetEntityMetadata(child.ReferencedEntity);
-
-                    ConnectShape(AddEntity(child.ReferencedEntity, childMeta.PrimaryIdAttribute, nextX, nextY), primeEntity, child.ReferencingAttribute, child.SchemaName);
-                }
-                else
-                {
-                    Entity childEntity = addedEntities.Where(ch => ch.Name == child.ReferencedEntity).First();
-                    Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID.ToString()];
-
-                    if (childShape == primeEntity)
-                    {
-                        if (!addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).Any()) childShape = AddEntity("PARENT: " + primeEntity.Name, string.Empty, addedEntities.Count, 0);
-                        else childShape = (Entity)page.Shapes["Shape." + addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).First().ID.ToString()];
-                    }
-                    ConnectShape(childShape, primeEntity, child.ReferencingAttribute, child.SchemaName);
-                }
+                AddManyToOne(primeEntity, parent);
 
                 if (levelCount > 1)
                 {
-                    var childMeta = Service.GetEntityMetadata(child.ReferencedEntity);
-                    var childEntity = addedEntities.Where(pe => pe.Name == childMeta.LogicalName).First();
+                    var childMeta = Service.GetEntityMetadata(parent.ReferencedEntity);
+                    var childEntity = addedEntities.First(pe => pe.Name == childMeta.LogicalName);
                     AddAllManyToOne(childEntity, childMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(childEntity, childMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllManyToMany(childEntity, childMeta, --levelCount);
                 }
             }
         }
 
+        private void AddAllManyToMany(Entity primeEntity, EntityMetadata entityMeta, decimal levelCount)
+        {
+            foreach (var connected in entityMeta.ManyToManyRelationships.Where(em => !HiddenSystemList.Contains(
+                primeEntity.Name == em.Entity1LogicalName ? em.Entity2LogicalName : em.Entity1LogicalName)))
+            {
+                if (!addedMtoM.Contains(connected.SchemaName)) AddManyToMany(primeEntity, connected);
+
+                if (levelCount > 1)
+                {
+                    var conMeta = Service.GetEntityMetadata(primeEntity.Name == connected.Entity1LogicalName ? connected.Entity2LogicalName : connected.Entity1LogicalName);
+                    var conEntity = addedEntities.First(ce => ce.Name == conMeta.LogicalName);
+                    AddAllManyToMany(conEntity, conMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(conEntity, conMeta, --levelCount);
+                    if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(conEntity, conMeta, --levelCount);
+                }
+            }
+        }
+
+        private void AddManyToMany(Entity primeEntity, ManyToManyRelationshipMetadata connected)
+        {
+            addedMtoM.Add(connected.SchemaName);
+
+            Entity secondary;
+            //EntityMetadata secondaryMeta;
+            string secondaryName = connected.Entity1LogicalName == primeEntity.Name ? connected.Entity2LogicalName : connected.Entity1LogicalName;
+            if (!addedEntities.Any(ent => ent.Name == secondaryName))
+            {
+                var secondaryMeta = Service.GetEntityMetadata(secondaryName);
+                secondary = AddEntity(secondaryName, secondaryMeta.PrimaryIdAttribute, nextX, nextY);
+            }
+            else secondary = addedEntities.First(se => se.Name == secondaryName);
+
+            ConnectMulti(primeEntity, secondary, connected);
+        }
+
         /// <summary>
         /// Create one-many for all entities listed but that is all
+        /// 12-7-20 Added Many to Many
         /// </summary>
         private void AddOnlySelectedRelationships()
         {
@@ -229,6 +289,16 @@ namespace LinkeD365.ERDBuilder
                 foreach (var child in primeEntityMeta.OneToManyRelationships.Where(em => addedEntities.Any(a => a.Name == em.ReferencingEntity)))
                 {
                     AddOneToMany(primeEntity, child);
+                }
+
+                foreach (var mtom in primeEntityMeta.ManyToManyRelationships.Where(rel => rel.Entity1LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity2LogicalName)))
+                {
+                    if (!addedMtoM.Contains(mtom.SchemaName)) AddManyToMany(primeEntity, mtom);
+                }
+
+                foreach (var mtom in primeEntityMeta.ManyToManyRelationships.Where(rel => rel.Entity2LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity1LogicalName)))
+                {
+                    if (!addedMtoM.Contains(mtom.SchemaName)) AddManyToMany(primeEntity, mtom);
                 }
             }
         }
@@ -261,7 +331,29 @@ namespace LinkeD365.ERDBuilder
             }
         }
 
-        public void ConnectShape(Entity firstEntity, Entity secondEntity, string fieldName, string relName)
+        private void AddManyToOne(Entity primeEntity, OneToManyRelationshipMetadata parent)
+        {
+            if (!addedEntities.Where(ent => ent.Name == parent.ReferencedEntity).Any())
+            {
+                var childMeta = Service.GetEntityMetadata(parent.ReferencedEntity);
+
+                ConnectShape(AddEntity(parent.ReferencedEntity, childMeta.PrimaryIdAttribute, nextX, nextY), primeEntity, parent.ReferencingAttribute, parent.SchemaName);
+            }
+            else
+            {
+                Entity childEntity = addedEntities.Where(ch => ch.Name == parent.ReferencedEntity).First();
+                Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID.ToString()];
+
+                if (childShape == primeEntity)
+                {
+                    if (!addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).Any()) childShape = AddEntity("PARENT: " + primeEntity.Name, string.Empty, addedEntities.Count, 0);
+                    else childShape = (Entity)page.Shapes["Shape." + addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).First().ID.ToString()];
+                }
+                ConnectShape(childShape, primeEntity, parent.ReferencingAttribute, parent.SchemaName);
+            }
+        }
+
+        private void ConnectShape(Entity firstEntity, Entity secondEntity, string fieldName, string relName)
         {
             var connector = Shape.CreateDynamicConnector(doc);
             connector.XForm1D.EndY.Result = 0;
@@ -282,6 +374,26 @@ namespace LinkeD365.ERDBuilder
             page.ConnectShapesViaConnector(connector, firstEntity, secondEntity);
         }
 
+        private void ConnectMulti(Entity firstEntity, Entity secondEntity, ManyToManyRelationshipMetadata connected)
+        {
+            var connector = Shape.CreateDynamicConnector(doc);
+            connector.XForm1D.EndY.Result = 0;
+            connector.Line = new Line();
+            connector.Line.EndArrow.Result = 29;
+            connector.Line.BeginArrow.Result = 29;
+            connector.CustomProps = new CustomProps();
+            connector.CustomProps.Add(new CustomProp("Connected1Entity") { Value = connected.Entity1LogicalName });
+            connector.CustomProps.Add(new CustomProp("Connected2Entity") { Value = connected.Entity2LogicalName });
+            connector.CustomProps.Add(new CustomProp("Entity1Navigation") { Value = connected.Entity1NavigationPropertyName });
+            connector.CustomProps.Add(new CustomProp("Entity2Navigation") { Value = connected.Entity2NavigationPropertyName });
+            page.Shapes.Add(connector);
+            connector.Geom = new Geom();
+            connector.Geom.Rows.Add(new MoveTo(1, 3));
+            connector.Geom.Rows.Add(new LineTo(5, 3));
+
+            page.ConnectShapesViaConnector(connector, firstEntity, secondEntity);
+        }
+
         private void AddEntity(Entity entity)
         {
             string entityName = entity.Name;
@@ -298,41 +410,6 @@ namespace LinkeD365.ERDBuilder
             entity.Text.Add(string.IsNullOrEmpty(primaryKey) ? string.Empty : "\nPK " + primaryKey, 1, 0, null);
             addedEntities.Add(entity);
             return entity;
-        }
-
-        private List<Entity> addedEntities = new List<Entity>();
-
-        private List<string> _hiddenSystem;
-
-        protected List<string> HiddenSystemList
-        {
-            get
-            {
-                if (btnHideSystem.Checked)
-                {
-                    if (_hiddenSystem == null)
-                    {
-                        _hiddenSystem = new List<string>();
-                        _hiddenSystem.Add("principalobjectattributeaccess");
-                        _hiddenSystem.Add("postfollow");
-                        _hiddenSystem.Add("postregarding");
-                        _hiddenSystem.Add("postrole");
-                        _hiddenSystem.Add("syncerror");
-                        _hiddenSystem.Add("bulkdeletefailure");
-                        _hiddenSystem.Add("processsession");
-                        _hiddenSystem.Add("asyncoperation");
-                        _hiddenSystem.Add("userentityinstancedata");
-                        _hiddenSystem.Add("team");
-                        _hiddenSystem.Add("systemuser");
-                        _hiddenSystem.Add("owner");
-                        _hiddenSystem.Add("businessunit");
-                        _hiddenSystem.Add("mailboxtrackingfolder");
-                        _hiddenSystem.Add("duplicaterecord");
-                    }
-                    return _hiddenSystem;
-                }
-                else return new List<string>();
-            }
         }
     }
 }

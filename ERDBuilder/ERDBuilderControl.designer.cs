@@ -32,6 +32,9 @@
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAllEntities = new System.Windows.Forms.ToolStripButton();
+            this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
             this.btnHideSystem = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,11 +45,11 @@
             this.splitSearch = new System.Windows.Forms.SplitContainer();
             this.lblSearch = new System.Windows.Forms.Label();
             this.textSearch = new System.Windows.Forms.TextBox();
+            this.checkAll = new System.Windows.Forms.CheckBox();
             this.listEntities = new System.Windows.Forms.ListView();
             this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colCustom = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.checkAll = new System.Windows.Forms.CheckBox();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grpSettings = new System.Windows.Forms.GroupBox();
             this.checkRelationships = new System.Windows.Forms.CheckedListBox();
@@ -60,9 +63,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.btnAllEntities = new System.Windows.Forms.ToolStripButton();
-            this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
             this.splitMain.Panel1.SuspendLayout();
@@ -116,6 +116,29 @@
             // 
             this.tssSeparator1.Name = "tssSeparator1";
             this.tssSeparator1.Size = new System.Drawing.Size(6, 31);
+            // 
+            // btnAllEntities
+            // 
+            this.btnAllEntities.Image = ((System.Drawing.Image)(resources.GetObject("btnAllEntities.Image")));
+            this.btnAllEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAllEntities.Name = "btnAllEntities";
+            this.btnAllEntities.Size = new System.Drawing.Size(90, 28);
+            this.btnAllEntities.Text = "All Entities";
+            this.btnAllEntities.Click += new System.EventHandler(this.btnAllEntities_Click);
+            // 
+            // btnFromSolution
+            // 
+            this.btnFromSolution.Image = ((System.Drawing.Image)(resources.GetObject("btnFromSolution.Image")));
+            this.btnFromSolution.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFromSolution.Name = "btnFromSolution";
+            this.btnFromSolution.Size = new System.Drawing.Size(115, 28);
+            this.btnFromSolution.Text = "From Solutions";
+            this.btnFromSolution.Click += new System.EventHandler(this.btnFromSolution_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // btnCreateVisio
             // 
@@ -231,6 +254,16 @@
             this.textSearch.TabIndex = 0;
             this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
             // 
+            // checkAll
+            // 
+            this.checkAll.AutoSize = true;
+            this.checkAll.Location = new System.Drawing.Point(6, 4);
+            this.checkAll.Name = "checkAll";
+            this.checkAll.Size = new System.Drawing.Size(15, 14);
+            this.checkAll.TabIndex = 1;
+            this.checkAll.UseVisualStyleBackColor = true;
+            this.checkAll.CheckedChanged += new System.EventHandler(this.checkAll_CheckedChanged);
+            // 
             // listEntities
             // 
             this.listEntities.CheckBoxes = true;
@@ -263,16 +296,6 @@
             // colCustom
             // 
             this.colCustom.Text = "Custom?";
-            // 
-            // checkAll
-            // 
-            this.checkAll.AutoSize = true;
-            this.checkAll.Location = new System.Drawing.Point(6, 4);
-            this.checkAll.Name = "checkAll";
-            this.checkAll.Size = new System.Drawing.Size(15, 14);
-            this.checkAll.TabIndex = 1;
-            this.checkAll.UseVisualStyleBackColor = true;
-            this.checkAll.CheckedChanged += new System.EventHandler(this.checkAll_CheckedChanged);
             // 
             // splitRight
             // 
@@ -315,6 +338,7 @@
             this.checkRelationships.Items.AddRange(new object[] {
             "One-To-Many",
             "Many-To-One",
+            "Many-To-Many",
             "Only Between Selected Entities"});
             this.checkRelationships.Location = new System.Drawing.Point(7, 71);
             this.checkRelationships.Name = "checkRelationships";
@@ -414,29 +438,6 @@
             // 
             this.saveDialog.DefaultExt = "vdx";
             this.saveDialog.Filter = "VDX files|*.vdx";
-            // 
-            // btnAllEntities
-            // 
-            this.btnAllEntities.Image = ((System.Drawing.Image)(resources.GetObject("btnAllEntities.Image")));
-            this.btnAllEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAllEntities.Name = "btnAllEntities";
-            this.btnAllEntities.Size = new System.Drawing.Size(90, 28);
-            this.btnAllEntities.Text = "All Entities";
-            this.btnAllEntities.Click += new System.EventHandler(this.btnAllEntities_Click);
-            // 
-            // btnFromSolution
-            // 
-            this.btnFromSolution.Image = ((System.Drawing.Image)(resources.GetObject("btnFromSolution.Image")));
-            this.btnFromSolution.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFromSolution.Name = "btnFromSolution";
-            this.btnFromSolution.Size = new System.Drawing.Size(115, 28);
-            this.btnFromSolution.Text = "From Solutions";
-            this.btnFromSolution.Click += new System.EventHandler(this.btnFromSolution_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
             // 
             // ERDBuilderControl
             // 
