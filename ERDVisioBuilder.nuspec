@@ -11,10 +11,8 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from CDS Entities</description>
     <releaseNotes>
-      #6 Expanded use of custom properties
-      #5 Added Many-To-Many
-
-      Added App Insights
+      #7 Added Save Settings (thanks DiggaTheWolf)
+      #8 Added prompt to override file (Thanks DiggaTheWolf)
     </releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>XrmToolBox Plugins ERDVisioBuilder</tags>

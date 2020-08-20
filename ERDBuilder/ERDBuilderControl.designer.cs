@@ -34,6 +34,7 @@
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAllEntities = new System.Windows.Forms.ToolStripButton();
             this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
+            this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
             this.btnHideSystem = new System.Windows.Forms.ToolStripButton();
@@ -54,7 +55,7 @@
             this.grpSettings = new System.Windows.Forms.GroupBox();
             this.checkRelationships = new System.Windows.Forms.CheckedListBox();
             this.lblLevels = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.numLevel = new System.Windows.Forms.NumericUpDown();
             this.btnFile = new System.Windows.Forms.Button();
             this.txtFileName = new System.Windows.Forms.TextBox();
             this.grpSelected = new System.Windows.Forms.GroupBox();
@@ -81,7 +82,7 @@
             this.splitRight.Panel2.SuspendLayout();
             this.splitRight.SuspendLayout();
             this.grpSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLevel)).BeginInit();
             this.grpSelected.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,6 +94,7 @@
             this.tssSeparator1,
             this.btnAllEntities,
             this.btnFromSolution,
+            this.btnSave,
             this.toolStripSeparator2,
             this.btnCreateVisio,
             this.btnHideSystem,
@@ -134,6 +136,15 @@
             this.btnFromSolution.Size = new System.Drawing.Size(115, 28);
             this.btnFromSolution.Text = "From Solutions";
             this.btnFromSolution.Click += new System.EventHandler(this.btnFromSolution_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
+            this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(98, 28);
+            this.btnSave.Text = "Save Config";
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // toolStripSeparator2
             // 
@@ -320,7 +331,7 @@
             // 
             this.grpSettings.Controls.Add(this.checkRelationships);
             this.grpSettings.Controls.Add(this.lblLevels);
-            this.grpSettings.Controls.Add(this.numericUpDown1);
+            this.grpSettings.Controls.Add(this.numLevel);
             this.grpSettings.Controls.Add(this.btnFile);
             this.grpSettings.Controls.Add(this.txtFileName);
             this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -355,23 +366,23 @@
             this.lblLevels.TabIndex = 3;
             this.lblLevels.Text = "Levels:";
             // 
-            // numericUpDown1
+            // numLevel
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(66, 45);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
+            this.numLevel.Location = new System.Drawing.Point(66, 45);
+            this.numLevel.Maximum = new decimal(new int[] {
             3,
             0,
             0,
             0});
-            this.numericUpDown1.Minimum = new decimal(new int[] {
+            this.numLevel.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 2;
-            this.numericUpDown1.Value = new decimal(new int[] {
+            this.numLevel.Name = "numLevel";
+            this.numLevel.Size = new System.Drawing.Size(120, 20);
+            this.numLevel.TabIndex = 2;
+            this.numLevel.Value = new decimal(new int[] {
             1,
             0,
             0,
@@ -447,6 +458,7 @@
             this.Controls.Add(this.toolStripMenu);
             this.Name = "ERDBuilderControl";
             this.Size = new System.Drawing.Size(854, 636);
+            this.Load += new System.EventHandler(this.ERDBuilderControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
             this.splitMain.Panel1.ResumeLayout(false);
@@ -470,7 +482,7 @@
             this.splitRight.ResumeLayout(false);
             this.grpSettings.ResumeLayout(false);
             this.grpSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLevel)).EndInit();
             this.grpSelected.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -495,7 +507,7 @@
         private System.Windows.Forms.GroupBox grpSelected;
         private System.Windows.Forms.Button btnFile;
         private System.Windows.Forms.Label lblLevels;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numLevel;
         private System.Windows.Forms.ListView listSelected;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
@@ -512,5 +524,6 @@
         private System.Windows.Forms.ToolStripButton btnAllEntities;
         private System.Windows.Forms.ToolStripButton btnFromSolution;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnSave;
     }
 }

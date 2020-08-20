@@ -15,5 +15,11 @@ namespace LinkeD365.ERDBuilder
     public class Settings
     {
         public string LastUsedOrganizationWebappUrl { get; set; }
+
+        public List<int> RelationshipMaps { get; set; } = new List<int>();
+
+        public decimal Level { get; set; } = 1;
+
+        public List<string> SelectedEntities { get; set; } = new List<string>();
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -41,6 +42,8 @@ namespace LinkeD365.ERDBuilder
         private double yMultiplier = 1;
 
         private List<ListViewItem> allEntities = new List<ListViewItem>();
+        private Settings mySettings;
+        private bool overrideSave = false;
 
         public ERDBuilderControl()
         {
@@ -72,6 +75,7 @@ namespace LinkeD365.ERDBuilder
         /// Generate Visio
         /// 7-7-20 Added primary key
         /// 12-7-20 Added Many to Many
+        /// 20-8-20 Added check to see if file exists #8
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -83,6 +87,11 @@ namespace LinkeD365.ERDBuilder
                 return;
             }
 
+            if (File.Exists(txtFileName.Text) && !overrideSave)
+            {
+                if (MessageBox.Show("Do you want to override the file?", "File already exists", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            }
+            overrideSave = false;
             try
             {
                 Cursor.Current = Cursors.WaitCursor;
@@ -114,11 +123,11 @@ namespace LinkeD365.ERDBuilder
                         var entityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
                         var primeEntity = addedEntities.Where(pe => pe.Name == entityMeta.LogicalName).First();
 
-                        if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(primeEntity, entityMeta, numericUpDown1.Value);
+                        if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
                         tspProgress.Value = 25;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(primeEntity, entityMeta, numericUpDown1.Value);
+                        if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(primeEntity, entityMeta, numLevel.Value);
                         tspProgress.Value = 50;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-Many")) AddAllManyToMany(primeEntity, entityMeta, numericUpDown1.Value);
+                        if (checkRelationships.CheckedItems.Contains("Many-To-Many")) AddAllManyToMany(primeEntity, entityMeta, numLevel.Value);
                         tspProgress.Value = 75;
                     }
 
@@ -194,6 +203,7 @@ namespace LinkeD365.ERDBuilder
         private void btnFile_Click(object sender, EventArgs e)
         {
             if (saveDialog.ShowDialog() == DialogResult.OK) txtFileName.Text = saveDialog.FileName;
+            overrideSave = true;
         }
 
         private void listEntities_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -242,6 +252,7 @@ namespace LinkeD365.ERDBuilder
                         }
                     );
                 lvItem.Name = entity.EntitySetName;
+
                 entList.Add(lvItem);
             }
             return entList.ToArray();
@@ -378,6 +389,17 @@ namespace LinkeD365.ERDBuilder
         {
             Cursor.Current = Cursors.WaitCursor;
             Application.DoEvents();
+
+            AddEntities(false);
+        }
+
+        /// <summary>
+        /// Populate all entities
+        /// 20-08-20 #7 Added Saved Entities population
+        /// </summary>
+        /// <param name="populateSaved"></param>
+        private void AddEntities(bool populateSaved)
+        {
             listEntities.BeginUpdate();
             listEntities.Items.Clear();
             listSelected.Items.Clear();
@@ -399,11 +421,72 @@ namespace LinkeD365.ERDBuilder
                     listEntities.Items.AddRange((ListViewItem[])e.Result);
 
                     listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+
+                    if (populateSaved)
+                    {
+                        foreach (var lvItem in from entity in mySettings.SelectedEntities
+                                               let lvItem = listEntities.Items.Cast<ListViewItem>().FirstOrDefault(lvi => lvi.Text == entity)
+                                               where lvItem != null
+                                               select lvItem)
+                        {
+                            lvItem.Checked = true;
+                        }
+                    }
                 },
                 ProgressChanged = e => { }
             });
             listEntities.EndUpdate();
             Cursor.Current = Cursors.Default;
+        }
+
+        /// <summary>
+        /// Save current config
+        /// #7
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            mySettings.RelationshipMaps.Clear();
+            mySettings.Level = numLevel.Value;
+            foreach (var chkBox in checkRelationships.CheckedIndices)
+            {
+                mySettings.RelationshipMaps.Add((int)chkBox);
+            }
+            mySettings.SelectedEntities.Clear();
+
+            foreach (ListViewItem entity in listSelected.Items)
+            {
+                mySettings.SelectedEntities.Add(entity.Text);
+            }
+
+            SettingsManager.Instance.Save(typeof(Settings), mySettings);
+        }
+
+        /// <summary>
+        /// Load settings if available
+        /// #7
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ERDBuilderControl_Load(object sender, EventArgs e)
+        {
+            if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
+            {
+                mySettings = new Settings();
+
+                LogWarning("Settings not found => a new settings file has been created!");
+            }
+            else
+            {
+                LogInfo("Settings found and loaded");
+                numLevel.Value = mySettings.Level;
+                AddEntities(true);
+                foreach (var relationship in mySettings.RelationshipMaps)
+                {
+                    checkRelationships.SetItemChecked(relationship, true);
+                }
+            }
         }
     }
 
