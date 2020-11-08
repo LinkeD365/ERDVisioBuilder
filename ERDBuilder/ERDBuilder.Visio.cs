@@ -1,11 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk.Extensions;
 using Microsoft.Xrm.Sdk.Metadata;
-using System;
-using System.Activities.Expressions;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VisioAutomation.VDX.Elements;
 using VisioAutomation.VDX.Sections;
@@ -23,7 +19,7 @@ namespace LinkeD365.ERDBuilder
         {
             get
             {
-                if (btnHideSystem.Checked)
+                if (chkListHide.CheckedItems.Contains("Hide System"))
                 {
                     if (_hiddenSystem == null)
                     {
@@ -204,6 +200,7 @@ namespace LinkeD365.ERDBuilder
             foreach (var child in primeEntityMeta.OneToManyRelationships.Where(em => !HiddenSystemList.Contains(em.ReferencingEntity)))
 
             {
+
                 AddOneToMany(primeEntity, child);
                 if (levelCount > 1)
                 {
@@ -265,13 +262,23 @@ namespace LinkeD365.ERDBuilder
 
             Entity secondary;
             //EntityMetadata secondaryMeta;
-            string secondaryName = connected.Entity1LogicalName == primeEntity.Name ? connected.Entity2LogicalName : connected.Entity1LogicalName;
-            if (!addedEntities.Any(ent => ent.Name == secondaryName))
+            string secondaryName = connected.Entity1LogicalName == primeEntity.LogicalName ? connected.Entity2LogicalName : connected.Entity1LogicalName;
+            var secondaryMeta = Service.GetEntityMetadata(secondaryName);
+            if ((secondaryMeta.IsActivity ?? false) && !HideActivity) return;
+
+            if (addedEntities.All(ent => ent.LogicalName != secondaryName))
             {
-                var secondaryMeta = Service.GetEntityMetadata(secondaryName);
-                secondary = AddEntity(secondaryName, secondaryMeta.PrimaryIdAttribute, nextX, nextY);
+                secondary = AddEntity(secondaryMeta, false,  nextX, nextY);
             }
-            else secondary = addedEntities.First(se => se.Name == secondaryName);
+            else
+            {
+                if (secondaryName == primeEntity.LogicalName)
+                {
+                    if (addedEntities.All(ch => ch.DisplayName != "PARENT: " + primeEntity.DisplayName)) secondary = AddEntity(primeEntity.EntityMeta, true, addedEntities.Count, 0);
+                    else secondary = (Entity)page.Shapes["Shape." + addedEntities.First(ch => ch.Name == "PARENT: " + primeEntity.DisplayName).ID];
+                }
+                else secondary = addedEntities.First(se => se.LogicalName == secondaryName);
+            }
 
             ConnectMulti(primeEntity, secondary, connected);
         }
@@ -284,25 +291,26 @@ namespace LinkeD365.ERDBuilder
         {
             foreach (ListViewItem selectedEntity in listSelected.Items)
             {
-                var primeEntityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
-                var primeEntity = addedEntities.Where(pe => pe.Name == primeEntityMeta.LogicalName).First();
-                foreach (var child in primeEntityMeta.OneToManyRelationships.Where(em => addedEntities.Any(a => a.Name == em.ReferencingEntity)))
+               // var primeEntityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
+                var primeEntity = addedEntities.First(pe => pe.LogicalName == selectedEntity.SubItems[1].Text);
+                foreach (var child in primeEntity.EntityMeta.OneToManyRelationships.Where(em => addedEntities.Any(a => a.LogicalName == em.ReferencingEntity)))
                 {
                     AddOneToMany(primeEntity, child);
                 }
 
-                foreach (var mtom in primeEntityMeta.ManyToManyRelationships.Where(rel => rel.Entity1LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity2LogicalName)))
+                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity1LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity2LogicalName)))
                 {
                     if (!addedMtoM.Contains(mtom.SchemaName)) AddManyToMany(primeEntity, mtom);
                 }
 
-                foreach (var mtom in primeEntityMeta.ManyToManyRelationships.Where(rel => rel.Entity2LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity1LogicalName)))
+                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity2LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity1LogicalName)))
                 {
                     if (!addedMtoM.Contains(mtom.SchemaName)) AddManyToMany(primeEntity, mtom);
                 }
             }
         }
 
+        private bool HideActivity => chkListHide.CheckedItems.Contains("Hide Activity Entities");
         /// <summary>
         /// Add a one to many relationship
         /// 7-7-2020 added entity meta call to populate Primary key
@@ -311,43 +319,44 @@ namespace LinkeD365.ERDBuilder
         /// <param name="child"></param>
         private void AddOneToMany(Entity primeEntity, OneToManyRelationshipMetadata child)
         {
-            if (!addedEntities.Where(ent => ent.Name == child.ReferencingEntity).Any())
+            if (addedEntities.All(ent => ent.LogicalName != child.ReferencingEntity))
             {
                 var childMeta = Service.GetEntityMetadata(child.ReferencingEntity);
-
-                ConnectShape(primeEntity, AddEntity(child.ReferencingEntity, childMeta.PrimaryIdAttribute, nextX, nextY), child.ReferencingEntityNavigationPropertyName, child.SchemaName);
+                if ((childMeta.IsActivity ?? false) && !HideActivity) return;
+                ConnectShape(primeEntity, AddEntity(childMeta, false, nextX, nextY), child.ReferencingAttribute, child.SchemaName);
             }
             else
             {
-                Entity childEntity = addedEntities.Where(ch => ch.Name == child.ReferencingEntity).First();
-                Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID.ToString()];
+                Entity childEntity = addedEntities.First(ch => ch.LogicalName == child.ReferencingEntity);
+                Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID];
 
                 if (childShape == primeEntity)
                 {
-                    if (!addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).Any()) childShape = AddEntity("PARENT: " + primeEntity.Name, string.Empty, addedEntities.Count, 0);
-                    else childShape = (Entity)page.Shapes["Shape." + addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).First().ID.ToString()];
+                    if (addedEntities.All(ch => ch.DisplayName != "PARENT: " + primeEntity.DisplayName)) childShape = AddEntity(primeEntity.EntityMeta, true, addedEntities.Count, 0);
+                    else childShape = (Entity)page.Shapes["Shape." + addedEntities.First(ch => ch.Name == "PARENT: " + primeEntity.DisplayName).ID];
                 }
-                ConnectShape(primeEntity, childShape, child.ReferencingEntityNavigationPropertyName, child.SchemaName);
+                ConnectShape(primeEntity, childShape, child.ReferencingAttribute, child.SchemaName);
             }
         }
 
         private void AddManyToOne(Entity primeEntity, OneToManyRelationshipMetadata parent)
         {
-            if (!addedEntities.Where(ent => ent.Name == parent.ReferencedEntity).Any())
+            if (addedEntities.All(ent => ent.LogicalName != parent.ReferencedEntity))
             {
                 var childMeta = Service.GetEntityMetadata(parent.ReferencedEntity);
+                if ((childMeta.IsActivity ?? false) && !HideActivity) return;
 
-                ConnectShape(AddEntity(parent.ReferencedEntity, childMeta.PrimaryIdAttribute, nextX, nextY), primeEntity, parent.ReferencingAttribute, parent.SchemaName);
+                ConnectShape(AddEntity(childMeta, false, nextX, nextY), primeEntity, parent.ReferencingAttribute, parent.SchemaName);
             }
             else
             {
-                Entity childEntity = addedEntities.Where(ch => ch.Name == parent.ReferencedEntity).First();
-                Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID.ToString()];
+                Entity childEntity = addedEntities.First(ch => ch.LogicalName == parent.ReferencedEntity);
+                Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID];
 
                 if (childShape == primeEntity)
                 {
-                    if (!addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).Any()) childShape = AddEntity("PARENT: " + primeEntity.Name, string.Empty, addedEntities.Count, 0);
-                    else childShape = (Entity)page.Shapes["Shape." + addedEntities.Where(ch => ch.Name == "PARENT: " + primeEntity.Name).First().ID.ToString()];
+                    if (!addedEntities.Any(ch => ch.DisplayName == "PARENT: " + primeEntity.DisplayName)) childShape = AddEntity(primeEntity.EntityMeta, true, addedEntities.Count, 0);
+                    else childShape = (Entity)page.Shapes["Shape." + addedEntities.First(ch => ch.DisplayName == "PARENT: " + primeEntity.DisplayName).ID];
                 }
                 ConnectShape(childShape, primeEntity, parent.ReferencingAttribute, parent.SchemaName);
             }
@@ -370,7 +379,7 @@ namespace LinkeD365.ERDBuilder
             connector.Geom.Rows.Add(new MoveTo(1, 3));
             connector.Geom.Rows.Add(new LineTo(5, 3));
 
-            secondEntity.Text.Add("\nFK " + fieldName, 1, 0, null);
+            secondEntity.Text.Add(GetFK(secondEntity.EntityMeta, fieldName), 1, 0, null);
             page.ConnectShapesViaConnector(connector, firstEntity, secondEntity);
         }
 
@@ -402,14 +411,30 @@ namespace LinkeD365.ERDBuilder
             addedEntities.Add(entity);
         }
 
-        private Entity AddEntity(string entityName, string primaryKey, double pinx, double piny)
+        private Entity AddEntity(EntityMetadata entityMeta, bool parent, double pinx, double piny)
         {
-            var entity = new Entity(entityName, pinx, piny, face.ID);
+            var entity = new Entity(entityMeta, parent, chkListDisplay.CheckedItems.Contains("Entity Display Names"), pinx, piny, face.ID);
             page.Shapes.Add(entity);
-            entity.Name = entityName;
-            entity.Text.Add(string.IsNullOrEmpty(primaryKey) ? string.Empty : "\nPK " + primaryKey, 1, 0, null);
+            entity.Name = entity.DisplayName;
+
+
+            entity.Text.Add(GetPrimaryKey(entityMeta), 1, 0, null);
             addedEntities.Add(entity);
             return entity;
+        }
+
+        private string GetPrimaryKey(EntityMetadata entityMeta)
+        {
+            AttributeMetadata primaryMeta = entityMeta.Attributes.ToList().First(att => att.LogicalName == entityMeta.PrimaryIdAttribute);
+            if (chkListDisplay.CheckedItems.Contains("Attribute Display Names")) return "\nPK " + primaryMeta?.DisplayName?.UserLocalizedLabel?.Label ?? primaryMeta.LogicalName;
+            return "\nPK " + primaryMeta.LogicalName;
+        }
+
+        private string GetFK(EntityMetadata entityMeta, string fieldName)
+        {
+            AttributeMetadata fkMeta = entityMeta.Attributes.ToList().First(att => att.LogicalName == fieldName);
+            if (chkListDisplay.CheckedItems.Contains("Attribute Display Names")) return "\nFK " + fkMeta?.DisplayName?.UserLocalizedLabel?.Label ?? fkMeta.LogicalName;
+            return "\nFK " + fkMeta.LogicalName;
         }
     }
 }

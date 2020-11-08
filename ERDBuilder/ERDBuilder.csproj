@@ -149,6 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ERDBuilder.cs" />
+    <Compile Include="ERDBuilderControl.Settings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ERDBuilder.Shape.cs" />
     <Compile Include="ERDBuilder.Visio.cs">
       <SubType>UserControl</SubType>
@@ -162,6 +165,16 @@
     <Compile Include="ERDBuilderControl.Helpers.cs" />
     <Compile Include="ERDBuilderControl.XML.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Popup\SaveMap.cs" />
+    <Compile Include="Popup\SaveMap.designer.cs">
+      <DependentUpon>SaveMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Popup\Export.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Popup\Export.Designer.cs">
+      <DependentUpon>Export.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -188,6 +201,12 @@
     <EmbeddedResource Include="Forms\SolutionPicker.resx">
       <DependentUpon>SolutionPicker.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Popup\SaveMap.resx">
+      <DependentUpon>SaveMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Popup\Export.resx">
+      <DependentUpon>Export.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -199,6 +218,7 @@
     <Content Include="Resources\tv_minus.bmp" />
     <Content Include="Resources\tv_plus.bmp" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using VisioAutomation.VDX.Elements;
 using VisioAutomation.VDX.Enums;
 using VisioAutomation.VDX.Sections;
@@ -42,7 +43,7 @@ namespace LinkeD365.ERDBuilder
         private double yMultiplier = 1;
 
         private List<ListViewItem> allEntities = new List<ListViewItem>();
-        private Settings mySettings;
+        private AllSettings mySettings;
         private bool overrideSave = false;
 
         public ERDBuilderControl()
@@ -69,6 +70,7 @@ namespace LinkeD365.ERDBuilder
         public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
         {
             base.UpdateConnection(newService, detail, actionName, parameter);
+            // ExecuteMethod(AddEntities,false);
         }
 
         /// <summary>
@@ -106,8 +108,8 @@ namespace LinkeD365.ERDBuilder
                                            let entityMeta = Service.GetEntityMetadata(coreEntity.SubItems[1].Text)
                                            select entityMeta)
                 {
-                    if (addedEntities.Count == 0) AddEntity(entityMeta.LogicalName, entityMeta.PrimaryIdAttribute, pageWidth / 2, pageHeight / 2);
-                    else AddEntity(entityMeta.LogicalName, entityMeta.PrimaryIdAttribute, nextX, nextY);
+                    if (addedEntities.Count == 0) AddEntity(entityMeta, false, pageWidth / 2, pageHeight / 2);
+                    else AddEntity(entityMeta, false, nextX, nextY);
                 }
                 tspProgress.Visible = true;
                 tspProgress.Maximum = 100;
@@ -121,7 +123,7 @@ namespace LinkeD365.ERDBuilder
                 else foreach (ListViewItem selectedEntity in listSelected.Items)
                     {
                         var entityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
-                        var primeEntity = addedEntities.Where(pe => pe.Name == entityMeta.LogicalName).First();
+                        var primeEntity = addedEntities.First(pe => pe.LogicalName == entityMeta.LogicalName);
 
                         if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
                         tspProgress.Value = 25;
@@ -390,7 +392,7 @@ namespace LinkeD365.ERDBuilder
             Cursor.Current = Cursors.WaitCursor;
             Application.DoEvents();
 
-            AddEntities(false);
+            ExecuteMethod(AddEntities, new Settings());// AddEntities(false);
         }
 
         /// <summary>
@@ -398,7 +400,8 @@ namespace LinkeD365.ERDBuilder
         /// 20-08-20 #7 Added Saved Entities population
         /// </summary>
         /// <param name="populateSaved"></param>
-        private void AddEntities(bool populateSaved)
+        /// <param name="setting"></param>
+        private void AddEntities(Settings setting)
         {
             listEntities.BeginUpdate();
             listEntities.Items.Clear();
@@ -421,17 +424,11 @@ namespace LinkeD365.ERDBuilder
                     listEntities.Items.AddRange((ListViewItem[])e.Result);
 
                     listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-
-                    if (populateSaved)
+                    if (setting.Name != null)
                     {
-                        foreach (var lvItem in from entity in mySettings.SelectedEntities
-                                               let lvItem = listEntities.Items.Cast<ListViewItem>().FirstOrDefault(lvi => lvi.Text == entity)
-                                               where lvItem != null
-                                               select lvItem)
-                        {
-                            lvItem.Checked = true;
-                        }
+                        AddConfig(setting);
                     }
+
                 },
                 ProgressChanged = e => { }
             });
@@ -439,29 +436,7 @@ namespace LinkeD365.ERDBuilder
             Cursor.Current = Cursors.Default;
         }
 
-        /// <summary>
-        /// Save current config
-        /// #7
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            mySettings.RelationshipMaps.Clear();
-            mySettings.Level = numLevel.Value;
-            foreach (var chkBox in checkRelationships.CheckedIndices)
-            {
-                mySettings.RelationshipMaps.Add((int)chkBox);
-            }
-            mySettings.SelectedEntities.Clear();
 
-            foreach (ListViewItem entity in listSelected.Items)
-            {
-                mySettings.SelectedEntities.Add(entity.Text);
-            }
-
-            SettingsManager.Instance.Save(typeof(Settings), mySettings);
-        }
 
         /// <summary>
         /// Load settings if available
@@ -471,23 +446,43 @@ namespace LinkeD365.ERDBuilder
         /// <param name="e"></param>
         private void ERDBuilderControl_Load(object sender, EventArgs e)
         {
-            if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
+            try
             {
-                mySettings = new Settings();
-
-                LogWarning("Settings not found => a new settings file has been created!");
-            }
-            else
-            {
-                LogInfo("Settings found and loaded");
-                numLevel.Value = mySettings.Level;
-                AddEntities(true);
-                foreach (var relationship in mySettings.RelationshipMaps)
+                if (SettingsManager.Instance.TryLoad(GetType(), out Settings oldSetting))
                 {
-                    checkRelationships.SetItemChecked(relationship, true);
+                    LogWarning("Old Settings found, converting");
+                    oldSetting.Name = "My First Setting";
+                    mySettings = new AllSettings();
+                    mySettings.Settings.Add(oldSetting);
+
+                    SettingsManager.Instance.Save(typeof(AllSettings), mySettings);
+                    AddSavedConfigs();
                 }
             }
+            catch (Exception)
+            {
+                if (!SettingsManager.Instance.TryLoad(GetType(), out mySettings))
+                {
+                    mySettings = new AllSettings();
+
+                    LogWarning("Settings not found => a new settings file has been created!");
+                }
+                else
+                {
+                    LogInfo("Settings found and loaded");
+
+                    AddSavedConfigs();
+                    // numLevel.Value = mySettings.Level;
+                    ExecuteMethod(AddEntities, new Settings());// AddEntities(true);
+                    //foreach (var relationship in mySettings.RelationshipMaps)
+                    //{
+                    //    checkRelationships.SetItemChecked(relationship, true);
+                    //}
+                }
+            }
+
         }
+
     }
 
     public static class Helpers

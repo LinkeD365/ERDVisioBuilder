@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Documents;
+using Microsoft.Xrm.Sdk.Metadata;
 using VisioAutomation.VDX.Elements;
 using VisioAutomation.VDX.Enums;
 using VisioAutomation.VDX.Sections;
@@ -31,6 +32,32 @@ namespace LinkeD365.ERDBuilder
             }
         }
 
+        public EntityMetadata EntityMeta { get; set; }
+
+        public string LogicalName
+        {
+            get
+            {
+                if (EntityMeta == null) return string.Empty;
+                return Parent ? "PARENT: " + EntityMeta.LogicalName : EntityMeta.LogicalName;
+
+            }
+        }
+
+        public bool Parent { get; }
+        public bool EntityDisplayName { get; }
+
+        public string DisplayName
+        {
+            get
+            {
+                if (EntityMeta == null) return string.Empty;
+                string displayName = Parent ? "PARENT: " : string.Empty;
+                if (EntityDisplayName) return displayName + EntityMeta.DisplayName.UserLocalizedLabel.Label;
+                return displayName + EntityMeta.LogicalName;
+            }
+        }
+
         /// <summary>
         /// Entity constructor
         /// 6-7-2020 added width protection
@@ -39,7 +66,7 @@ namespace LinkeD365.ERDBuilder
         /// <param name="pinx"></param>
         /// <param name="piny"></param>
         /// <param name="fontId"></param>
-        public Entity(string entityName, double pinx, double piny, int fontId) : base(0, pinx, piny, 1.2, 0.8)
+        public Entity(EntityMetadata entityMeta, bool parent, bool entityDisplayName, double pinx, double piny, int fontId) : base(0, pinx, piny, 1.2, 0.8)
         {
             FontId = fontId;
             TextBlock = new TextBlock();
@@ -60,21 +87,13 @@ namespace LinkeD365.ERDBuilder
             CharFormats.Add(attribute);
             XForm.Height.Formula = "GUARD(TEXTHEIGHT(TheText,Width))";
             XForm.Width.Formula = "GUARD(TEXTWIDTH(TheText))";
-            Text.Add(entityName, 0, 0, null);
+
+            EntityMeta = entityMeta;
+            EntityDisplayName = entityDisplayName;
+            Parent = parent;
+            Text.Add(DisplayName, 0, 0, null);
         }
 
-        //public new TextBlock TextBlock
-        //{
-        //    get
-        //    {
-        //        if (_textBlock == null) _textBlock = new TextBlock();
 
-        //        return _textBlock;
-        //    }
-        //    set
-        //    {
-        //        _textBlock = value;
-        //    }
-        //}
     }
 }

@@ -34,11 +34,10 @@
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAllEntities = new System.Windows.Forms.ToolStripButton();
             this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
+            this.cboSelectSaved = new System.Windows.Forms.ToolStripComboBox();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
-            this.btnHideSystem = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.splitMain = new System.Windows.Forms.SplitContainer();
@@ -53,6 +52,8 @@
             this.colCustom = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grpSettings = new System.Windows.Forms.GroupBox();
+            this.chkListHide = new System.Windows.Forms.CheckedListBox();
+            this.chkListDisplay = new System.Windows.Forms.CheckedListBox();
             this.checkRelationships = new System.Windows.Forms.CheckedListBox();
             this.lblLevels = new System.Windows.Forms.Label();
             this.numLevel = new System.Windows.Forms.NumericUpDown();
@@ -64,6 +65,9 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
+            this.btnExport = new System.Windows.Forms.ToolStripButton();
+            this.btnImport = new System.Windows.Forms.ToolStripButton();
+            this.exportFile = new System.Windows.Forms.SaveFileDialog();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
             this.splitMain.Panel1.SuspendLayout();
@@ -94,11 +98,12 @@
             this.tssSeparator1,
             this.btnAllEntities,
             this.btnFromSolution,
+            this.cboSelectSaved,
             this.btnSave,
+            this.btnExport,
+            this.btnImport,
             this.toolStripSeparator2,
             this.btnCreateVisio,
-            this.btnHideSystem,
-            this.toolStripSeparator1,
             this.tspProgress});
             this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.toolStripMenu.Name = "toolStripMenu";
@@ -137,6 +142,13 @@
             this.btnFromSolution.Text = "From Solutions";
             this.btnFromSolution.Click += new System.EventHandler(this.btnFromSolution_Click);
             // 
+            // cboSelectSaved
+            // 
+            this.cboSelectSaved.Name = "cboSelectSaved";
+            this.cboSelectSaved.Size = new System.Drawing.Size(121, 31);
+            this.cboSelectSaved.Text = "Select Saved Config";
+            this.cboSelectSaved.SelectedIndexChanged += new System.EventHandler(this.cboSelectSaved_SelectedIndexChanged);
+            // 
             // btnSave
             // 
             this.btnSave.Image = ((System.Drawing.Image)(resources.GetObject("btnSave.Image")));
@@ -160,26 +172,6 @@
             this.btnCreateVisio.Text = "Create Visio";
             this.btnCreateVisio.Click += new System.EventHandler(this.btnGenerateVisio_Click);
             // 
-            // btnHideSystem
-            // 
-            this.btnHideSystem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnHideSystem.Checked = true;
-            this.btnHideSystem.CheckOnClick = true;
-            this.btnHideSystem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.btnHideSystem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnHideSystem.Image = ((System.Drawing.Image)(resources.GetObject("btnHideSystem.Image")));
-            this.btnHideSystem.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnHideSystem.Name = "btnHideSystem";
-            this.btnHideSystem.Size = new System.Drawing.Size(77, 28);
-            this.btnHideSystem.Text = "Hide System";
-            this.btnHideSystem.ToolTipText = "Hide the standard relationships such as Created By, Modified By";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
-            // 
             // tspProgress
             // 
             this.tspProgress.Name = "tspProgress";
@@ -202,7 +194,7 @@
             // 
             this.splitMain.Panel2.Controls.Add(this.splitRight);
             this.splitMain.Size = new System.Drawing.Size(854, 605);
-            this.splitMain.SplitterDistance = 544;
+            this.splitMain.SplitterDistance = 548;
             this.splitMain.TabIndex = 5;
             // 
             // splitEntitiesList
@@ -223,7 +215,7 @@
             // 
             this.splitEntitiesList.Panel2.Controls.Add(this.checkAll);
             this.splitEntitiesList.Panel2.Controls.Add(this.listEntities);
-            this.splitEntitiesList.Size = new System.Drawing.Size(544, 605);
+            this.splitEntitiesList.Size = new System.Drawing.Size(548, 605);
             this.splitEntitiesList.SplitterDistance = 25;
             this.splitEntitiesList.TabIndex = 2;
             // 
@@ -242,7 +234,7 @@
             // splitSearch.Panel2
             // 
             this.splitSearch.Panel2.Controls.Add(this.textSearch);
-            this.splitSearch.Size = new System.Drawing.Size(544, 25);
+            this.splitSearch.Size = new System.Drawing.Size(548, 25);
             this.splitSearch.SplitterDistance = 60;
             this.splitSearch.TabIndex = 1;
             // 
@@ -261,7 +253,7 @@
             this.textSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textSearch.Location = new System.Drawing.Point(0, 0);
             this.textSearch.Name = "textSearch";
-            this.textSearch.Size = new System.Drawing.Size(480, 20);
+            this.textSearch.Size = new System.Drawing.Size(484, 20);
             this.textSearch.TabIndex = 0;
             this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
             // 
@@ -286,7 +278,7 @@
             this.listEntities.HideSelection = false;
             this.listEntities.Location = new System.Drawing.Point(0, 0);
             this.listEntities.Name = "listEntities";
-            this.listEntities.Size = new System.Drawing.Size(544, 576);
+            this.listEntities.Size = new System.Drawing.Size(548, 576);
             this.listEntities.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listEntities.TabIndex = 0;
             this.listEntities.UseCompatibleStateImageBehavior = false;
@@ -323,12 +315,14 @@
             // splitRight.Panel2
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
-            this.splitRight.Size = new System.Drawing.Size(306, 605);
-            this.splitRight.SplitterDistance = 193;
+            this.splitRight.Size = new System.Drawing.Size(302, 605);
+            this.splitRight.SplitterDistance = 221;
             this.splitRight.TabIndex = 4;
             // 
             // grpSettings
             // 
+            this.grpSettings.Controls.Add(this.chkListHide);
+            this.grpSettings.Controls.Add(this.chkListDisplay);
             this.grpSettings.Controls.Add(this.checkRelationships);
             this.grpSettings.Controls.Add(this.lblLevels);
             this.grpSettings.Controls.Add(this.numLevel);
@@ -337,10 +331,34 @@
             this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSettings.Location = new System.Drawing.Point(0, 0);
             this.grpSettings.Name = "grpSettings";
-            this.grpSettings.Size = new System.Drawing.Size(306, 193);
+            this.grpSettings.Size = new System.Drawing.Size(302, 221);
             this.grpSettings.TabIndex = 0;
             this.grpSettings.TabStop = false;
             this.grpSettings.Text = "Settings";
+            // 
+            // chkListHide
+            // 
+            this.chkListHide.CheckOnClick = true;
+            this.chkListHide.FormattingEnabled = true;
+            this.chkListHide.Items.AddRange(new object[] {
+            "Hide System",
+            "Hide Activity Entities"});
+            this.chkListHide.Location = new System.Drawing.Point(7, 181);
+            this.chkListHide.Name = "chkListHide";
+            this.chkListHide.Size = new System.Drawing.Size(185, 34);
+            this.chkListHide.TabIndex = 5;
+            // 
+            // chkListDisplay
+            // 
+            this.chkListDisplay.CheckOnClick = true;
+            this.chkListDisplay.FormattingEnabled = true;
+            this.chkListDisplay.Items.AddRange(new object[] {
+            "Entity Display Names",
+            "Attribute Display Names"});
+            this.chkListDisplay.Location = new System.Drawing.Point(7, 141);
+            this.chkListDisplay.Name = "chkListDisplay";
+            this.chkListDisplay.Size = new System.Drawing.Size(185, 34);
+            this.chkListDisplay.TabIndex = 4;
             // 
             // checkRelationships
             // 
@@ -412,7 +430,7 @@
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(306, 408);
+            this.grpSelected.Size = new System.Drawing.Size(302, 380);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
@@ -427,7 +445,7 @@
             this.listSelected.HideSelection = false;
             this.listSelected.Location = new System.Drawing.Point(3, 16);
             this.listSelected.Name = "listSelected";
-            this.listSelected.Size = new System.Drawing.Size(300, 389);
+            this.listSelected.Size = new System.Drawing.Size(296, 361);
             this.listSelected.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listSelected.TabIndex = 3;
             this.listSelected.UseCompatibleStateImageBehavior = false;
@@ -449,6 +467,29 @@
             // 
             this.saveDialog.DefaultExt = "vdx";
             this.saveDialog.Filter = "VDX files|*.vdx";
+            // 
+            // btnExport
+            // 
+            this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
+            this.btnExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(68, 28);
+            this.btnExport.Text = "Export";
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnImport
+            // 
+            this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
+            this.btnImport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(71, 28);
+            this.btnImport.Text = "Import";
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            // 
+            // exportFile
+            // 
+            this.exportFile.DefaultExt = "vdx";
+            this.exportFile.Filter = "XML files|*.xml";
             // 
             // ERDBuilderControl
             // 
@@ -513,8 +554,6 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.CheckedListBox checkRelationships;
-        private System.Windows.Forms.ToolStripButton btnHideSystem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripProgressBar tspProgress;
         private System.Windows.Forms.CheckBox checkAll;
         private System.Windows.Forms.SplitContainer splitEntitiesList;
@@ -525,5 +564,11 @@
         private System.Windows.Forms.ToolStripButton btnFromSolution;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton btnSave;
+        private System.Windows.Forms.CheckedListBox chkListHide;
+        private System.Windows.Forms.CheckedListBox chkListDisplay;
+        private System.Windows.Forms.ToolStripComboBox cboSelectSaved;
+        private System.Windows.Forms.ToolStripButton btnExport;
+        private System.Windows.Forms.ToolStripButton btnImport;
+        private System.Windows.Forms.SaveFileDialog exportFile;
     }
 }
