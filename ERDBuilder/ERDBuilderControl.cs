@@ -26,7 +26,7 @@ namespace LinkeD365.ERDBuilder
 {
     public partial class ERDBuilderControl : PluginControlBase, IGitHubPlugin
     {
-        public string RepositoryName => "ERD Visio Builder";
+        public string RepositoryName => "ERDVisioBuilder";
         private AppInsights ai;
         private const string aiEndpoint = "https://dc.services.visualstudio.com/v2/track";
 
