@@ -27,7 +27,7 @@ namespace LinkeD365.ERDBuilder
     public partial class ERDBuilderControl : PluginControlBase, IGitHubPlugin, IPayPalPlugin
     {
 
-        public string DonationDescription => "Mockaroo Munger Fans";
+        public string DonationDescription => "ERD to Visio Fans";
 
         public string EmailAccount => "carl.cookson@gmail.com";
         public string RepositoryName => "ERDVisioBuilder";

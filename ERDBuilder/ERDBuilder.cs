@@ -23,7 +23,7 @@ namespace LinkeD365.ERDBuilder
     [ExportMetadata("SecondaryFontColor", "Gray")]
     public class ERDBuilder : PluginBase, IPayPalPlugin
     {
-        public string DonationDescription => "Mockaroo Munger Fans";
+        public string DonationDescription => "ERD to Visio Fans";
 
         public string EmailAccount => "carl.cookson@gmail.com";
 
