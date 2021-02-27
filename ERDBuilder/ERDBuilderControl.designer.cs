@@ -36,6 +36,8 @@
             this.btnFromSolution = new System.Windows.Forms.ToolStripButton();
             this.cboSelectSaved = new System.Windows.Forms.ToolStripComboBox();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
+            this.btnExport = new System.Windows.Forms.ToolStripButton();
+            this.btnImport = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
             this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
@@ -65,8 +67,6 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.btnExport = new System.Windows.Forms.ToolStripButton();
-            this.btnImport = new System.Windows.Forms.ToolStripButton();
             this.exportFile = new System.Windows.Forms.SaveFileDialog();
             this.toolStripMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).BeginInit();
@@ -157,6 +157,24 @@
             this.btnSave.Size = new System.Drawing.Size(98, 28);
             this.btnSave.Text = "Save Config";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnExport
+            // 
+            this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
+            this.btnExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(69, 28);
+            this.btnExport.Text = "Export";
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
+            // btnImport
+            // 
+            this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
+            this.btnImport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Size = new System.Drawing.Size(71, 28);
+            this.btnImport.Text = "Import";
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
             // toolStripSeparator2
             // 
@@ -468,24 +486,6 @@
             this.saveDialog.DefaultExt = "vdx";
             this.saveDialog.Filter = "VDX files|*.vdx";
             // 
-            // btnExport
-            // 
-            this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
-            this.btnExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(68, 28);
-            this.btnExport.Text = "Export";
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
-            // 
-            // btnImport
-            // 
-            this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
-            this.btnImport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(71, 28);
-            this.btnImport.Text = "Import";
-            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
-            // 
             // exportFile
             // 
             this.exportFile.DefaultExt = "vdx";
@@ -498,7 +498,9 @@
             this.Controls.Add(this.splitMain);
             this.Controls.Add(this.toolStripMenu);
             this.Name = "ERDBuilderControl";
+            this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
             this.Size = new System.Drawing.Size(854, 636);
+            this.TabIcon = global::ERDBuilder.Properties.Resources.smallIcon_32;
             this.Load += new System.EventHandler(this.ERDBuilderControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();

@@ -9,8 +9,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/LinkeD365/ERDVisioBuilder</projectUrl>
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
-    <description>A XrmToolBox tool to create Visio diagrams from CDS Entities</description>
+    <description>A XrmToolBox tool to create Visio diagrams from Datavese Tables</description>
     <releaseNotes>
+      Added icons and paypal config
+      #14 - Fixed bug which didnt load settings if a new install
+      
       #13 - Added option to display Entities and fields with display name rather than logical
       #12 - Added ability to export / import settings
       #9 - Added option to hide activities.
