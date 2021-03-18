@@ -94,7 +94,13 @@ namespace LinkeD365.ERDBuilder
             }
 
             if (File.Exists(txtFileName.Text) && !overrideSave)
-                if (MessageBox.Show("Do you want to override the file?", "File already exists", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            {
+                if (MessageBox.Show("Do you want to override the file?", "File already exists", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
             overrideSave = false;
             try
             {
@@ -105,12 +111,22 @@ namespace LinkeD365.ERDBuilder
                 face = doc.AddFace("Segoe UI");
                 doc.Pages.Add(page);
                 addedEntities.Clear();
+                addedMtoM.Clear();
 
                 foreach (var entityMeta in from ListViewItem coreEntity in listSelected.Items
                                            let entityMeta = Service.GetEntityMetadata(coreEntity.SubItems[1].Text)
                                            select entityMeta)
-                    if (addedEntities.Count == 0) AddEntity(entityMeta, false, pageWidth / 2, pageHeight / 2);
-                    else AddEntity(entityMeta, false, nextX, nextY);
+                {
+                    if (addedEntities.Count == 0)
+                    {
+                        AddEntity(entityMeta, false, pageWidth / 2, pageHeight / 2);
+                    }
+                    else
+                    {
+                        AddEntity(entityMeta, false, nextX, nextY);
+                    }
+                }
+
                 tspProgress.Visible = true;
                 tspProgress.Maximum = 100;
                 tspProgress.Step = 1;
@@ -120,18 +136,33 @@ namespace LinkeD365.ERDBuilder
                     AddOnlySelectedRelationships();
                     tspProgress.Value = 75;
                 }
-                else foreach (ListViewItem selectedEntity in listSelected.Items)
+                else
+                {
+                    foreach (ListViewItem selectedEntity in listSelected.Items)
                     {
                         var entityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
                         var primeEntity = addedEntities.First(pe => pe.LogicalName == entityMeta.LogicalName);
 
-                        if (checkRelationships.CheckedItems.Contains("One-To-Many")) AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
+                        if (checkRelationships.CheckedItems.Contains("One-To-Many"))
+                        {
+                            AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
+                        }
+
                         tspProgress.Value = 25;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-One")) AddAllManyToOne(primeEntity, entityMeta, numLevel.Value);
+                        if (checkRelationships.CheckedItems.Contains("Many-To-One"))
+                        {
+                            AddAllManyToOne(primeEntity, entityMeta, numLevel.Value);
+                        }
+
                         tspProgress.Value = 50;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-Many")) AddAllManyToMany(primeEntity, entityMeta, numLevel.Value);
+                        if (checkRelationships.CheckedItems.Contains("Many-To-Many"))
+                        {
+                            AddAllManyToMany(primeEntity, entityMeta, numLevel.Value);
+                        }
+
                         tspProgress.Value = 75;
                     }
+                }
 
                 doc.Save(txtFileName.Text);
                 tspProgress.Visible = false;
@@ -154,20 +185,30 @@ namespace LinkeD365.ERDBuilder
             // Figure out the new sorting order.
             SortOrder sort_order;
             if (sortingColumn == null)
+            {
                 // New column. Sort ascending.
                 sort_order = SortOrder.Ascending;
+            }
             else
             {
                 // See if this is the same column.
                 if (new_sorting_column == sortingColumn)
+                {
                     // Same column. Switch the sort order.
                     if (sortingColumn.Text.StartsWith("> "))
+                    {
                         sort_order = SortOrder.Descending;
+                    }
                     else
+                    {
                         sort_order = SortOrder.Ascending;
+                    }
+                }
                 else
+                {
                     // New column. Sort ascending.
                     sort_order = SortOrder.Ascending;
+                }
 
                 // Remove the old sort indicator.
                 sortingColumn.Text = sortingColumn.Text.Substring(2);
@@ -176,9 +217,13 @@ namespace LinkeD365.ERDBuilder
             // Display the new sort order.
             sortingColumn = new_sorting_column;
             if (sort_order == SortOrder.Ascending)
+            {
                 sortingColumn.Text = "> " + sortingColumn.Text;
+            }
             else
+            {
                 sortingColumn.Text = "< " + sortingColumn.Text;
+            }
 
             // Create a comparer.
             listEntities.ListViewItemSorter =
@@ -190,7 +235,11 @@ namespace LinkeD365.ERDBuilder
 
         private void btnFile_Click(object sender, EventArgs e)
         {
-            if (saveDialog.ShowDialog() == DialogResult.OK) txtFileName.Text = saveDialog.FileName;
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                txtFileName.Text = saveDialog.FileName;
+            }
+
             overrideSave = true;
         }
 
@@ -202,8 +251,15 @@ namespace LinkeD365.ERDBuilder
         {
             ListViewItem lvSelectedItem = (ListViewItem)e.Item.Clone();
             lvSelectedItem.Name = "sel_" + e.Item.Name;
-            if (e.Item.Checked) listSelected.Items.Add(lvSelectedItem);
-            else listSelected.Items.RemoveByKey("sel_" + e.Item.Name);
+            if (e.Item.Checked)
+            {
+                listSelected.Items.Add(lvSelectedItem);
+            }
+            else
+            {
+                listSelected.Items.RemoveByKey("sel_" + e.Item.Name);
+            }
+
             listSelected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
         }
 
@@ -215,7 +271,10 @@ namespace LinkeD365.ERDBuilder
                 checkRelationships.SetItemChecked(1, false);
                 checkRelationships.SetItemChecked(2, false);
             }
-            else if (e.Index != 3 && e.NewValue == CheckState.Checked) checkRelationships.SetItemChecked(3, false);
+            else if (e.Index != 3 && e.NewValue == CheckState.Checked)
+            {
+                checkRelationships.SetItemChecked(3, false);
+            }
         }
 
         /// <summary>
@@ -226,7 +285,10 @@ namespace LinkeD365.ERDBuilder
         /// <returns></returns>
         private ListViewItem[] BuildEntityItems(List<EntityMetadata> entities)
         {
-            if (entities.Count == 0) return new ListViewItem[] { };
+            if (entities.Count == 0)
+            {
+                return new ListViewItem[] { };
+            }
 
             var entList = new List<ListViewItem>();
 
@@ -328,22 +390,31 @@ namespace LinkeD365.ERDBuilder
         private void checkAll_CheckedChanged(object sender, EventArgs e)
         {
             foreach (ListViewItem entity in listEntities.Items)
+            {
                 entity.Checked = checkAll.Checked;
+            }
         }
 
         private void textSearch_TextChanged(object sender, EventArgs e)
         {
             listEntities.Items.Clear();
             if (string.IsNullOrEmpty(textSearch.Text))
+            {
                 listEntities.Items.AddRange(allEntities.ToArray());
+            }
             else
+            {
                 listEntities.Items.AddRange(allEntities.Where(lvi => lvi.SubItems[0].Text.ToLower().Contains(textSearch.Text.ToLower())).ToArray());
+            }
         }
 
         private void btnFromSolution_Click(object sender, EventArgs args)
         {
             SolutionPicker solPicker = new SolutionPicker(Service);
-            if (solPicker.ShowDialog() != DialogResult.OK) return;
+            if (solPicker.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
 
             WorkAsync(new WorkAsyncInfo
             {
@@ -402,8 +473,9 @@ namespace LinkeD365.ERDBuilder
 
                     listEntities.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
                     if (setting.Name != null)
+                    {
                         AddConfig(setting);
-
+                    }
                 },
                 ProgressChanged = e => { }
             });
@@ -483,7 +555,9 @@ namespace LinkeD365.ERDBuilder
         public static Face GetFontSafe(VDX.FaceList faces, string name)
         {
             if (faces.ContainsName(name))
+            {
                 return faces[name];
+            }
 
             int max_id = faces.Items.Select(f => f.ID).Max();
             int new_id = max_id + 1;

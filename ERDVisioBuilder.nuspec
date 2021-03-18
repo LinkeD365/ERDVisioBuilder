@@ -11,6 +11,11 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Datavese Tables</description>
     <releaseNotes>
+      #18 - Fixed bug with many to many with duplicate FK keys
+      #17 - Fixed bug with Hide Activity not actually hiding activities
+      #16 - Fixed bug with re-running visio export caused error
+      #14 - Hopefully fixed bug when creating a big erd (Thanks Susan) 🤞
+      
       Added icons and paypal config
       #14 - Fixed bug which didnt load settings if a new install
       
@@ -23,7 +28,7 @@
       #7 Added Save Settings (thanks DiggaTheWolf)
       #8 Added prompt to override file (Thanks DiggaTheWolf)
     </releaseNotes>
-    <copyright>Copyright 2020</copyright>
+    <copyright>Copyright 2021</copyright>
     <tags>XrmToolBox Plugins ERDVisioBuilder</tags>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2020.6.40" />

@@ -1,20 +1,15 @@
-﻿using System;
+﻿using Microsoft.Xrm.Sdk.Metadata;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Documents;
-using Microsoft.Xrm.Sdk.Metadata;
 using VisioAutomation.VDX.Elements;
 using VisioAutomation.VDX.Enums;
 using VisioAutomation.VDX.Sections;
-using XrmToolBox.Extensibility;
-using VDX = VisioAutomation.VDX;
 
 namespace LinkeD365.ERDBuilder
 {
-    public class Entity : VDX.Elements.Shape
+    public class Entity : Shape
     {
-        private VDX.Sections.Char bold = new VDX.Sections.Char();
-        private VDX.Sections.Char attribute = new VDX.Sections.Char();
+        private Char bold = new Char();
+        private Char attribute = new Char();
         public int FontId;
 
         private ParagraphFormat _left;
@@ -38,7 +33,11 @@ namespace LinkeD365.ERDBuilder
         {
             get
             {
-                if (EntityMeta == null) return string.Empty;
+                if (EntityMeta == null)
+                {
+                    return string.Empty;
+                }
+
                 return Parent ? "PARENT: " + EntityMeta.LogicalName : EntityMeta.LogicalName;
 
             }
@@ -51,13 +50,22 @@ namespace LinkeD365.ERDBuilder
         {
             get
             {
-                if (EntityMeta == null) return string.Empty;
+                if (EntityMeta == null)
+                {
+                    return string.Empty;
+                }
+
                 string displayName = Parent ? "PARENT: " : string.Empty;
-                if (EntityDisplayName) return displayName + EntityMeta.DisplayName.UserLocalizedLabel.Label;
+                if (EntityDisplayName)
+                {
+                    return displayName + EntityMeta.DisplayName.UserLocalizedLabel.Label;
+                }
+
                 return displayName + EntityMeta.LogicalName;
             }
         }
 
+        public List<string> Texts = new List<string>();
         /// <summary>
         /// Entity constructor
         /// 6-7-2020 added width protection
@@ -79,7 +87,7 @@ namespace LinkeD365.ERDBuilder
             bold.Font.Result = FontId;
             bold.Size.Result = 8;
 
-            CharFormats = new List<VDX.Sections.Char>();
+            CharFormats = new List<Char>();
             ParaFormats = new List<ParagraphFormat>();
 
             ParaFormats.Add(Left);
@@ -91,6 +99,7 @@ namespace LinkeD365.ERDBuilder
             EntityMeta = entityMeta;
             EntityDisplayName = entityDisplayName;
             Parent = parent;
+            Texts.Add(DisplayName);
             Text.Add(DisplayName, 0, 0, null);
         }
 
