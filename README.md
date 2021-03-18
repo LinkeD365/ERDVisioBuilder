@@ -1,2 +1,3 @@
 # ERDVisioBuilder
-An XrmToolBox tool to create Visio diagrams from your CDS entities and relationships
+
+An XrmToolBox tool to create Visio diagrams from your Dataverse tables and relationships
