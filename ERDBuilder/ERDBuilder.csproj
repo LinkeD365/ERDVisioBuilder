@@ -189,6 +189,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ERDBuilder.cs" />
+    <Compile Include="ERDBuilderControl.Methods.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ERDBuilderControl.Settings.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -206,7 +209,11 @@
     <Compile Include="ERDBuilderControl.XML.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Popup\SaveMap.cs" />
+    <Compile Include="Helper\Helper.cs" />
+    <Compile Include="Helper\SortableBindableList.cs" />
+    <Compile Include="Popup\SaveMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Popup\SaveMap.designer.cs">
       <DependentUpon>SaveMap.cs</DependentUpon>
     </Compile>

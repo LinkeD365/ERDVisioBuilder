@@ -336,12 +336,12 @@ namespace LinkeD365.ERDBuilder
         /// Create one-many for all entities listed but that is all
         /// 12-7-20 Added Many to Many
         /// </summary>
-        private void AddOnlySelectedRelationships()
+        private void AddOnlySelectedRelationships(SBList<Table> tables)
         {
-            foreach (ListViewItem selectedEntity in listSelected.Items)
+            foreach (var table in tables)
             {
                 // var primeEntityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
-                var primeEntity = addedEntities.First(pe => pe.LogicalName == selectedEntity.SubItems[1].Text);
+                var primeEntity = addedEntities.First(pe => pe.LogicalName == table.Logical);
                 foreach (var child in primeEntity.EntityMeta.OneToManyRelationships.Where(em => addedEntities.Any(a => a.LogicalName == em.ReferencingEntity)))
                 {
                     AddOneToMany(primeEntity, child);
@@ -502,6 +502,17 @@ namespace LinkeD365.ERDBuilder
             entity.Text.Add(GetPrimaryKey(entityMeta), 1, 0, null);
             addedEntities.Add(entity);
             return entity;
+        }
+
+        private void AddEntity(Table table, bool parent, double pinx, double piny)
+        {
+            var entity = AddEntity(table.Entity, parent, pinx, piny);
+            foreach (var column in table.Columns.OrderBy(col => col.DisplayName))
+            {
+                if (chkListDisplay.CheckedItems.Contains("Attribute Display Names")) entity.Text.Add($"\n{column.DisplayName}", 1, 0, null);
+                else entity.Text.Add($"\n{column.LogicalName}", 1, 0, null);
+            }
+
         }
 
         private string GetPrimaryKey(EntityMetadata entityMeta)

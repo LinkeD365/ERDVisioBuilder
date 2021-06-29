@@ -11,6 +11,13 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Datavese Tables</description>
     <releaseNotes>
+      #23 - New Grid for columns so you can put them into your visio (😁 THANKS MCJ)
+      #22 - Allow you to open the Visio file straight away (🙄 THANKS MCJ)
+      #21 - Removed File field into selection when Create Visio option used. (🤬 THANKS MCJ)
+      Additioanl Sort for Columns
+      Changed all lists to grids to allow correct display
+      
+      
       #18 - Fixed bug with many to many with duplicate FK keys
       #17 - Fixed bug with Hide Activity not actually hiding activities
       #16 - Fixed bug with re-running visio export caused error

@@ -12,7 +12,7 @@ namespace LinkeD365.ERDBuilder
 {
     public partial class ERDBuilderControl
     {
-                private void AddSavedConfigs()
+        private void AddSavedConfigs()
         {
             cboSelectSaved.Items.Clear();
             cboSelectSaved.Items.AddRange(mySettings.Settings.Select(set => set.Name).ToArray());
@@ -29,8 +29,10 @@ namespace LinkeD365.ERDBuilder
 
             if (selectedConfig is null) return;
 
-            ExecuteMethod(AddEntities, selectedConfig);
+            InitSelectedGrid(new SBList<Table>());
 
+
+            ExecuteMethod(AddEntities, selectedConfig);
         }
 
         private void btnExport_Click(object sender, EventArgs e)
@@ -77,33 +79,25 @@ namespace LinkeD365.ERDBuilder
             AddSavedConfigs();
         }
 
-                private void AddConfig(Settings selectedConfig)
+        private void AddConfig(Settings selectedConfig)
         {
-
-            foreach (var lvItem in from entity in selectedConfig.SelectedEntities
-                                   let lvItem = listEntities.Items.Cast<ListViewItem>().FirstOrDefault(lvi => lvi.Text == entity)
-                                   where lvItem != null
-                                   select lvItem)
+            foreach (Table selectedTable in selectedConfig.Tables)
             {
-                lvItem.Checked = true;
-            }
+                var table = Helper.AllTables.FirstOrDefault(tbl => tbl.Logical == selectedTable.Logical);
+                if (table == null) continue;
 
-            foreach (var relationship in selectedConfig.RelationshipMaps)
-            {
-                checkRelationships.SetItemChecked(relationship, true);
-            }
+                table.Selected = true;
+                if (!selectedTable.Columns.Any()) continue;
+                if (!table.Columns.Any()) table.Columns = BuildAttributeItems(table.Logical);
+                table.Columns.Intersect(selectedTable.Columns, new ColumnComparer()).ToList().ForEach(col => col.Selected = true);
 
-            foreach (var display in selectedConfig.Display)
-            {
-                chkListDisplay.SetItemChecked(display, true);
             }
+            //foreach (Table table in Helper.AllTables.Intersect(selectedConfig.Tables, new TableComparer()))
+            //{
+            //    table.Selected = true;
 
-            foreach (var hide in selectedConfig.Hide)
-            {
-                chkListHide.SetItemChecked(hide, true);
-            }
-
-            numLevel.Value = selectedConfig.Level;
+            //}
+            //Helper.AllTables.Intersect(selectedConfig.Tables, new TableComparer()).ToList().ForEach(table => table.Selected = true);
         }
 
         /// <summary>
@@ -132,10 +126,10 @@ namespace LinkeD365.ERDBuilder
             {
                 setting.RelationshipMaps.Add((int)chkBox);
             }
-            foreach (ListViewItem entity in listSelected.Items)
-            {
-                setting.SelectedEntities.Add(entity.Text);
-            }
+            //foreach (ListViewItem entity in listSelected.Items)
+            //{
+            //    setting.Tables.Add(new Table ( entity.Text ));
+            //}
             foreach (var chkBox in chkListHide.CheckedIndices)
             {
                 setting.Hide.Add((int)chkBox);
@@ -145,7 +139,7 @@ namespace LinkeD365.ERDBuilder
             {
                 setting.Display.Add((int)chkBox);
             }
-
+            setting.Tables = ((SBList<Table>)gvSelected.DataSource).ToList();
             SaveConfig(setting);
         }
 

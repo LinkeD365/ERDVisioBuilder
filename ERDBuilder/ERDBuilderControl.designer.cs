@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ERDBuilderControl));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -43,15 +46,21 @@
             this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.splitMain = new System.Windows.Forms.SplitContainer();
-            this.splitEntitiesList = new System.Windows.Forms.SplitContainer();
+            this.splitTableFields = new System.Windows.Forms.SplitContainer();
+            this.grpTables = new System.Windows.Forms.GroupBox();
+            this.splitTableSearch = new System.Windows.Forms.SplitContainer();
             this.splitSearch = new System.Windows.Forms.SplitContainer();
             this.lblSearch = new System.Windows.Forms.Label();
             this.textSearch = new System.Windows.Forms.TextBox();
             this.checkAll = new System.Windows.Forms.CheckBox();
-            this.listEntities = new System.Windows.Forms.ListView();
-            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colEntity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.colCustom = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.gvTables = new System.Windows.Forms.DataGridView();
+            this.grpColumns = new System.Windows.Forms.GroupBox();
+            this.splitColSearch = new System.Windows.Forms.SplitContainer();
+            this.splitSearchCol = new System.Windows.Forms.SplitContainer();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textSearchCol = new System.Windows.Forms.TextBox();
+            this.chkAllColumns = new System.Windows.Forms.CheckBox();
+            this.gvAttributes = new System.Windows.Forms.DataGridView();
             this.splitRight = new System.Windows.Forms.SplitContainer();
             this.grpSettings = new System.Windows.Forms.GroupBox();
             this.chkListHide = new System.Windows.Forms.CheckedListBox();
@@ -59,9 +68,8 @@
             this.checkRelationships = new System.Windows.Forms.CheckedListBox();
             this.lblLevels = new System.Windows.Forms.Label();
             this.numLevel = new System.Windows.Forms.NumericUpDown();
-            this.btnFile = new System.Windows.Forms.Button();
-            this.txtFileName = new System.Windows.Forms.TextBox();
             this.grpSelected = new System.Windows.Forms.GroupBox();
+            this.gvSelected = new System.Windows.Forms.DataGridView();
             this.listSelected = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -73,14 +81,30 @@
             this.splitMain.Panel1.SuspendLayout();
             this.splitMain.Panel2.SuspendLayout();
             this.splitMain.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitEntitiesList)).BeginInit();
-            this.splitEntitiesList.Panel1.SuspendLayout();
-            this.splitEntitiesList.Panel2.SuspendLayout();
-            this.splitEntitiesList.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitTableFields)).BeginInit();
+            this.splitTableFields.Panel1.SuspendLayout();
+            this.splitTableFields.Panel2.SuspendLayout();
+            this.splitTableFields.SuspendLayout();
+            this.grpTables.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitTableSearch)).BeginInit();
+            this.splitTableSearch.Panel1.SuspendLayout();
+            this.splitTableSearch.Panel2.SuspendLayout();
+            this.splitTableSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitSearch)).BeginInit();
             this.splitSearch.Panel1.SuspendLayout();
             this.splitSearch.Panel2.SuspendLayout();
             this.splitSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvTables)).BeginInit();
+            this.grpColumns.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitColSearch)).BeginInit();
+            this.splitColSearch.Panel1.SuspendLayout();
+            this.splitColSearch.Panel2.SuspendLayout();
+            this.splitColSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitSearchCol)).BeginInit();
+            this.splitSearchCol.Panel1.SuspendLayout();
+            this.splitSearchCol.Panel2.SuspendLayout();
+            this.splitSearchCol.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvAttributes)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitRight)).BeginInit();
             this.splitRight.Panel1.SuspendLayout();
             this.splitRight.Panel2.SuspendLayout();
@@ -88,6 +112,7 @@
             this.grpSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLevel)).BeginInit();
             this.grpSelected.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvSelected)).BeginInit();
             this.SuspendLayout();
             // 
             // toolStripMenu
@@ -205,37 +230,64 @@
             // 
             // splitMain.Panel1
             // 
-            this.splitMain.Panel1.Controls.Add(this.splitEntitiesList);
+            this.splitMain.Panel1.Controls.Add(this.splitTableFields);
             this.splitMain.Panel1MinSize = 350;
             // 
             // splitMain.Panel2
             // 
             this.splitMain.Panel2.Controls.Add(this.splitRight);
             this.splitMain.Size = new System.Drawing.Size(854, 605);
-            this.splitMain.SplitterDistance = 548;
+            this.splitMain.SplitterDistance = 612;
             this.splitMain.TabIndex = 5;
             // 
-            // splitEntitiesList
+            // splitTableFields
             // 
-            this.splitEntitiesList.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitEntitiesList.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitEntitiesList.IsSplitterFixed = true;
-            this.splitEntitiesList.Location = new System.Drawing.Point(0, 0);
-            this.splitEntitiesList.Name = "splitEntitiesList";
-            this.splitEntitiesList.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitTableFields.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitTableFields.Location = new System.Drawing.Point(0, 0);
+            this.splitTableFields.Name = "splitTableFields";
             // 
-            // splitEntitiesList.Panel1
+            // splitTableFields.Panel1
             // 
-            this.splitEntitiesList.Panel1.Controls.Add(this.splitSearch);
-            this.splitEntitiesList.Panel1MinSize = 20;
+            this.splitTableFields.Panel1.Controls.Add(this.grpTables);
             // 
-            // splitEntitiesList.Panel2
+            // splitTableFields.Panel2
             // 
-            this.splitEntitiesList.Panel2.Controls.Add(this.checkAll);
-            this.splitEntitiesList.Panel2.Controls.Add(this.listEntities);
-            this.splitEntitiesList.Size = new System.Drawing.Size(548, 605);
-            this.splitEntitiesList.SplitterDistance = 25;
-            this.splitEntitiesList.TabIndex = 2;
+            this.splitTableFields.Panel2.Controls.Add(this.grpColumns);
+            this.splitTableFields.Size = new System.Drawing.Size(612, 605);
+            this.splitTableFields.SplitterDistance = 304;
+            this.splitTableFields.TabIndex = 4;
+            // 
+            // grpTables
+            // 
+            this.grpTables.Controls.Add(this.splitTableSearch);
+            this.grpTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpTables.Location = new System.Drawing.Point(0, 0);
+            this.grpTables.Name = "grpTables";
+            this.grpTables.Size = new System.Drawing.Size(304, 605);
+            this.grpTables.TabIndex = 2;
+            this.grpTables.TabStop = false;
+            this.grpTables.Text = "Tables";
+            // 
+            // splitTableSearch
+            // 
+            this.splitTableSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitTableSearch.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitTableSearch.IsSplitterFixed = true;
+            this.splitTableSearch.Location = new System.Drawing.Point(3, 16);
+            this.splitTableSearch.Name = "splitTableSearch";
+            this.splitTableSearch.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitTableSearch.Panel1
+            // 
+            this.splitTableSearch.Panel1.Controls.Add(this.splitSearch);
+            // 
+            // splitTableSearch.Panel2
+            // 
+            this.splitTableSearch.Panel2.Controls.Add(this.checkAll);
+            this.splitTableSearch.Panel2.Controls.Add(this.gvTables);
+            this.splitTableSearch.Size = new System.Drawing.Size(298, 586);
+            this.splitTableSearch.SplitterDistance = 25;
+            this.splitTableSearch.TabIndex = 3;
             // 
             // splitSearch
             // 
@@ -252,7 +304,7 @@
             // splitSearch.Panel2
             // 
             this.splitSearch.Panel2.Controls.Add(this.textSearch);
-            this.splitSearch.Size = new System.Drawing.Size(548, 25);
+            this.splitSearch.Size = new System.Drawing.Size(298, 25);
             this.splitSearch.SplitterDistance = 60;
             this.splitSearch.TabIndex = 1;
             // 
@@ -271,57 +323,147 @@
             this.textSearch.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textSearch.Location = new System.Drawing.Point(0, 0);
             this.textSearch.Name = "textSearch";
-            this.textSearch.Size = new System.Drawing.Size(484, 20);
+            this.textSearch.Size = new System.Drawing.Size(234, 20);
             this.textSearch.TabIndex = 0;
             this.textSearch.TextChanged += new System.EventHandler(this.textSearch_TextChanged);
             // 
             // checkAll
             // 
             this.checkAll.AutoSize = true;
-            this.checkAll.Location = new System.Drawing.Point(6, 4);
+            this.checkAll.Location = new System.Drawing.Point(4, 4);
             this.checkAll.Name = "checkAll";
             this.checkAll.Size = new System.Drawing.Size(15, 14);
             this.checkAll.TabIndex = 1;
             this.checkAll.UseVisualStyleBackColor = true;
             this.checkAll.CheckedChanged += new System.EventHandler(this.checkAll_CheckedChanged);
             // 
-            // listEntities
+            // gvTables
             // 
-            this.listEntities.CheckBoxes = true;
-            this.listEntities.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.colName,
-            this.colEntity,
-            this.colCustom});
-            this.listEntities.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listEntities.HideSelection = false;
-            this.listEntities.Location = new System.Drawing.Point(0, 0);
-            this.listEntities.Name = "listEntities";
-            this.listEntities.Size = new System.Drawing.Size(548, 576);
-            this.listEntities.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listEntities.TabIndex = 0;
-            this.listEntities.UseCompatibleStateImageBehavior = false;
-            this.listEntities.View = System.Windows.Forms.View.Details;
-            this.listEntities.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listEntities_ColumnClick);
-            this.listEntities.ItemChecked += new System.Windows.Forms.ItemCheckedEventHandler(this.listEntities_ItemChecked);
-            this.listEntities.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listEntities_ItemSelectionChanged);
+            this.gvTables.AllowUserToAddRows = false;
+            this.gvTables.AllowUserToDeleteRows = false;
+            this.gvTables.AllowUserToResizeColumns = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.gvTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gvTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvTables.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvTables.Location = new System.Drawing.Point(0, 0);
+            this.gvTables.MultiSelect = false;
+            this.gvTables.Name = "gvTables";
+            this.gvTables.RowHeadersVisible = false;
+            this.gvTables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gvTables.ShowEditingIcon = false;
+            this.gvTables.Size = new System.Drawing.Size(298, 557);
+            this.gvTables.TabIndex = 2;
+            this.gvTables.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvTables_CellValueChanged);
+            this.gvTables.CurrentCellDirtyStateChanged += new System.EventHandler(this.gvTables_CurrentCellDirtyStateChanged);
             // 
-            // colName
+            // grpColumns
             // 
-            this.colName.Text = "        Name";
-            this.colName.Width = 25;
+            this.grpColumns.Controls.Add(this.splitColSearch);
+            this.grpColumns.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.grpColumns.Location = new System.Drawing.Point(0, 0);
+            this.grpColumns.Name = "grpColumns";
+            this.grpColumns.Size = new System.Drawing.Size(304, 605);
+            this.grpColumns.TabIndex = 4;
+            this.grpColumns.TabStop = false;
+            this.grpColumns.Text = "Columns";
             // 
-            // colEntity
+            // splitColSearch
             // 
-            this.colEntity.Text = "Physical";
+            this.splitColSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitColSearch.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitColSearch.IsSplitterFixed = true;
+            this.splitColSearch.Location = new System.Drawing.Point(3, 16);
+            this.splitColSearch.Name = "splitColSearch";
+            this.splitColSearch.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // colCustom
+            // splitColSearch.Panel1
             // 
-            this.colCustom.Text = "Custom?";
+            this.splitColSearch.Panel1.Controls.Add(this.splitSearchCol);
+            // 
+            // splitColSearch.Panel2
+            // 
+            this.splitColSearch.Panel2.Controls.Add(this.chkAllColumns);
+            this.splitColSearch.Panel2.Controls.Add(this.gvAttributes);
+            this.splitColSearch.Size = new System.Drawing.Size(298, 586);
+            this.splitColSearch.SplitterDistance = 25;
+            this.splitColSearch.TabIndex = 5;
+            // 
+            // splitSearchCol
+            // 
+            this.splitSearchCol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitSearchCol.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitSearchCol.IsSplitterFixed = true;
+            this.splitSearchCol.Location = new System.Drawing.Point(0, 0);
+            this.splitSearchCol.Name = "splitSearchCol";
+            // 
+            // splitSearchCol.Panel1
+            // 
+            this.splitSearchCol.Panel1.Controls.Add(this.label1);
+            // 
+            // splitSearchCol.Panel2
+            // 
+            this.splitSearchCol.Panel2.Controls.Add(this.textSearchCol);
+            this.splitSearchCol.Size = new System.Drawing.Size(298, 25);
+            this.splitSearchCol.SplitterDistance = 60;
+            this.splitSearchCol.TabIndex = 4;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 5);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Search";
+            // 
+            // textSearchCol
+            // 
+            this.textSearchCol.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textSearchCol.Location = new System.Drawing.Point(0, 0);
+            this.textSearchCol.Name = "textSearchCol";
+            this.textSearchCol.Size = new System.Drawing.Size(234, 20);
+            this.textSearchCol.TabIndex = 0;
+            this.textSearchCol.TextChanged += new System.EventHandler(this.textSearchCol_TextChanged);
+            // 
+            // chkAllColumns
+            // 
+            this.chkAllColumns.AutoSize = true;
+            this.chkAllColumns.Location = new System.Drawing.Point(4, 4);
+            this.chkAllColumns.Name = "chkAllColumns";
+            this.chkAllColumns.Size = new System.Drawing.Size(15, 14);
+            this.chkAllColumns.TabIndex = 3;
+            this.chkAllColumns.UseVisualStyleBackColor = true;
+            this.chkAllColumns.CheckedChanged += new System.EventHandler(this.chkAllColumns_CheckedChanged);
+            // 
+            // gvAttributes
+            // 
+            this.gvAttributes.AllowUserToAddRows = false;
+            this.gvAttributes.AllowUserToDeleteRows = false;
+            this.gvAttributes.AllowUserToResizeColumns = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvAttributes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.gvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvAttributes.Location = new System.Drawing.Point(0, 0);
+            this.gvAttributes.MultiSelect = false;
+            this.gvAttributes.Name = "gvAttributes";
+            this.gvAttributes.RowHeadersVisible = false;
+            this.gvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gvAttributes.ShowEditingIcon = false;
+            this.gvAttributes.Size = new System.Drawing.Size(298, 557);
+            this.gvAttributes.TabIndex = 3;
+            this.gvAttributes.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvAttributes_CellValueChanged);
+            this.gvAttributes.CurrentCellDirtyStateChanged += new System.EventHandler(this.gvAttributes_CurrentCellDirtyStateChanged);
             // 
             // splitRight
             // 
             this.splitRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitRight.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitRight.IsSplitterFixed = true;
             this.splitRight.Location = new System.Drawing.Point(0, 0);
             this.splitRight.Name = "splitRight";
             this.splitRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -333,8 +475,8 @@
             // splitRight.Panel2
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
-            this.splitRight.Size = new System.Drawing.Size(302, 605);
-            this.splitRight.SplitterDistance = 221;
+            this.splitRight.Size = new System.Drawing.Size(238, 605);
+            this.splitRight.SplitterDistance = 190;
             this.splitRight.TabIndex = 4;
             // 
             // grpSettings
@@ -344,12 +486,10 @@
             this.grpSettings.Controls.Add(this.checkRelationships);
             this.grpSettings.Controls.Add(this.lblLevels);
             this.grpSettings.Controls.Add(this.numLevel);
-            this.grpSettings.Controls.Add(this.btnFile);
-            this.grpSettings.Controls.Add(this.txtFileName);
             this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSettings.Location = new System.Drawing.Point(0, 0);
             this.grpSettings.Name = "grpSettings";
-            this.grpSettings.Size = new System.Drawing.Size(302, 221);
+            this.grpSettings.Size = new System.Drawing.Size(238, 190);
             this.grpSettings.TabIndex = 0;
             this.grpSettings.TabStop = false;
             this.grpSettings.Text = "Settings";
@@ -361,9 +501,9 @@
             this.chkListHide.Items.AddRange(new object[] {
             "Hide System",
             "Hide Activity Entities"});
-            this.chkListHide.Location = new System.Drawing.Point(7, 181);
+            this.chkListHide.Location = new System.Drawing.Point(6, 149);
             this.chkListHide.Name = "chkListHide";
-            this.chkListHide.Size = new System.Drawing.Size(185, 34);
+            this.chkListHide.Size = new System.Drawing.Size(226, 34);
             this.chkListHide.TabIndex = 5;
             // 
             // chkListDisplay
@@ -373,9 +513,9 @@
             this.chkListDisplay.Items.AddRange(new object[] {
             "Entity Display Names",
             "Attribute Display Names"});
-            this.chkListDisplay.Location = new System.Drawing.Point(7, 141);
+            this.chkListDisplay.Location = new System.Drawing.Point(6, 109);
             this.chkListDisplay.Name = "chkListDisplay";
-            this.chkListDisplay.Size = new System.Drawing.Size(185, 34);
+            this.chkListDisplay.Size = new System.Drawing.Size(226, 34);
             this.chkListDisplay.TabIndex = 4;
             // 
             // checkRelationships
@@ -387,16 +527,16 @@
             "Many-To-One",
             "Many-To-Many",
             "Only Between Selected Entities"});
-            this.checkRelationships.Location = new System.Drawing.Point(7, 71);
+            this.checkRelationships.Location = new System.Drawing.Point(6, 39);
             this.checkRelationships.Name = "checkRelationships";
-            this.checkRelationships.Size = new System.Drawing.Size(185, 64);
+            this.checkRelationships.Size = new System.Drawing.Size(226, 64);
             this.checkRelationships.TabIndex = 1;
             this.checkRelationships.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkRelationships_ItemCheck);
             // 
             // lblLevels
             // 
             this.lblLevels.AutoSize = true;
-            this.lblLevels.Location = new System.Drawing.Point(17, 51);
+            this.lblLevels.Location = new System.Drawing.Point(16, 19);
             this.lblLevels.Name = "lblLevels";
             this.lblLevels.Size = new System.Drawing.Size(41, 13);
             this.lblLevels.TabIndex = 3;
@@ -404,7 +544,7 @@
             // 
             // numLevel
             // 
-            this.numLevel.Location = new System.Drawing.Point(66, 45);
+            this.numLevel.Location = new System.Drawing.Point(65, 13);
             this.numLevel.Maximum = new decimal(new int[] {
             3,
             0,
@@ -424,34 +564,37 @@
             0,
             0});
             // 
-            // btnFile
-            // 
-            this.btnFile.Location = new System.Drawing.Point(7, 16);
-            this.btnFile.Name = "btnFile";
-            this.btnFile.Size = new System.Drawing.Size(49, 23);
-            this.btnFile.TabIndex = 1;
-            this.btnFile.Text = "File";
-            this.btnFile.UseVisualStyleBackColor = true;
-            this.btnFile.Click += new System.EventHandler(this.btnFile_Click);
-            // 
-            // txtFileName
-            // 
-            this.txtFileName.Enabled = false;
-            this.txtFileName.Location = new System.Drawing.Point(66, 18);
-            this.txtFileName.Name = "txtFileName";
-            this.txtFileName.Size = new System.Drawing.Size(234, 20);
-            this.txtFileName.TabIndex = 0;
-            // 
             // grpSelected
             // 
+            this.grpSelected.Controls.Add(this.gvSelected);
             this.grpSelected.Controls.Add(this.listSelected);
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(302, 380);
+            this.grpSelected.Size = new System.Drawing.Size(238, 411);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
+            // 
+            // gvSelected
+            // 
+            this.gvSelected.AllowUserToAddRows = false;
+            this.gvSelected.AllowUserToDeleteRows = false;
+            this.gvSelected.AllowUserToResizeColumns = false;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.gvSelected.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gvSelected.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.gvSelected.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gvSelected.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvSelected.Location = new System.Drawing.Point(3, 16);
+            this.gvSelected.MultiSelect = false;
+            this.gvSelected.Name = "gvSelected";
+            this.gvSelected.RowHeadersVisible = false;
+            this.gvSelected.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gvSelected.ShowEditingIcon = false;
+            this.gvSelected.Size = new System.Drawing.Size(232, 392);
+            this.gvSelected.TabIndex = 3;
             // 
             // listSelected
             // 
@@ -459,11 +602,10 @@
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
-            this.listSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listSelected.HideSelection = false;
-            this.listSelected.Location = new System.Drawing.Point(3, 16);
+            this.listSelected.Location = new System.Drawing.Point(3, 178);
             this.listSelected.Name = "listSelected";
-            this.listSelected.Size = new System.Drawing.Size(296, 361);
+            this.listSelected.Size = new System.Drawing.Size(232, 199);
             this.listSelected.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listSelected.TabIndex = 3;
             this.listSelected.UseCompatibleStateImageBehavior = false;
@@ -508,17 +650,36 @@
             this.splitMain.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitMain)).EndInit();
             this.splitMain.ResumeLayout(false);
-            this.splitEntitiesList.Panel1.ResumeLayout(false);
-            this.splitEntitiesList.Panel2.ResumeLayout(false);
-            this.splitEntitiesList.Panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitEntitiesList)).EndInit();
-            this.splitEntitiesList.ResumeLayout(false);
+            this.splitTableFields.Panel1.ResumeLayout(false);
+            this.splitTableFields.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitTableFields)).EndInit();
+            this.splitTableFields.ResumeLayout(false);
+            this.grpTables.ResumeLayout(false);
+            this.splitTableSearch.Panel1.ResumeLayout(false);
+            this.splitTableSearch.Panel2.ResumeLayout(false);
+            this.splitTableSearch.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitTableSearch)).EndInit();
+            this.splitTableSearch.ResumeLayout(false);
             this.splitSearch.Panel1.ResumeLayout(false);
             this.splitSearch.Panel1.PerformLayout();
             this.splitSearch.Panel2.ResumeLayout(false);
             this.splitSearch.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitSearch)).EndInit();
             this.splitSearch.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvTables)).EndInit();
+            this.grpColumns.ResumeLayout(false);
+            this.splitColSearch.Panel1.ResumeLayout(false);
+            this.splitColSearch.Panel2.ResumeLayout(false);
+            this.splitColSearch.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitColSearch)).EndInit();
+            this.splitColSearch.ResumeLayout(false);
+            this.splitSearchCol.Panel1.ResumeLayout(false);
+            this.splitSearchCol.Panel1.PerformLayout();
+            this.splitSearchCol.Panel2.ResumeLayout(false);
+            this.splitSearchCol.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitSearchCol)).EndInit();
+            this.splitSearchCol.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvAttributes)).EndInit();
             this.splitRight.Panel1.ResumeLayout(false);
             this.splitRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitRight)).EndInit();
@@ -527,6 +688,7 @@
             this.grpSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLevel)).EndInit();
             this.grpSelected.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvSelected)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -539,26 +701,15 @@
         private WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme vS2015DarkTheme1;
         private System.Windows.Forms.SplitContainer splitMain;
         private System.Windows.Forms.ToolStripButton btnCreateVisio;
-        private System.Windows.Forms.ListView listEntities;
-        private System.Windows.Forms.ColumnHeader colName;
-        private System.Windows.Forms.ColumnHeader colEntity;
-        private System.Windows.Forms.ColumnHeader colCustom;
         private System.Windows.Forms.SaveFileDialog saveDialog;
         private System.Windows.Forms.GroupBox grpSettings;
-        private System.Windows.Forms.TextBox txtFileName;
         private System.Windows.Forms.SplitContainer splitRight;
         private System.Windows.Forms.GroupBox grpSelected;
-        private System.Windows.Forms.Button btnFile;
         private System.Windows.Forms.Label lblLevels;
         private System.Windows.Forms.NumericUpDown numLevel;
-        private System.Windows.Forms.ListView listSelected;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.CheckedListBox checkRelationships;
         private System.Windows.Forms.ToolStripProgressBar tspProgress;
         private System.Windows.Forms.CheckBox checkAll;
-        private System.Windows.Forms.SplitContainer splitEntitiesList;
         private System.Windows.Forms.SplitContainer splitSearch;
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox textSearch;
@@ -572,5 +723,21 @@
         private System.Windows.Forms.ToolStripButton btnExport;
         private System.Windows.Forms.ToolStripButton btnImport;
         private System.Windows.Forms.SaveFileDialog exportFile;
+        private System.Windows.Forms.SplitContainer splitTableFields;
+        private System.Windows.Forms.GroupBox grpTables;
+        private System.Windows.Forms.GroupBox grpColumns;
+        private System.Windows.Forms.CheckBox chkAllColumns;
+        private System.Windows.Forms.DataGridView gvTables;
+        private System.Windows.Forms.DataGridView gvAttributes;
+        private System.Windows.Forms.DataGridView gvSelected;
+        private System.Windows.Forms.ListView listSelected;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.SplitContainer splitTableSearch;
+        private System.Windows.Forms.SplitContainer splitColSearch;
+        private System.Windows.Forms.SplitContainer splitSearchCol;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textSearchCol;
     }
 }
