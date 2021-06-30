@@ -301,9 +301,9 @@ namespace LinkeD365.ERDBuilder
                 }
                 else
                 {
-                    foreach (ListViewItem selectedEntity in listSelected.Items)
+                    foreach (var table in selectedTables)
                     {
-                        var entityMeta = Service.GetEntityMetadata(selectedEntity.SubItems[1].Text);
+                        var entityMeta = table.Entity;
                         var primeEntity = addedEntities.First(pe => pe.LogicalName == entityMeta.LogicalName);
 
                         if (checkRelationships.CheckedItems.Contains("One-To-Many"))

@@ -9,12 +9,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/LinkeD365/ERDVisioBuilder</projectUrl>
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
-    <description>A XrmToolBox tool to create Visio diagrams from Datavese Tables</description>
+    <description>A XrmToolBox tool to create Visio diagrams from Dataverse Tables</description>
     <releaseNotes>
+      #24 - Fixed issue with 1:M, M:1 and M:M creation (Thanks @popemot)
+      
       #23 - New Grid for columns so you can put them into your visio (😁 THANKS MCJ)
       #22 - Allow you to open the Visio file straight away (🙄 THANKS MCJ)
       #21 - Removed File field into selection when Create Visio option used. (🤬 THANKS MCJ)
-      Additioanl Sort for Columns
+      Additional Sort for Columns
       Changed all lists to grids to allow correct display
       
       

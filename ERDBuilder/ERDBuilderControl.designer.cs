@@ -70,10 +70,6 @@
             this.numLevel = new System.Windows.Forms.NumericUpDown();
             this.grpSelected = new System.Windows.Forms.GroupBox();
             this.gvSelected = new System.Windows.Forms.DataGridView();
-            this.listSelected = new System.Windows.Forms.ListView();
-            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
             this.exportFile = new System.Windows.Forms.SaveFileDialog();
             this.toolStripMenu.SuspendLayout();
@@ -567,7 +563,6 @@
             // grpSelected
             // 
             this.grpSelected.Controls.Add(this.gvSelected);
-            this.grpSelected.Controls.Add(this.listSelected);
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
@@ -595,33 +590,6 @@
             this.gvSelected.ShowEditingIcon = false;
             this.gvSelected.Size = new System.Drawing.Size(232, 392);
             this.gvSelected.TabIndex = 3;
-            // 
-            // listSelected
-            // 
-            this.listSelected.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1,
-            this.columnHeader2,
-            this.columnHeader3});
-            this.listSelected.HideSelection = false;
-            this.listSelected.Location = new System.Drawing.Point(3, 178);
-            this.listSelected.Name = "listSelected";
-            this.listSelected.Size = new System.Drawing.Size(232, 199);
-            this.listSelected.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listSelected.TabIndex = 3;
-            this.listSelected.UseCompatibleStateImageBehavior = false;
-            this.listSelected.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Text = "Name";
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Physical";
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Custom?";
             // 
             // saveDialog
             // 
@@ -730,10 +698,6 @@
         private System.Windows.Forms.DataGridView gvTables;
         private System.Windows.Forms.DataGridView gvAttributes;
         private System.Windows.Forms.DataGridView gvSelected;
-        private System.Windows.Forms.ListView listSelected;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.SplitContainer splitTableSearch;
         private System.Windows.Forms.SplitContainer splitColSearch;
         private System.Windows.Forms.SplitContainer splitSearchCol;
