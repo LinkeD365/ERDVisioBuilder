@@ -294,7 +294,7 @@ namespace LinkeD365.ERDBuilder
                 tspProgress.Maximum = 100;
                 tspProgress.Step = 1;
                 tspProgress.Value = 25;
-                if (checkRelationships.CheckedItems.Contains("Only Between Selected Entities"))
+                if (checkRelationships.CheckedItems.Contains("Only Between Selected Tables"))
                 {
                     AddOnlySelectedRelationships(selectedTables);
                     tspProgress.Value = 75;

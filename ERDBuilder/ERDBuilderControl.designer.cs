@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ERDBuilderControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -150,8 +150,8 @@
             this.btnAllEntities.Image = ((System.Drawing.Image)(resources.GetObject("btnAllEntities.Image")));
             this.btnAllEntities.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAllEntities.Name = "btnAllEntities";
-            this.btnAllEntities.Size = new System.Drawing.Size(90, 28);
-            this.btnAllEntities.Text = "All Entities";
+            this.btnAllEntities.Size = new System.Drawing.Size(84, 28);
+            this.btnAllEntities.Text = "All Tables";
             this.btnAllEntities.Click += new System.EventHandler(this.btnAllEntities_Click);
             // 
             // btnFromSolution
@@ -338,8 +338,8 @@
             this.gvTables.AllowUserToAddRows = false;
             this.gvTables.AllowUserToDeleteRows = false;
             this.gvTables.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gvTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvTables.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -439,8 +439,8 @@
             this.gvAttributes.AllowUserToAddRows = false;
             this.gvAttributes.AllowUserToDeleteRows = false;
             this.gvAttributes.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvAttributes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvAttributes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.gvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -507,8 +507,8 @@
             this.chkListDisplay.CheckOnClick = true;
             this.chkListDisplay.FormattingEnabled = true;
             this.chkListDisplay.Items.AddRange(new object[] {
-            "Entity Display Names",
-            "Attribute Display Names"});
+            "Table Display Names",
+            "Column Display Names"});
             this.chkListDisplay.Location = new System.Drawing.Point(6, 109);
             this.chkListDisplay.Name = "chkListDisplay";
             this.chkListDisplay.Size = new System.Drawing.Size(226, 34);
@@ -522,7 +522,7 @@
             "One-To-Many",
             "Many-To-One",
             "Many-To-Many",
-            "Only Between Selected Entities"});
+            "Only Between Selected Tables"});
             this.checkRelationships.Location = new System.Drawing.Point(6, 39);
             this.checkRelationships.Name = "checkRelationships";
             this.checkRelationships.Size = new System.Drawing.Size(226, 64);
@@ -576,8 +576,8 @@
             this.gvSelected.AllowUserToAddRows = false;
             this.gvSelected.AllowUserToDeleteRows = false;
             this.gvSelected.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.gvSelected.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvSelected.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.gvSelected.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;

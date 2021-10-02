@@ -46,6 +46,29 @@ namespace LinkeD365.ERDBuilder
 
             if (entList.Count > 0)
             {
+                var queryList = new ExecuteMultipleRequest();
+                queryList.Requests = new OrganizationRequestCollection();
+                queryList.Settings = new ExecuteMultipleSettings()
+                {
+                    ContinueOnError = false,
+                    ReturnResponses = true
+                };
+
+                foreach (var tableId in entList)
+                {
+                    var query = new RetrieveEntityRequest();
+                    query.EntityFilters = EntityFilters.Default;
+                    query.MetadataId = tableId;
+                    queryList.Requests.Add(query);
+                }
+                
+                var tableList = ( (ExecuteMultipleResponse) Service.Execute(queryList)).Responses;
+
+                return tableList.Select(tl => ((RetrieveEntityResponse) tl.Response).EntityMetadata).Where(ent => ent.IsIntersect == false).ToList();
+                foreach (var response in tableList)
+                {
+                    //if (response.Response)
+                }
                 var eq = new EntityQueryExpression
                 {
                     Criteria = new MetadataFilterExpression(LogicalOperator.Or),

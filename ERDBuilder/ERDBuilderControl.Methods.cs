@@ -109,7 +109,7 @@ namespace LinkeD365.ERDBuilder
                 Work = (wrk, e) =>
                 {
                     var query = new RetrieveAllEntitiesRequest();
-                    var entities = ((RetrieveAllEntitiesResponse)Service.Execute(query)).EntityMetadata.ToList();
+                    var entities = ((RetrieveAllEntitiesResponse)Service.Execute(query)).EntityMetadata.Where(tbl => tbl.IsIntersect != true).ToList();
                     e.Result = BuildEntityItems(entities);
 
                     //wrk.ReportProgress(50, "Populating List");
@@ -240,7 +240,7 @@ namespace LinkeD365.ERDBuilder
 
         private void AddFullEntity(SBList<Table> tableSelected)
         {
-            foreach (var table in tableSelected.Where(table => table.Entity.Attributes == null))
+            foreach (var table in tableSelected.Where(table => table.Entity.Attributes == null || table.Entity.Attributes.Count() == 0))
             {
                 AddFullEntity(table);
             }

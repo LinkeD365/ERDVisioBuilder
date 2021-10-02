@@ -347,7 +347,7 @@ namespace LinkeD365.ERDBuilder
                     AddOneToMany(primeEntity, child);
                 }
 
-                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity1LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity2LogicalName)))
+                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity1LogicalName == primeEntity.LogicalName && addedEntities.Any(a => a.LogicalName == rel.Entity2LogicalName)))
                 {
                     if (!addedMtoM.Contains(mtom.SchemaName))
                     {
@@ -355,7 +355,7 @@ namespace LinkeD365.ERDBuilder
                     }
                 }
 
-                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity2LogicalName == primeEntity.Name && addedEntities.Any(a => a.Name == rel.Entity1LogicalName)))
+                foreach (var mtom in primeEntity.EntityMeta.ManyToManyRelationships.Where(rel => rel.Entity2LogicalName == primeEntity.LogicalName && addedEntities.Any(a => a.LogicalName == rel.Entity1LogicalName)))
                 {
                     if (!addedMtoM.Contains(mtom.SchemaName))
                     {
@@ -494,7 +494,7 @@ namespace LinkeD365.ERDBuilder
 
         private Entity AddEntity(EntityMetadata entityMeta, bool parent, double pinx, double piny)
         {
-            var entity = new Entity(entityMeta, parent, chkListDisplay.CheckedItems.Contains("Entity Display Names"), pinx, piny, face.ID);
+            var entity = new Entity(entityMeta, parent, chkListDisplay.CheckedItems.Contains("Table Display Names"), pinx, piny, face.ID);
             page.Shapes.Add(entity);
             entity.Name = entity.DisplayName;
 
@@ -509,7 +509,7 @@ namespace LinkeD365.ERDBuilder
             var entity = AddEntity(table.Entity, parent, pinx, piny);
             foreach (var column in table.Columns.OrderBy(col => col.DisplayName))
             {
-                if (chkListDisplay.CheckedItems.Contains("Attribute Display Names")) entity.Text.Add($"\n{column.DisplayName}", 1, 0, null);
+                if (chkListDisplay.CheckedItems.Contains("Column Display Names")) entity.Text.Add($"\n{column.DisplayName}", 1, 0, null);
                 else entity.Text.Add($"\n{column.LogicalName}", 1, 0, null);
             }
 
@@ -518,7 +518,7 @@ namespace LinkeD365.ERDBuilder
         private string GetPrimaryKey(EntityMetadata entityMeta)
         {
             AttributeMetadata primaryMeta = entityMeta.Attributes.ToList().First(att => att.LogicalName == entityMeta.PrimaryIdAttribute);
-            if (chkListDisplay.CheckedItems.Contains("Attribute Display Names"))
+            if (chkListDisplay.CheckedItems.Contains("Column Display Names"))
             {
                 return "\nPK " + primaryMeta?.DisplayName?.UserLocalizedLabel?.Label ?? primaryMeta.LogicalName;
             }
@@ -534,7 +534,7 @@ namespace LinkeD365.ERDBuilder
                 return string.Empty;
             }
 
-            if (chkListDisplay.CheckedItems.Contains("Attribute Display Names"))
+            if (chkListDisplay.CheckedItems.Contains("Column Display Names"))
             {
                 return "\nFK " + fkMeta?.DisplayName?.UserLocalizedLabel?.Label ?? fkMeta.LogicalName;
             }
