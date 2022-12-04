@@ -86,6 +86,54 @@ namespace LinkeD365.ERDBuilder
     public class AllSettings
     {
         public List<Settings> Settings { get; set; } = new List<Settings>();
+
+        public VisioDisplayConfig VisioDisplayConfig { get; set; } = new VisioDisplayConfig();
+    }
+
+    public class VisioDisplayConfig
+    {
+        private int levels;
+        [Category("Relationships")]
+        [DisplayName("One-To-Many")]
+        public bool OneToMany { get; set; }
+        [Category("Relationships")]
+        [DisplayName("Many-To-One")]
+        public bool ManyToOne { get; set; }
+        [Category("Relationships")]
+        [DisplayName("Many-To-Many")]
+        public bool ManyToMany { get; set; }
+        [Category("Relationships")]
+        [DisplayName("Only Between selected Tables")]
+        [DefaultValue(true)]
+        public bool OnlySelected { get; set; } = true;
+
+        [Category("Display Names or Logical")]
+        [DisplayName("Use Display Names for Tables ")]
+        [DefaultValue(true)]
+        public bool TableDisplay { get; set; } = true;
+        [Category("Display Names or Logical")]
+        [DisplayName("Use Display Names for Columns")]
+        [DefaultValue(true)]
+        public bool ColumnDisplay { get; set; } = true;
+
+        [Category("Tables")]
+        [DisplayName("Hide System")]
+        [DefaultValue(true)]
+        public bool HideSystem { get; set; } = true;
+        [Category("Tables")]
+        [DisplayName("Hide Activity Tables")]
+        [DefaultValue(true)]
+        public bool HideActivity { get; set; } = true;
+        [Category("Tables")]
+        [DisplayName("Hide Parent Tables")]
+        [DefaultValue(true)]
+        public bool HideParent { get; set; }
+
+        [Category("Relationships")]
+        [DefaultValue(1)]
+        [DisplayName("Max Level Count")]
+        
+        public int Levels { get => levels; set { levels = value > 3 ? 3 : value < 1 ? 1 : value; } }
     }
 
     public class Table : IEquatable<Table>, INotifyPropertyChanged

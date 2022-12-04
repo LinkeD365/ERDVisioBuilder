@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ERDBuilderControl));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,7 +42,9 @@
             this.btnExport = new System.Windows.Forms.ToolStripButton();
             this.btnImport = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnCreateVisio = new System.Windows.Forms.ToolStripButton();
+            this.btnCreateVisio = new System.Windows.Forms.ToolStripDropDownButton();
+            this.btnOldVisio = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnNewVisio = new System.Windows.Forms.ToolStripMenuItem();
             this.tspProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.vS2015DarkTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme();
             this.splitMain = new System.Windows.Forms.SplitContainer();
@@ -204,12 +206,28 @@
             // 
             // btnCreateVisio
             // 
+            this.btnCreateVisio.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnOldVisio,
+            this.btnNewVisio});
             this.btnCreateVisio.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateVisio.Image")));
             this.btnCreateVisio.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCreateVisio.Name = "btnCreateVisio";
-            this.btnCreateVisio.Size = new System.Drawing.Size(97, 28);
+            this.btnCreateVisio.Size = new System.Drawing.Size(106, 28);
             this.btnCreateVisio.Text = "Create Visio";
-            this.btnCreateVisio.Click += new System.EventHandler(this.btnGenerateVisio_Click);
+            // 
+            // btnOldVisio
+            // 
+            this.btnOldVisio.Name = "btnOldVisio";
+            this.btnOldVisio.Size = new System.Drawing.Size(180, 22);
+            this.btnOldVisio.Text = "Old Visio (VDX)";
+            this.btnOldVisio.Click += new System.EventHandler(this.btnGenerateVisio_Click);
+            // 
+            // btnNewVisio
+            // 
+            this.btnNewVisio.Name = "btnNewVisio";
+            this.btnNewVisio.Size = new System.Drawing.Size(180, 22);
+            this.btnNewVisio.Text = "New Visio (VSDX)";
+            this.btnNewVisio.Click += new System.EventHandler(this.btnNewVisio_Click);
             // 
             // tspProgress
             // 
@@ -338,8 +356,8 @@
             this.gvTables.AllowUserToAddRows = false;
             this.gvTables.AllowUserToDeleteRows = false;
             this.gvTables.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
             this.gvTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvTables.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -347,6 +365,7 @@
             this.gvTables.MultiSelect = false;
             this.gvTables.Name = "gvTables";
             this.gvTables.RowHeadersVisible = false;
+            this.gvTables.RowHeadersWidth = 51;
             this.gvTables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvTables.ShowEditingIcon = false;
             this.gvTables.Size = new System.Drawing.Size(298, 557);
@@ -439,8 +458,8 @@
             this.gvAttributes.AllowUserToAddRows = false;
             this.gvAttributes.AllowUserToDeleteRows = false;
             this.gvAttributes.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvAttributes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvAttributes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
             this.gvAttributes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvAttributes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gvAttributes.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -448,6 +467,7 @@
             this.gvAttributes.MultiSelect = false;
             this.gvAttributes.Name = "gvAttributes";
             this.gvAttributes.RowHeadersVisible = false;
+            this.gvAttributes.RowHeadersWidth = 51;
             this.gvAttributes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvAttributes.ShowEditingIcon = false;
             this.gvAttributes.Size = new System.Drawing.Size(298, 557);
@@ -472,7 +492,7 @@
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
             this.splitRight.Size = new System.Drawing.Size(238, 605);
-            this.splitRight.SplitterDistance = 190;
+            this.splitRight.SplitterDistance = 202;
             this.splitRight.TabIndex = 4;
             // 
             // grpSettings
@@ -485,7 +505,7 @@
             this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSettings.Location = new System.Drawing.Point(0, 0);
             this.grpSettings.Name = "grpSettings";
-            this.grpSettings.Size = new System.Drawing.Size(238, 190);
+            this.grpSettings.Size = new System.Drawing.Size(238, 202);
             this.grpSettings.TabIndex = 0;
             this.grpSettings.TabStop = false;
             this.grpSettings.Text = "Settings";
@@ -496,10 +516,11 @@
             this.chkListHide.FormattingEnabled = true;
             this.chkListHide.Items.AddRange(new object[] {
             "Hide System",
-            "Hide Activity Entities"});
+            "Hide Activity Entities",
+            "Hide Parent Tables"});
             this.chkListHide.Location = new System.Drawing.Point(6, 149);
             this.chkListHide.Name = "chkListHide";
-            this.chkListHide.Size = new System.Drawing.Size(226, 34);
+            this.chkListHide.Size = new System.Drawing.Size(226, 49);
             this.chkListHide.TabIndex = 5;
             // 
             // chkListDisplay
@@ -566,7 +587,7 @@
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(238, 411);
+            this.grpSelected.Size = new System.Drawing.Size(238, 399);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
@@ -576,8 +597,8 @@
             this.gvSelected.AllowUserToAddRows = false;
             this.gvSelected.AllowUserToDeleteRows = false;
             this.gvSelected.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
             this.gvSelected.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvSelected.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.gvSelected.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -586,9 +607,10 @@
             this.gvSelected.MultiSelect = false;
             this.gvSelected.Name = "gvSelected";
             this.gvSelected.RowHeadersVisible = false;
+            this.gvSelected.RowHeadersWidth = 51;
             this.gvSelected.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvSelected.ShowEditingIcon = false;
-            this.gvSelected.Size = new System.Drawing.Size(232, 392);
+            this.gvSelected.Size = new System.Drawing.Size(232, 380);
             this.gvSelected.TabIndex = 3;
             // 
             // saveDialog
@@ -610,7 +632,6 @@
             this.Name = "ERDBuilderControl";
             this.PluginIcon = ((System.Drawing.Icon)(resources.GetObject("$this.PluginIcon")));
             this.Size = new System.Drawing.Size(854, 636);
-            this.TabIcon = global::ERDBuilder.Properties.Resources.smallIcon_32;
             this.Load += new System.EventHandler(this.ERDBuilderControl_Load);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
@@ -668,7 +689,6 @@
         private System.Windows.Forms.ToolStripSeparator tssSeparator1;
         private WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme vS2015DarkTheme1;
         private System.Windows.Forms.SplitContainer splitMain;
-        private System.Windows.Forms.ToolStripButton btnCreateVisio;
         private System.Windows.Forms.SaveFileDialog saveDialog;
         private System.Windows.Forms.GroupBox grpSettings;
         private System.Windows.Forms.SplitContainer splitRight;
@@ -703,5 +723,8 @@
         private System.Windows.Forms.SplitContainer splitSearchCol;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textSearchCol;
+        private System.Windows.Forms.ToolStripDropDownButton btnCreateVisio;
+        private System.Windows.Forms.ToolStripMenuItem btnOldVisio;
+        private System.Windows.Forms.ToolStripMenuItem btnNewVisio;
     }
 }

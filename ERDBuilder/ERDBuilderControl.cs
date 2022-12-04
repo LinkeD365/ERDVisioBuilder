@@ -1,4 +1,5 @@
-﻿using McTools.Xrm.Connection;
+﻿using LinkeD365.ERDBuilder.Forms;
+using McTools.Xrm.Connection;
 using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Extensions;
@@ -129,11 +130,7 @@ namespace LinkeD365.ERDBuilder
                 }
             }
             InitSelectedGrid(new SBList<Table>());
-            checkRelationships.SetItemChecked(3, true);
-            chkListDisplay.SetItemChecked(0, true);
-            chkListDisplay.SetItemChecked(1, true);
-            chkListHide.SetItemChecked(0, true);
-            chkListHide.SetItemChecked(1, true);   
+            SetDefaultOptions();
         }
 
         public override void UpdateConnection(IOrganizationService newService, ConnectionDetail detail, string actionName, object parameter)
@@ -226,22 +223,7 @@ namespace LinkeD365.ERDBuilder
 
 
 
-        internal string saveVisio(string visioName)
-        {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "VDX files|*.vdx";// filters for text files only
-            sfd.DefaultExt = "vdx";
-            sfd.AddExtension = true;
-            sfd.FileName = visioName + ".vdx";
-            sfd.Title = "Save Visio File";
-
-            if (sfd.ShowDialog() == DialogResult.OK)
-            {
-                return sfd.FileName;
-            }
-
-            return null;
-        }
+        
 
         /// <summary>
         /// Generate Visio
@@ -253,92 +235,93 @@ namespace LinkeD365.ERDBuilder
         /// <param name="e"></param>
         private void btnGenerateVisio_Click(object sender, EventArgs e)
         {
+            GenerateVisio(false);
             var selectedTables = (SBList<Table>)gvSelected.DataSource;
-            if (!selectedTables.Any())
-            {
-                MessageBox.Show("Select one or more Tables before creating a Visio", "Select a Table", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-                return;
-            }
-            string fileName = saveVisio(cboSelectSaved.SelectedItem?.ToString() ?? string.Empty);
+            //if (!selectedTables.Any())
+            //{
+            //    MessageBox.Show("Select one or more Tables before creating a Visio", "Select a Table", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+            //    return;
+            //}
+            //string fileName = saveVisio(cboSelectSaved.SelectedItem?.ToString() ?? string.Empty);
 
-            if (fileName == null) return;
+            //if (fileName == null) return;
 
-            overrideSave = false;
-            try
-            {
-                Cursor.Current = Cursors.WaitCursor;
+            //overrideSave = false;
+            //try
+            //{
+            //    Cursor.Current = Cursors.WaitCursor;
 
-                doc = new Drawing(template);
-                page = new Page(pageWidth, pageHeight);
-                face = doc.AddFace("Segoe UI");
-                doc.Pages.Add(page);
-                addedEntities.Clear();
-                addedMtoM.Clear();
+            //    doc = new Drawing(template);
+            //    page = new Page(pageWidth, pageHeight);
+            //    face = doc.AddFace("Segoe UI");
+            //    doc.Pages.Add(page);
+            //    addedEntities.Clear();
+            //    addedMtoM.Clear();
 
                
-                AddFullEntity(selectedTables);
+            //    AddFullEntity(selectedTables);
 
-                foreach (var table in selectedTables)
-                {
-                    if (addedEntities.Count == 0)
-                    {
-                        AddEntity(table, false, pageWidth / 2, pageHeight / 2);
-                    }
-                    else
-                    {
-                        AddEntity(table, false, nextX, nextY);
-                    }
-                }
+            //    foreach (var table in selectedTables)
+            //    {
+            //        if (addedEntities.Count == 0)
+            //        {
+            //            AddEntity(table, false, pageWidth / 2, pageHeight / 2);
+            //        }
+            //        else
+            //        {
+            //            AddEntity(table, false, nextX, nextY);
+            //        }
+            //    }
 
-                tspProgress.Visible = true;
-                tspProgress.Maximum = 100;
-                tspProgress.Step = 1;
-                tspProgress.Value = 25;
-                if (checkRelationships.CheckedItems.Contains("Only Between Selected Tables"))
-                {
-                    AddOnlySelectedRelationships(selectedTables);
-                    tspProgress.Value = 75;
-                }
-                else
-                {
-                    foreach (var table in selectedTables)
-                    {
-                        var entityMeta = table.Entity;
-                        var primeEntity = addedEntities.First(pe => pe.LogicalName == entityMeta.LogicalName);
+            //    tspProgress.Visible = true;
+            //    tspProgress.Maximum = 100;
+            //    tspProgress.Step = 1;
+            //    tspProgress.Value = 25;
+            //    if (checkRelationships.CheckedItems.Contains("Only Between Selected Tables"))
+            //    {
+            //        AddOnlySelectedRelationships(selectedTables);
+            //        tspProgress.Value = 75;
+            //    }
+            //    else
+            //    {
+            //        foreach (var table in selectedTables)
+            //        {
+            //            var entityMeta = table.Entity;
+            //            var primeEntity = addedEntities.First(pe => pe.LogicalName == entityMeta.LogicalName);
 
-                        if (checkRelationships.CheckedItems.Contains("One-To-Many"))
-                        {
-                            AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
-                        }
+            //            if (checkRelationships.CheckedItems.Contains("One-To-Many"))
+            //            {
+            //                AddAllOneToMany(primeEntity, entityMeta, numLevel.Value);
+            //            }
 
-                        tspProgress.Value = 25;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-One"))
-                        {
-                            AddAllManyToOne(primeEntity, entityMeta, numLevel.Value);
-                        }
+            //            tspProgress.Value = 25;
+            //            if (checkRelationships.CheckedItems.Contains("Many-To-One"))
+            //            {
+            //                AddAllManyToOne(primeEntity, entityMeta, numLevel.Value);
+            //            }
 
-                        tspProgress.Value = 50;
-                        if (checkRelationships.CheckedItems.Contains("Many-To-Many"))
-                        {
-                            AddAllManyToMany(primeEntity, entityMeta, numLevel.Value);
-                        }
+            //            tspProgress.Value = 50;
+            //            if (checkRelationships.CheckedItems.Contains("Many-To-Many"))
+            //            {
+            //                AddAllManyToMany(primeEntity, entityMeta, numLevel.Value);
+            //            }
 
-                        tspProgress.Value = 75;
-                    }
-                }
+            //            tspProgress.Value = 75;
+            //        }
+            //    }
 
-                doc.Save(fileName);
-                tspProgress.Visible = false;
-                ai.WriteEvent("Visio Entities Count", addedEntities.Count);
-                if (MessageBox.Show("Visio File created successfully. Do you want to open the Visio Diagram?", "Success!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                {
-                    Process.Start(fileName);
-                }
-            }
-            finally
-            {
-                Cursor.Current = Cursors.Default;
-            }
+            //    doc.Save(fileName);
+            //    tspProgress.Visible = false;
+            //    ai.WriteEvent("Visio Entities Count", addedEntities.Count);
+            //    if (MessageBox.Show("Visio File created successfully. Do you want to open the Visio Diagram?", "Success!", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            //    {
+            //        Process.Start(fileName);
+            //    }
+            //}
+            //finally
+            //{
+            //    Cursor.Current = Cursors.Default;
+            //}
         }
 
 
@@ -443,6 +426,25 @@ namespace LinkeD365.ERDBuilder
         private void chkAllColumns_CheckedChanged(object sender, EventArgs e)
         {
             ((SBList<Column>)gvAttributes.DataSource).ToList().ForEach(column => column.Selected = chkAllColumns.Checked);
+        }
+
+        private void btnNewVisio_Click(object sender, EventArgs e)
+        {
+            GenerateVisio(true);
+        }
+
+        public void ShowSettings()
+        {
+            SettingsDialog  settingsDialog = new SettingsDialog();
+            settingsDialog.propGrid.SelectedObject = this.mySettings.VisioDisplayConfig;
+            settingsDialog.ShowDialog();
+
+            if (settingsDialog.DialogResult == DialogResult.OK)
+            {
+                mySettings.VisioDisplayConfig = (VisioDisplayConfig) settingsDialog.propGrid.SelectedObject;
+                
+            }
+            
         }
     }
 }

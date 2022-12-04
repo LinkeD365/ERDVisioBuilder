@@ -30,9 +30,42 @@ namespace LinkeD365.ERDBuilder
             if (selectedConfig is null) return;
 
             InitSelectedGrid(new SBList<Table>());
+            SetOptions(selectedConfig);
 
 
             ExecuteMethod(AddEntities, selectedConfig);
+        }
+
+        private void SetDefaultOptions()
+        {
+            checkRelationships.SetItemChecked(3, true);
+            chkListDisplay.SetItemChecked(0, true);
+            chkListDisplay.SetItemChecked(1, true);
+            chkListHide.SetItemChecked(0, true);
+            chkListHide.SetItemChecked(1, true);
+            chkListHide.SetItemChecked(2, true);
+        }
+        /// <summary>
+        /// #32 Added to resolve
+        /// </summary>
+        /// <param name="selectedConfig"></param>
+        private void SetOptions(Settings selectedConfig)
+        {
+            for (int i=0; i<=checkRelationships.Items.Count -1;i++)
+            {
+                checkRelationships.SetItemChecked(i, selectedConfig.RelationshipMaps.Contains(i));
+            }
+
+            for (int i = 0; i <= chkListHide.Items.Count - 1; i++)
+            {
+                chkListHide.SetItemChecked(i, selectedConfig.Hide.Contains(i));
+            }
+
+            for (int i = 0; i <= chkListDisplay.Items.Count - 1; i++)
+            {
+                chkListDisplay.SetItemChecked(i, selectedConfig.Display.Contains(i));
+            }
+           
         }
 
         private void btnExport_Click(object sender, EventArgs e)

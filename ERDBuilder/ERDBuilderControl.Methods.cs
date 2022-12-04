@@ -254,6 +254,24 @@ namespace LinkeD365.ERDBuilder
             query.EntityFilters = EntityFilters.All;
             table.Entity = ((RetrieveEntityResponse)Service.Execute(query)).EntityMetadata;
         }
+
+        internal string saveVisio(string visioName, bool newVisio)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            sfd.Filter = newVisio ? "VSDX files|*.vsdx" : "VDX files|*.vdx";// filters for text files only
+            sfd.DefaultExt = newVisio ? "vsdx" : "vdx";
+            sfd.AddExtension = true;
+            sfd.FileName = visioName + (newVisio ? ".vsdx" : ".vdx");
+            sfd.Title = "Save Visio File";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                return sfd.FileName;
+            }
+
+            return null;
+        }
     }
 
 }

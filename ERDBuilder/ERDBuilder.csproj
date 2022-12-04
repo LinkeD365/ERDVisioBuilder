@@ -241,7 +241,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Shape.cs" />
+    <Compile Include="Classes\Shape.Line.cs" />
+    <Compile Include="Classes\Shape.Table.cs" />
+    <Compile Include="Classes\Utils.Visio.cs" />
+    <Compile Include="Classes\Utils.VisioBase.cs" />
+    <Compile Include="Classes\VisioSettings.cs" />
     <Compile Include="ERDBuilder.cs" />
+    <Compile Include="ERDBuilderControl.Methods.CreateVisio.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ERDBuilderControl.Methods.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -261,6 +270,12 @@
     <Compile Include="ERDBuilderControl.Helpers.cs" />
     <Compile Include="ERDBuilderControl.XML.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Settings.Designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
     <Compile Include="Helper\Helper.cs" />
     <Compile Include="Helper\SortableBindableList.cs" />
@@ -293,10 +308,14 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Resources\Visio Template ERD.vsdx" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ERDBuilderControl.resx">
       <DependentUpon>ERDBuilderControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Settings.resx">
+      <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SolutionPicker.resx">
       <DependentUpon>SolutionPicker.cs</DependentUpon>

@@ -221,7 +221,7 @@ namespace LinkeD365.ERDBuilder
                         AddAllManyToOne(childEntity, childMeta, --levelCount);
                     }
 
-                    if (checkRelationships.CheckedItems.Contains("One-To-Many"))
+                    if (checkRelationships.CheckedItems.Contains("Many-To-Many"))
                     {
                         AddAllManyToMany(childEntity, childMeta, --levelCount);
                     }
@@ -253,7 +253,7 @@ namespace LinkeD365.ERDBuilder
                         AddAllOneToMany(childEntity, childMeta, --levelCount);
                     }
 
-                    if (checkRelationships.CheckedItems.Contains("One-To-Many"))
+                    if (checkRelationships.CheckedItems.Contains("Many-To-Many"))
                     {
                         AddAllManyToMany(childEntity, childMeta, --levelCount);
                     }
@@ -393,7 +393,7 @@ namespace LinkeD365.ERDBuilder
                 {
                     if (addedEntities.All(ch => ch.DisplayName != "PARENT: " + primeEntity.DisplayName))
                     {
-                        childShape = AddEntity(primeEntity.EntityMeta, true, addedEntities.Count, 0);
+                        childShape = AddEntity(primeEntity.EntityMeta, true, nextX, nextY);
                     }
                     else
                     {
@@ -426,7 +426,7 @@ namespace LinkeD365.ERDBuilder
                 {
                     if (!addedEntities.Any(ch => ch.DisplayName == "PARENT: " + primeEntity.DisplayName))
                     {
-                        childShape = AddEntity(primeEntity.EntityMeta, true, addedEntities.Count, 0);
+                        childShape = AddEntity(primeEntity.EntityMeta, true, nextX, nextY);
                     }
                     else
                     {
@@ -441,7 +441,7 @@ namespace LinkeD365.ERDBuilder
         {
             var connector = Shape.CreateDynamicConnector(doc);
             connector.XForm1D.EndY.Result = 0;
-            connector.Line = new Line();
+            connector.Line = new VisioAutomation.VDX.Sections.Line();
             connector.Line.EndArrow.Result = 29;
             connector.Line.BeginArrow.Result = 30;
             connector.CustomProps = new CustomProps();
@@ -468,7 +468,7 @@ namespace LinkeD365.ERDBuilder
         {
             var connector = Shape.CreateDynamicConnector(doc);
             connector.XForm1D.EndY.Result = 0;
-            connector.Line = new Line();
+            connector.Line = new VisioAutomation.VDX.Sections.Line();
             connector.Line.EndArrow.Result = 29;
             connector.Line.BeginArrow.Result = 29;
             connector.CustomProps = new CustomProps();
