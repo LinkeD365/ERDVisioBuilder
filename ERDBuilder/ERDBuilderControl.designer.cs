@@ -479,7 +479,6 @@
             // 
             this.splitRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitRight.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitRight.IsSplitterFixed = true;
             this.splitRight.Location = new System.Drawing.Point(0, 0);
             this.splitRight.Name = "splitRight";
             this.splitRight.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -492,7 +491,7 @@
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
             this.splitRight.Size = new System.Drawing.Size(238, 605);
-            this.splitRight.SplitterDistance = 202;
+            this.splitRight.SplitterDistance = 219;
             this.splitRight.TabIndex = 4;
             // 
             // grpSettings
@@ -505,7 +504,7 @@
             this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSettings.Location = new System.Drawing.Point(0, 0);
             this.grpSettings.Name = "grpSettings";
-            this.grpSettings.Size = new System.Drawing.Size(238, 202);
+            this.grpSettings.Size = new System.Drawing.Size(238, 219);
             this.grpSettings.TabIndex = 0;
             this.grpSettings.TabStop = false;
             this.grpSettings.Text = "Settings";
@@ -518,7 +517,8 @@
             "Hide System",
             "Hide Activity Entities",
             "Hide Parent Tables"});
-            this.chkListHide.Location = new System.Drawing.Point(6, 149);
+            this.chkListHide.Location = new System.Drawing.Point(6, 164);
+            this.chkListHide.Margin = new System.Windows.Forms.Padding(0);
             this.chkListHide.Name = "chkListHide";
             this.chkListHide.Size = new System.Drawing.Size(226, 49);
             this.chkListHide.TabIndex = 5;
@@ -529,10 +529,13 @@
             this.chkListDisplay.FormattingEnabled = true;
             this.chkListDisplay.Items.AddRange(new object[] {
             "Table Display Names",
-            "Column Display Names"});
-            this.chkListDisplay.Location = new System.Drawing.Point(6, 109);
+            "Column Display Names",
+            "Primary Keys",
+            "Foreign Keys"});
+            this.chkListDisplay.Location = new System.Drawing.Point(6, 100);
+            this.chkListDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.chkListDisplay.Name = "chkListDisplay";
-            this.chkListDisplay.Size = new System.Drawing.Size(226, 34);
+            this.chkListDisplay.Size = new System.Drawing.Size(226, 64);
             this.chkListDisplay.TabIndex = 4;
             // 
             // checkRelationships
@@ -544,7 +547,8 @@
             "Many-To-One",
             "Many-To-Many",
             "Only Between Selected Tables"});
-            this.checkRelationships.Location = new System.Drawing.Point(6, 39);
+            this.checkRelationships.Location = new System.Drawing.Point(6, 36);
+            this.checkRelationships.Margin = new System.Windows.Forms.Padding(0);
             this.checkRelationships.Name = "checkRelationships";
             this.checkRelationships.Size = new System.Drawing.Size(226, 64);
             this.checkRelationships.TabIndex = 1;
@@ -587,7 +591,7 @@
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(238, 399);
+            this.grpSelected.Size = new System.Drawing.Size(238, 382);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
@@ -610,7 +614,7 @@
             this.gvSelected.RowHeadersWidth = 51;
             this.gvSelected.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gvSelected.ShowEditingIcon = false;
-            this.gvSelected.Size = new System.Drawing.Size(232, 380);
+            this.gvSelected.Size = new System.Drawing.Size(232, 363);
             this.gvSelected.TabIndex = 3;
             // 
             // saveDialog

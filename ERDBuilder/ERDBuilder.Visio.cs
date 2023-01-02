@@ -471,11 +471,13 @@ namespace LinkeD365.ERDBuilder
             connector.Line = new VisioAutomation.VDX.Sections.Line();
             connector.Line.EndArrow.Result = 29;
             connector.Line.BeginArrow.Result = 29;
-            connector.CustomProps = new CustomProps();
-            connector.CustomProps.Add(new CustomProp("Connected1Entity") { Value = connected.Entity1LogicalName });
-            connector.CustomProps.Add(new CustomProp("Connected2Entity") { Value = connected.Entity2LogicalName });
-            connector.CustomProps.Add(new CustomProp("Entity1Navigation") { Value = connected.Entity1NavigationPropertyName });
-            connector.CustomProps.Add(new CustomProp("Entity2Navigation") { Value = connected.Entity2NavigationPropertyName });
+            connector.CustomProps = new CustomProps
+            {
+                new CustomProp("Connected1Entity") { Value = connected.Entity1LogicalName },
+                new CustomProp("Connected2Entity") { Value = connected.Entity2LogicalName },
+                new CustomProp("Entity1Navigation") { Value = connected.Entity1NavigationPropertyName },
+                new CustomProp("Entity2Navigation") { Value = connected.Entity2NavigationPropertyName }
+            };
             page.Shapes.Add(connector);
             connector.Geom = new Geom();
             connector.Geom.Rows.Add(new MoveTo(1, 3));
@@ -498,8 +500,7 @@ namespace LinkeD365.ERDBuilder
             page.Shapes.Add(entity);
             entity.Name = entity.DisplayName;
 
-
-            entity.Text.Add(GetPrimaryKey(entityMeta), 1, 0, null);
+            if (!chkListDisplay.CheckedItems.Contains("Primary Keys")) entity.Text.Add(GetPrimaryKey(entityMeta), 1, 0, null);
             addedEntities.Add(entity);
             return entity;
         }
@@ -517,6 +518,7 @@ namespace LinkeD365.ERDBuilder
 
         private string GetPrimaryKey(EntityMetadata entityMeta)
         {
+
             AttributeMetadata primaryMeta = entityMeta.Attributes.ToList().First(att => att.LogicalName == entityMeta.PrimaryIdAttribute);
             if (chkListDisplay.CheckedItems.Contains("Column Display Names"))
             {

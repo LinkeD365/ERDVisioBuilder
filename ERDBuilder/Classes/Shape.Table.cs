@@ -37,7 +37,7 @@ namespace LinkeD365.ERDBuilder
 
         public VisTable(EntityMetadata tableMeta, bool parent, bool tableDisplayNames, double pinX, double pinY)
         {
-            this.TableMeta = tableMeta;
+            TableMeta = tableMeta;
             this.parent = parent;
             this.tableDisplayNames = tableDisplayNames;
             PinX = pinX;
@@ -71,10 +71,29 @@ namespace LinkeD365.ERDBuilder
         private void AddLine(VisTable child, string referencedAttribute, string schemaName)
         {
             var line = AddLine(child);
+
             line.AddProp("Parent", DisplayName);
             line.AddProp("Child", child.DisplayName);
             line.AddProp("Field", referencedAttribute);
             line.AddProp("Relationship", schemaName);
+
+            if (Utils.ShowFK) AddFK(child, referencedAttribute, schemaName);
+        }
+
+        private void AddFK(VisTable child, string referencedAttribute, string schemaName)
+        {
+
+           // var fieldText = Shape.Descendants().Where(el => el.Name.LocalName == "Text").Last();
+            var field = child.TableMeta.Attributes.FirstOrDefault(att => att.LogicalName == referencedAttribute);
+            if (field == null) return;
+            var displayName = "FK " + (Utils.ColumnsDisplayName ? field.DisplayName.UserLocalizedLabel.Label : field.LogicalName);
+            child.AddField(displayName);
+            //if (!fieldText.ToString().Contains(displayName)) return;
+            //var sb = new StringBuilder(fieldText.Value == "Fields\n" ? "" : fieldText.Value);
+            //sb.AppendLine(displayName);
+
+            //fieldText.ReplaceWith(XElement.Parse($"<Text><![CDATA[{sb}]]></Text>", LoadOptions.SetBaseUri));
+
         }
 
         internal void ConnectMulti(VisTable child, string navPropParent, string navPropChild)
@@ -90,7 +109,7 @@ namespace LinkeD365.ERDBuilder
         {
             var fieldText = Shape.Descendants().Where(el => el.Name.LocalName == "Text").Last();
             fieldText.ReplaceWith(XElement.Parse($"<Text></Text>", LoadOptions.SetBaseUri));
-           // throw new NotImplementedException();
+            // throw new NotImplementedException();
         }
     }
 }

@@ -56,6 +56,8 @@ namespace LinkeD365.ERDBuilder
             Utils.NoLevels = numLevel.Value;
             Utils.HideActivity = HideActivity;
             Utils.HideParent = chkListHide.CheckedItems.Contains("Hide Parent Tables");
+            Utils.ShowFK = chkListDisplay.CheckedItems.Contains("Foreign Keys");
+            Utils.ShowPK = chkListDisplay.CheckedItems.Contains("Primary Keys");
             Utils.Service = Service;
             Utils.CreateVisio(selectedTables,fileName);
             Utils.CompleteVisio(fileName);

@@ -241,11 +241,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Shape.Containter.cs" />
     <Compile Include="Classes\Shape.cs" />
     <Compile Include="Classes\Shape.Line.cs" />
     <Compile Include="Classes\Shape.Table.cs" />
+    <Compile Include="Classes\Shape.Visio.Properties.cs" />
     <Compile Include="Classes\Utils.Visio.cs" />
     <Compile Include="Classes\Utils.VisioBase.cs" />
+    <Compile Include="Classes\UtilsHelpers.cs" />
     <Compile Include="Classes\VisioSettings.cs" />
     <Compile Include="ERDBuilder.cs" />
     <Compile Include="ERDBuilderControl.Methods.CreateVisio.cs">

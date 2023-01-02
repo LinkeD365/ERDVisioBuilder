@@ -11,36 +11,40 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Dataverse Tables</description>
     <releaseNotes>
-      #28 Modified load of tables when using solutions Thank @AndyTait35
-      Hidden tables that are actually many to many relationships
-      Changes to Tables and Columns throughout
-      
-      #24 - Fixed issue with 1:M, M:1 and M:M creation (Thanks @popemot)
-      
-      #23 - New Grid for columns so you can put them into your visio (😁 THANKS MCJ)
-      #22 - Allow you to open the Visio file straight away (🙄 THANKS MCJ)
-      #21 - Removed File field into selection when Create Visio option used. (🤬 THANKS MCJ)
-      Additional Sort for Columns
-      Changed all lists to grids to allow correct display
-      
-      
-      #18 - Fixed bug with many to many with duplicate FK keys
-      #17 - Fixed bug with Hide Activity not actually hiding activities
-      #16 - Fixed bug with re-running visio export caused error
-      #14 - Hopefully fixed bug when creating a big erd (Thanks Susan) 🤞
-      
-      Added icons and paypal config
-      #14 - Fixed bug which didnt load settings if a new install
-      
-      #13 - Added option to display Entities and fields with display name rather than logical
-      #12 - Added ability to export / import settings
-      #9 - Added option to hide activities.
-      Multiple settings now available
+		#33 Added option to hide parent tables (thanks Dani)
+		#32 Fixed issue where the hide/display options were not actually taken up
+		#20 First draft of VSDX file format
+
+		#28 Modified load of tables when using solutions Thank @AndyTait35
+		Hidden tables that are actually many to many relationships
+		Changes to Tables and Columns throughout
+
+		#24 - Fixed issue with 1:M, M:1 and M:M creation (Thanks @popemot)
+
+		#23 - New Grid for columns so you can put them into your visio (😁 THANKS MCJ)
+		#22 - Allow you to open the Visio file straight away (🙄 THANKS MCJ)
+		#21 - Removed File field into selection when Create Visio option used. (🤬 THANKS MCJ)
+		Additional Sort for Columns
+		Changed all lists to grids to allow correct display
 
 
-      #7 Added Save Settings (thanks DiggaTheWolf)
-      #8 Added prompt to override file (Thanks DiggaTheWolf)
-    </releaseNotes>
+		#18 - Fixed bug with many to many with duplicate FK keys
+		#17 - Fixed bug with Hide Activity not actually hiding activities
+		#16 - Fixed bug with re-running visio export caused error
+		#14 - Hopefully fixed bug when creating a big erd (Thanks Susan) 🤞
+
+		Added icons and paypal config
+		#14 - Fixed bug which didnt load settings if a new install
+
+		#13 - Added option to display Entities and fields with display name rather than logical
+		#12 - Added ability to export / import settings
+		#9 - Added option to hide activities.
+		Multiple settings now available
+
+
+		#7 Added Save Settings (thanks DiggaTheWolf)
+		#8 Added prompt to override file (Thanks DiggaTheWolf)
+	</releaseNotes>
     <copyright>Copyright 2021</copyright>
     <tags>XrmToolBox Plugins ERDVisioBuilder</tags>
     <dependencies>
