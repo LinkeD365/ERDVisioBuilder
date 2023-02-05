@@ -29,9 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ERDBuilderControl));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripMenu = new System.Windows.Forms.ToolStrip();
             this.tsbClose = new System.Windows.Forms.ToolStripButton();
             this.tssSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -64,12 +74,15 @@
             this.chkAllColumns = new System.Windows.Forms.CheckBox();
             this.gvAttributes = new System.Windows.Forms.DataGridView();
             this.splitRight = new System.Windows.Forms.SplitContainer();
-            this.grpSettings = new System.Windows.Forms.GroupBox();
+            this.tabGrpSettings = new System.Windows.Forms.TabControl();
+            this.tabSettings = new System.Windows.Forms.TabPage();
             this.chkListHide = new System.Windows.Forms.CheckedListBox();
-            this.chkListDisplay = new System.Windows.Forms.CheckedListBox();
-            this.checkRelationships = new System.Windows.Forms.CheckedListBox();
             this.lblLevels = new System.Windows.Forms.Label();
+            this.chkListDisplay = new System.Windows.Forms.CheckedListBox();
             this.numLevel = new System.Windows.Forms.NumericUpDown();
+            this.checkRelationships = new System.Windows.Forms.CheckedListBox();
+            this.tabContainers = new System.Windows.Forms.TabPage();
+            this.gvContainers = new System.Windows.Forms.DataGridView();
             this.grpSelected = new System.Windows.Forms.GroupBox();
             this.gvSelected = new System.Windows.Forms.DataGridView();
             this.saveDialog = new System.Windows.Forms.SaveFileDialog();
@@ -107,8 +120,11 @@
             this.splitRight.Panel1.SuspendLayout();
             this.splitRight.Panel2.SuspendLayout();
             this.splitRight.SuspendLayout();
-            this.grpSettings.SuspendLayout();
+            this.tabGrpSettings.SuspendLayout();
+            this.tabSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLevel)).BeginInit();
+            this.tabContainers.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gvContainers)).BeginInit();
             this.grpSelected.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gvSelected)).BeginInit();
             this.SuspendLayout();
@@ -218,14 +234,14 @@
             // btnOldVisio
             // 
             this.btnOldVisio.Name = "btnOldVisio";
-            this.btnOldVisio.Size = new System.Drawing.Size(180, 22);
+            this.btnOldVisio.Size = new System.Drawing.Size(165, 22);
             this.btnOldVisio.Text = "Old Visio (VDX)";
             this.btnOldVisio.Click += new System.EventHandler(this.btnGenerateVisio_Click);
             // 
             // btnNewVisio
             // 
             this.btnNewVisio.Name = "btnNewVisio";
-            this.btnNewVisio.Size = new System.Drawing.Size(180, 22);
+            this.btnNewVisio.Size = new System.Drawing.Size(165, 22);
             this.btnNewVisio.Text = "New Visio (VSDX)";
             this.btnNewVisio.Click += new System.EventHandler(this.btnNewVisio_Click);
             // 
@@ -238,7 +254,6 @@
             // splitMain
             // 
             this.splitMain.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitMain.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitMain.Location = new System.Drawing.Point(0, 31);
             this.splitMain.Name = "splitMain";
             // 
@@ -356,14 +371,38 @@
             this.gvTables.AllowUserToAddRows = false;
             this.gvTables.AllowUserToDeleteRows = false;
             this.gvTables.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvTables.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.gvTables.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvTables.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.gvTables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gvTables.DefaultCellStyle = dataGridViewCellStyle3;
             this.gvTables.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvTables.Location = new System.Drawing.Point(0, 0);
             this.gvTables.MultiSelect = false;
             this.gvTables.Name = "gvTables";
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvTables.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.gvTables.RowHeadersVisible = false;
             this.gvTables.RowHeadersWidth = 51;
             this.gvTables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -485,29 +524,40 @@
             // 
             // splitRight.Panel1
             // 
-            this.splitRight.Panel1.Controls.Add(this.grpSettings);
+            this.splitRight.Panel1.Controls.Add(this.tabGrpSettings);
             // 
             // splitRight.Panel2
             // 
             this.splitRight.Panel2.Controls.Add(this.grpSelected);
             this.splitRight.Size = new System.Drawing.Size(238, 605);
-            this.splitRight.SplitterDistance = 219;
+            this.splitRight.SplitterDistance = 234;
             this.splitRight.TabIndex = 4;
             // 
-            // grpSettings
+            // tabGrpSettings
             // 
-            this.grpSettings.Controls.Add(this.chkListHide);
-            this.grpSettings.Controls.Add(this.chkListDisplay);
-            this.grpSettings.Controls.Add(this.checkRelationships);
-            this.grpSettings.Controls.Add(this.lblLevels);
-            this.grpSettings.Controls.Add(this.numLevel);
-            this.grpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.grpSettings.Location = new System.Drawing.Point(0, 0);
-            this.grpSettings.Name = "grpSettings";
-            this.grpSettings.Size = new System.Drawing.Size(238, 219);
-            this.grpSettings.TabIndex = 0;
-            this.grpSettings.TabStop = false;
-            this.grpSettings.Text = "Settings";
+            this.tabGrpSettings.Controls.Add(this.tabSettings);
+            this.tabGrpSettings.Controls.Add(this.tabContainers);
+            this.tabGrpSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabGrpSettings.Location = new System.Drawing.Point(0, 0);
+            this.tabGrpSettings.Name = "tabGrpSettings";
+            this.tabGrpSettings.SelectedIndex = 0;
+            this.tabGrpSettings.Size = new System.Drawing.Size(238, 234);
+            this.tabGrpSettings.TabIndex = 6;
+            // 
+            // tabSettings
+            // 
+            this.tabSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.tabSettings.Controls.Add(this.chkListHide);
+            this.tabSettings.Controls.Add(this.lblLevels);
+            this.tabSettings.Controls.Add(this.chkListDisplay);
+            this.tabSettings.Controls.Add(this.numLevel);
+            this.tabSettings.Controls.Add(this.checkRelationships);
+            this.tabSettings.Location = new System.Drawing.Point(4, 22);
+            this.tabSettings.Margin = new System.Windows.Forms.Padding(0);
+            this.tabSettings.Name = "tabSettings";
+            this.tabSettings.Size = new System.Drawing.Size(230, 208);
+            this.tabSettings.TabIndex = 0;
+            this.tabSettings.Text = "Settings";
             // 
             // chkListHide
             // 
@@ -517,11 +567,20 @@
             "Hide System",
             "Hide Activity Entities",
             "Hide Parent Tables"});
-            this.chkListHide.Location = new System.Drawing.Point(6, 164);
+            this.chkListHide.Location = new System.Drawing.Point(5, 151);
             this.chkListHide.Margin = new System.Windows.Forms.Padding(0);
             this.chkListHide.Name = "chkListHide";
-            this.chkListHide.Size = new System.Drawing.Size(226, 49);
+            this.chkListHide.Size = new System.Drawing.Size(223, 49);
             this.chkListHide.TabIndex = 5;
+            // 
+            // lblLevels
+            // 
+            this.lblLevels.AutoSize = true;
+            this.lblLevels.Location = new System.Drawing.Point(14, 3);
+            this.lblLevels.Name = "lblLevels";
+            this.lblLevels.Size = new System.Drawing.Size(41, 13);
+            this.lblLevels.TabIndex = 3;
+            this.lblLevels.Text = "Levels:";
             // 
             // chkListDisplay
             // 
@@ -532,40 +591,15 @@
             "Column Display Names",
             "Primary Keys",
             "Foreign Keys"});
-            this.chkListDisplay.Location = new System.Drawing.Point(6, 100);
+            this.chkListDisplay.Location = new System.Drawing.Point(4, 87);
             this.chkListDisplay.Margin = new System.Windows.Forms.Padding(0);
             this.chkListDisplay.Name = "chkListDisplay";
-            this.chkListDisplay.Size = new System.Drawing.Size(226, 64);
+            this.chkListDisplay.Size = new System.Drawing.Size(224, 64);
             this.chkListDisplay.TabIndex = 4;
-            // 
-            // checkRelationships
-            // 
-            this.checkRelationships.CheckOnClick = true;
-            this.checkRelationships.FormattingEnabled = true;
-            this.checkRelationships.Items.AddRange(new object[] {
-            "One-To-Many",
-            "Many-To-One",
-            "Many-To-Many",
-            "Only Between Selected Tables"});
-            this.checkRelationships.Location = new System.Drawing.Point(6, 36);
-            this.checkRelationships.Margin = new System.Windows.Forms.Padding(0);
-            this.checkRelationships.Name = "checkRelationships";
-            this.checkRelationships.Size = new System.Drawing.Size(226, 64);
-            this.checkRelationships.TabIndex = 1;
-            this.checkRelationships.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkRelationships_ItemCheck);
-            // 
-            // lblLevels
-            // 
-            this.lblLevels.AutoSize = true;
-            this.lblLevels.Location = new System.Drawing.Point(16, 19);
-            this.lblLevels.Name = "lblLevels";
-            this.lblLevels.Size = new System.Drawing.Size(41, 13);
-            this.lblLevels.TabIndex = 3;
-            this.lblLevels.Text = "Levels:";
             // 
             // numLevel
             // 
-            this.numLevel.Location = new System.Drawing.Point(65, 13);
+            this.numLevel.Location = new System.Drawing.Point(64, 3);
             this.numLevel.Maximum = new decimal(new int[] {
             3,
             0,
@@ -585,13 +619,78 @@
             0,
             0});
             // 
+            // checkRelationships
+            // 
+            this.checkRelationships.CheckOnClick = true;
+            this.checkRelationships.FormattingEnabled = true;
+            this.checkRelationships.Items.AddRange(new object[] {
+            "One-To-Many",
+            "Many-To-One",
+            "Many-To-Many",
+            "Only Between Selected Tables"});
+            this.checkRelationships.Location = new System.Drawing.Point(4, 23);
+            this.checkRelationships.Margin = new System.Windows.Forms.Padding(0);
+            this.checkRelationships.Name = "checkRelationships";
+            this.checkRelationships.Size = new System.Drawing.Size(223, 64);
+            this.checkRelationships.TabIndex = 1;
+            this.checkRelationships.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this.checkRelationships_ItemCheck);
+            // 
+            // tabContainers
+            // 
+            this.tabContainers.Controls.Add(this.gvContainers);
+            this.tabContainers.Location = new System.Drawing.Point(4, 22);
+            this.tabContainers.Name = "tabContainers";
+            this.tabContainers.Padding = new System.Windows.Forms.Padding(3);
+            this.tabContainers.Size = new System.Drawing.Size(230, 208);
+            this.tabContainers.TabIndex = 1;
+            this.tabContainers.Text = "Containers";
+            this.tabContainers.UseVisualStyleBackColor = true;
+            // 
+            // gvContainers
+            // 
+            this.gvContainers.AllowUserToResizeRows = false;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvContainers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvContainers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            this.gvContainers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gvContainers.DefaultCellStyle = dataGridViewCellStyle8;
+            this.gvContainers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gvContainers.Location = new System.Drawing.Point(3, 3);
+            this.gvContainers.Name = "gvContainers";
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvContainers.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
+            this.gvContainers.Size = new System.Drawing.Size(224, 202);
+            this.gvContainers.TabIndex = 0;
+            this.gvContainers.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvContainers_CellValueChanged);
+            this.gvContainers.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.gvContainers_RowsAdded);
+            // 
             // grpSelected
             // 
             this.grpSelected.Controls.Add(this.gvSelected);
             this.grpSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.grpSelected.Location = new System.Drawing.Point(0, 0);
             this.grpSelected.Name = "grpSelected";
-            this.grpSelected.Size = new System.Drawing.Size(238, 382);
+            this.grpSelected.Size = new System.Drawing.Size(238, 367);
             this.grpSelected.TabIndex = 3;
             this.grpSelected.TabStop = false;
             this.grpSelected.Text = "Selected Entities";
@@ -601,21 +700,46 @@
             this.gvSelected.AllowUserToAddRows = false;
             this.gvSelected.AllowUserToDeleteRows = false;
             this.gvSelected.AllowUserToResizeColumns = false;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.gvSelected.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle10;
             this.gvSelected.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gvSelected.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvSelected.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
             this.gvSelected.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gvSelected.DefaultCellStyle = dataGridViewCellStyle12;
             this.gvSelected.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gvSelected.Location = new System.Drawing.Point(3, 16);
             this.gvSelected.MultiSelect = false;
             this.gvSelected.Name = "gvSelected";
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gvSelected.RowHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.gvSelected.RowHeadersVisible = false;
             this.gvSelected.RowHeadersWidth = 51;
             this.gvSelected.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gvSelected.ShowEditingIcon = false;
-            this.gvSelected.Size = new System.Drawing.Size(232, 363);
+            this.gvSelected.Size = new System.Drawing.Size(232, 348);
             this.gvSelected.TabIndex = 3;
+            this.gvSelected.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.gvSelected_CellValueChanged);
+            this.gvSelected.CurrentCellDirtyStateChanged += new System.EventHandler(this.gvSelected_CurrentCellDirtyStateChanged);
             // 
             // saveDialog
             // 
@@ -677,9 +801,12 @@
             this.splitRight.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitRight)).EndInit();
             this.splitRight.ResumeLayout(false);
-            this.grpSettings.ResumeLayout(false);
-            this.grpSettings.PerformLayout();
+            this.tabGrpSettings.ResumeLayout(false);
+            this.tabSettings.ResumeLayout(false);
+            this.tabSettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLevel)).EndInit();
+            this.tabContainers.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gvContainers)).EndInit();
             this.grpSelected.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gvSelected)).EndInit();
             this.ResumeLayout(false);
@@ -694,7 +821,6 @@
         private WeifenLuo.WinFormsUI.Docking.VS2015DarkTheme vS2015DarkTheme1;
         private System.Windows.Forms.SplitContainer splitMain;
         private System.Windows.Forms.SaveFileDialog saveDialog;
-        private System.Windows.Forms.GroupBox grpSettings;
         private System.Windows.Forms.SplitContainer splitRight;
         private System.Windows.Forms.GroupBox grpSelected;
         private System.Windows.Forms.Label lblLevels;
@@ -730,5 +856,9 @@
         private System.Windows.Forms.ToolStripDropDownButton btnCreateVisio;
         private System.Windows.Forms.ToolStripMenuItem btnOldVisio;
         private System.Windows.Forms.ToolStripMenuItem btnNewVisio;
+        private System.Windows.Forms.TabControl tabGrpSettings;
+        private System.Windows.Forms.TabPage tabSettings;
+        private System.Windows.Forms.TabPage tabContainers;
+        private System.Windows.Forms.DataGridView gvContainers;
     }
 }

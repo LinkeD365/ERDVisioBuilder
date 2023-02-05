@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Linq;
 using System.Security;
+using System.Windows.Shapes;
 using System.Xml.Linq;
 
 namespace LinkeD365.ERDBuilder
@@ -16,8 +17,8 @@ namespace LinkeD365.ERDBuilder
         protected XElement shapes;
 
         private XElement line;
-        public double PinX { get; protected set; }
-        public double PinY { get; protected set; }
+        public double PinX { get; set; }
+        public double PinY { get; set; }
         public int Id { get; protected set; }
         public string Guid { get; protected set; }
 
@@ -94,6 +95,9 @@ namespace LinkeD365.ERDBuilder
                 SetId();
             }
         }
+
+        public XNamespace NS { get => Shape.GetDefaultNamespace(); }
+
 
         public string PropertyName
         {
@@ -183,7 +187,7 @@ namespace LinkeD365.ERDBuilder
             SetPosition();
         }
 
-        protected void SetPosition()
+        public void SetPosition()
         {
             Shape.Elements().First(el => el.Attribute("N").Value == "PinY").SetAttributeValue("V", PinY);
             Shape.Elements().First(el => el.Attribute("N").Value == "PinX").SetAttributeValue("V", PinX);
@@ -205,7 +209,7 @@ namespace LinkeD365.ERDBuilder
             if (ParentShape == null) return;
             var line = new Line();
             line.Connect(ParentShape, this, CurrentChild, NoChildren);
-   
+
         }
 
         public Line AddLine(BaseShape child)

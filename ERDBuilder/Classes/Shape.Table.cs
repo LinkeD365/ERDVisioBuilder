@@ -1,12 +1,6 @@
-﻿using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Metadata;
-using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using Microsoft.Xrm.Sdk.Metadata;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
 using System.Xml.Linq;
 
 namespace LinkeD365.ERDBuilder
@@ -34,7 +28,7 @@ namespace LinkeD365.ERDBuilder
 
         public EntityMetadata TableMeta { get; internal set; }
         public string LogicalName { get { return TableMeta.LogicalName; } }
-
+        public Table Table { get; set; }
         public VisTable(EntityMetadata tableMeta, bool parent, bool tableDisplayNames, double pinX, double pinY)
         {
             TableMeta = tableMeta;
@@ -51,14 +45,14 @@ namespace LinkeD365.ERDBuilder
         }
 
         internal void AddField(string fieldName)
-        {
+         {
             var fieldText = Shape.Descendants().Where(el => el.Name.LocalName == "Text").Last();
 
 
-            var sb = new StringBuilder(fieldText.Value == "Fields\n" ? "" : fieldText.Value);
+            var sb = new StringBuilder(fieldText.Value);
             sb.AppendLine(fieldName);
 
-            fieldText.ReplaceWith(XElement.Parse($"<Text><![CDATA[{sb}]]></Text>", LoadOptions.SetBaseUri));
+            fieldText.ReplaceWith(XElement.Parse($"<Text><![CDATA[{sb.ToString()}]]></Text>", LoadOptions.SetBaseUri));
 
         }
 

@@ -1,5 +1,4 @@
 ﻿using ERDBuilder.Properties;
-using inkeD365.ERDBuilder;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Extensions;
 //using LinkeD365.ERDBuilder.Properties;
@@ -70,13 +69,14 @@ namespace LinkeD365.ERDBuilder
 
             Shapes = new List<BaseShape>();
             addedTables.Clear();
+            //Helper.Containers.Clear();
+            AddContainers(selectedTables);
             foreach (Table table in selectedTables)
             {
-                if (addedTables.Count == 0) AddTable(table, false, pageWidth / 2, pageHeight / 2);
-                else AddTable(table, false, nextX, nextY);
-
+                AddToContainer(AddTable(table, false, addedTables.Any() ? nextX : pageWidth / 2, addedTables.Any() ? nextY : pageHeight / 2));
             }
-            AddContainer(addedTables[0]);
+
+            //  AddContainer(addedTables[0]);
             if (OnlyBetweenTable) AddOnlyBetweenRels(selectedTables);
             else
             {
@@ -93,16 +93,23 @@ namespace LinkeD365.ERDBuilder
             CreateNewPage("ERDBuilder", 1);
         }
 
-        private static void AddContainer(VisTable visTable)
+        private static void AddContainers(SBList<Table> selectedTables)
         {
+            int countContainer = Helper.Containers.Where(cnt => selectedTables.Any(tbl => tbl.ContainerName == cnt.Title)).Count();
+            foreach (Container container in Helper.Containers.Where(cnt => selectedTables.Any(tbl => tbl.ContainerName == cnt.Title)))
+            {
+                Shapes.Add(new VisContainer(container.Title, container.Colour, 2 * pageWidth * Shapes.OfType<VisContainer>().Count() / 3, pageHeight));
+            }
+        }
 
-            var container = !Shapes.OfType<VisContainer>().Any(cnt => cnt.ContainerName == "Dave")
-                ? new VisContainer("Dave")
-                : Shapes.OfType<VisContainer>().First(cnt => cnt.ContainerName == "Dave");
-
-            container.AddShape(visTable);
-
-
+        private static void AddToContainer(VisTable visTable)
+        {
+            if (visTable.Table.ContainerName != string.Empty)
+            {
+                var container = Shapes.OfType<VisContainer>().FirstOrDefault(cnt => cnt.ContainerName == visTable.Table.ContainerName);
+                if (container == null) return;
+                container.AddShape(visTable);
+            }
         }
 
         private static void AddAllOneToMany(VisTable primTable, decimal noLevels)
@@ -270,7 +277,6 @@ namespace LinkeD365.ERDBuilder
                     }
                 }
                 else primTable.Connect(childTable, parent.ReferencedAttribute, parent.SchemaName);
-                //ConnectShape(primeEntity, childShape, child.ReferencingAttribute, childRel.SchemaName);
             }
             return true;
         }
@@ -294,7 +300,6 @@ namespace LinkeD365.ERDBuilder
                 //Entity childShape = (Entity)page.Shapes["Shape." + childEntity.ID];
                 if (childTable == primeTable)
 
-                //if (childShape == primeEntity)
                 {
                     if (!HideParent)
                     {
@@ -310,8 +315,7 @@ namespace LinkeD365.ERDBuilder
                     }
                 }
                 else primeTable.Connect(childTable, childRel.ReferencedAttribute, childRel.SchemaName);
-                //if (!HideParent) primeTable.Connect(childTable, childRel.ReferencedAttribute, childRel.SchemaName);
-                //ConnectShape(primeEntity, childShape, child.ReferencingAttribute, childRel.SchemaName);
+
             }
             return true;
         }
@@ -322,9 +326,11 @@ namespace LinkeD365.ERDBuilder
             table.ClearFields();
             return table;
         }
-        private static void AddTable(Table table, bool parent, double pinX, double pinY)
+        private static VisTable AddTable(Table table, bool parent, double pinX, double pinY)
         {
+
             var visTable = AddTable(table.Entity, parent, pinX, pinY);
+            visTable.Table = table;
             if (ShowPK) AddPK(visTable);
             if (table.Columns.Any())
             {
@@ -334,8 +340,8 @@ namespace LinkeD365.ERDBuilder
                     else visTable.AddField(column.LogicalName);
                 }
             }
-            else visTable.ClearFields();
-
+            //else visTable.ClearFields();
+            return visTable;
         }
 
         private static void AddPK(VisTable visTable)

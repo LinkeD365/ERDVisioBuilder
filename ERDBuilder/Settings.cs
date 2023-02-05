@@ -22,7 +22,9 @@ namespace LinkeD365.ERDBuilder
     public class Settings
     {
         private List<string> _selectedEntities = new List<string>();
+        private List<string> _containerStrings = new List<string>();
         private List<Table> tables = new List<Table>();
+        private List<Container> containers = new List<Container>();
 
         public string Name { get; set; }
         public string LastUsedOrganizationWebappUrl { get; set; }
@@ -46,6 +48,7 @@ namespace LinkeD365.ERDBuilder
                 }
             }
         }
+
         public List<Table> Tables
         {
             get
@@ -81,6 +84,10 @@ namespace LinkeD365.ERDBuilder
         {
             return Name;
         }
+
+        public List<Container> Containers { get; set; }
+        
+
     }
 
     public class AllSettings
@@ -132,7 +139,7 @@ namespace LinkeD365.ERDBuilder
         [Category("Relationships")]
         [DefaultValue(1)]
         [DisplayName("Max Level Count")]
-        
+
         public int Levels { get => levels; set { levels = value > 3 ? 3 : value < 1 ? 1 : value; } }
     }
 
@@ -172,6 +179,7 @@ namespace LinkeD365.ERDBuilder
             DisplayName = clone.DisplayName;
             Logical = clone.Logical;
             Custom = clone.Custom;
+            ContainerName = clone.ContainerName;
         }
 
         [DisplayName("Logical Name")]
@@ -215,6 +223,10 @@ namespace LinkeD365.ERDBuilder
         [XmlIgnore]
         [Browsable(false)]
         public EntityMetadata Entity { get; set; }
+
+        public string ContainerName { get; set; }
+
+
     }
 
     public class Column : INotifyPropertyChanged
@@ -308,5 +320,20 @@ namespace LinkeD365.ERDBuilder
 
             return returnValue;
         }
+    }
+
+    public class Container
+    {
+        public Container() { }
+
+        public string Title { get; set; }
+
+        public string Colour { get; set; }
+
+        public override string ToString()
+        {
+            return Title.ToString();
+        }
+      //  public bool NotSelectable { get; set; }
     }
 }

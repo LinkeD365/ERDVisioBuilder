@@ -28,8 +28,11 @@ namespace LinkeD365.ERDBuilder
             var selectedConfig = mySettings.Settings.First(stng => stng.Name == cboSelectSaved.SelectedItem.ToString());
 
             if (selectedConfig is null) return;
-
+            Helper.Containers = new SBList<Container>(selectedConfig.Containers);
+            InitContainerGrid(Helper.Containers);
             InitSelectedGrid(new SBList<Table>());
+            
+
             SetOptions(selectedConfig);
 
 
@@ -118,19 +121,14 @@ namespace LinkeD365.ERDBuilder
             {
                 var table = Helper.AllTables.FirstOrDefault(tbl => tbl.Logical == selectedTable.Logical);
                 if (table == null) continue;
-
+                table.ContainerName = selectedTable.ContainerName;
                 table.Selected = true;
+                
                 if (!selectedTable.Columns.Any()) continue;
                 if (!table.Columns.Any()) table.Columns = BuildAttributeItems(table.Logical);
                 table.Columns.Intersect(selectedTable.Columns, new ColumnComparer()).ToList().ForEach(col => col.Selected = true);
 
             }
-            //foreach (Table table in Helper.AllTables.Intersect(selectedConfig.Tables, new TableComparer()))
-            //{
-            //    table.Selected = true;
-
-            //}
-            //Helper.AllTables.Intersect(selectedConfig.Tables, new TableComparer()).ToList().ForEach(table => table.Selected = true);
         }
 
         /// <summary>
@@ -173,6 +171,7 @@ namespace LinkeD365.ERDBuilder
                 setting.Display.Add((int)chkBox);
             }
             setting.Tables = ((SBList<Table>)gvSelected.DataSource).ToList();
+            setting.Containers = ((SBList<Container>)gvContainers.DataSource).ToList();
             SaveConfig(setting);
         }
 

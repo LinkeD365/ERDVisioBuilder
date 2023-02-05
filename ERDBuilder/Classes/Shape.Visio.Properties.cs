@@ -50,7 +50,7 @@ namespace LinkeD365.ERDBuilder
 
         private static double xMultiplier = 1.8;
         private static double yMultiplier = 1.2;
-        public static List<string> VisioTemplates = new List<string>() { "Table", "Connector" };
+        public static List<string> VisioTemplates = new List<string>() { "Table", "Connector", "Container" };
         private static double nextX
         {
             get

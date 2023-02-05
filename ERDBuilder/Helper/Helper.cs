@@ -23,6 +23,7 @@ namespace LinkeD365.ERDBuilder
 
         public static SBList<Table> AllTables { get; set; } = new SBList<Table>();
 
+        public static SBList<Container> Containers { get; set; } = new SBList<Container>();
 
         internal static List<EntityMetadata> GetSolutionEntities(Guid[] guids)
         {

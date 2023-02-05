@@ -11,6 +11,10 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Dataverse Tables</description>
     <releaseNotes>
+		#23 Added columns/pk/fk in for VSDX
+		#34 Added multiple connection points
+		#35 Added Containers
+		
 		#33 Added option to hide parent tables (thanks Dani)
 		#32 Fixed issue where the hide/display options were not actually taken up
 		#20 First draft of VSDX file format

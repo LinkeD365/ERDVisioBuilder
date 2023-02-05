@@ -130,6 +130,7 @@ namespace LinkeD365.ERDBuilder
                 }
             }
             InitSelectedGrid(new SBList<Table>());
+            InitContainerGrid(Helper.Containers);
             SetDefaultOptions();
         }
 
@@ -447,6 +448,22 @@ namespace LinkeD365.ERDBuilder
             
         }
 
+        private void gvSelected_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex != 0) return;
+            var selCol = (Table)gvSelected.Rows[e.RowIndex].DataBoundItem;
+            var table = ((SBList<Table>)gvTables.DataSource).First(tab => tab.Logical == selCol.Logical);
+            table.Selected = selCol.Selected;
+        }
 
+        private void gvSelected_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (gvSelected.IsCurrentCellDirty) gvSelected.CommitEdit(DataGridViewDataErrorContexts.Commit);
+        }
+
+        private void gvContainers_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            AddContainerList((DataGridViewComboBoxColumn) gvSelected.Columns["containerCol"]);
+        }
     }
 }

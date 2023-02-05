@@ -159,7 +159,7 @@ namespace LinkeD365.ERDBuilder
                 },
                 PostWorkCallBack = e =>
                 {
-                   
+
                     table.Columns = ((SBList<Column>)e.Result);
                     table.Columns.Sort("DisplayName", ListSortDirection.Ascending);
                     gvAttributes.DataSource = null;
@@ -205,6 +205,7 @@ namespace LinkeD365.ERDBuilder
             gvTables.Columns["Custom"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
 
             gvTables.Columns["ColumnList"].Visible = false;
+            gvTables.Columns["ContainerName"].Visible = false;
         }
         private void InitTableGrid(SBList<Table> tableList)
         {
@@ -221,7 +222,7 @@ namespace LinkeD365.ERDBuilder
         {
             gvSelected.DataSource = null;
             gvSelected.DataSource = selectedList;
-            gvSelected.Columns["DisplayName"].MinimumWidth = 80;
+            //  gvSelected.Columns["DisplayName"].MinimumWidth = 80;
             gvSelected.Columns["DisplayName"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
             gvSelected.Columns["Logical"].Visible = false;
@@ -230,13 +231,18 @@ namespace LinkeD365.ERDBuilder
             gvSelected.Columns["Selected"].AutoSizeMode = DataGridViewAutoSizeColumnMode.ColumnHeader;
             gvSelected.Columns["Custom"].Visible = false;
 
-            gvSelected.Columns["ColumnList"].MinimumWidth = 100;
+            //   gvSelected.Columns["ColumnList"].MinimumWidth = 100;
 
             gvSelected.Columns["ColumnList"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             // gvSelected.Columns["ColumnList"]
 
             gvSelected.Columns["ColumnList"].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            AddContainerColumn();
+            gvSelected.Columns["ContainerName"].Visible = false;
         }
+
+
 
         private void AddFullEntity(SBList<Table> tableSelected)
         {
@@ -266,9 +272,8 @@ namespace LinkeD365.ERDBuilder
             sfd.Title = "Save Visio File";
 
             if (sfd.ShowDialog() == DialogResult.OK)
-            {
                 return sfd.FileName;
-            }
+
 
             return null;
         }

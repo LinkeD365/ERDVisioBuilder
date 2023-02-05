@@ -241,7 +241,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Shape.Containter.cs" />
+    <Compile Include="Classes\Shape.Container.cs" />
     <Compile Include="Classes\Shape.cs" />
     <Compile Include="Classes\Shape.Line.cs" />
     <Compile Include="Classes\Shape.Table.cs" />
@@ -255,6 +255,9 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ERDBuilderControl.Methods.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ERDBuilderControl.Settings.Container.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ERDBuilderControl.Settings.cs">
@@ -307,6 +310,7 @@
     <Compile Include="Forms\SolutionPicker.Designer.cs">
       <DependentUpon>SolutionPicker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shape.Container.Properties.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
