@@ -11,6 +11,8 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Dataverse Tables</description>
     <releaseNotes>
+		Modified to use the new XrmToolBox version
+		
 		#23 Added columns/pk/fk in for VSDX
 		#34 Added multiple connection points
 		#35 Added Containers
