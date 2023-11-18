@@ -351,9 +351,9 @@
   <PropertyGroup>
     <PostBuildEvent>
       IF NOT EXIST "$(TargetDir)Plugins" mkdir "$(TargetDir)Plugins"
-      IF $(ConfigurationName) == Release "$(SolutionDir)packages\ILMerge.3.0.40\tools\net452\ILMerge.exe" /targetplatform:v4,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2" /lib:"C:\Windows\Microsoft.Net\Framework64\v4.0.30319" /out:"$(TargetDir)Plugins\$(TargetFileName)" $(TargetFileName) VisioAutomation.VDX.dll
+      IF $(ConfigurationName) == Release "$(SolutionDir)packages\ILMerge.3.0.41\tools\net452\ILMerge.exe" /targetplatform:v4,"C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2" /lib:"C:\Windows\Microsoft.Net\Framework64\v4.0.30319" /out:"$(TargetDir)Plugins\$(TargetFileName)" $(TargetFileName) VisioAutomation.VDX.dll
       IF $(ConfigurationName) == Debug COPY /Y "$(TargetFileName)" "$(TargetDir)Plugins"
-    </PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
