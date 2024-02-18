@@ -11,6 +11,7 @@
     <iconUrl>https://linked365.blog/wp-content/uploads/2020/03/smallIcon.png</iconUrl>
     <description>A XrmToolBox tool to create Visio diagrams from Dataverse Tables</description>
     <releaseNotes>
+		Added Min Version of 1.02023.10.67 for this version of XrmToolBox
 		Modified to use the new XrmToolBox version
 		
 		#23 Added columns/pk/fk in for VSDX
@@ -54,7 +55,7 @@
     <copyright>Copyright 2021</copyright>
     <tags>XrmToolBox Plugins ERDVisioBuilder</tags>
     <dependencies>
-      <dependency id="XrmToolBox" version="1.2020.6.40" />
+      <dependency id="XrmToolBox" version="1.2023.10.67" />
     </dependencies>
   </metadata>
   <files>
